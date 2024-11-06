@@ -1,11 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
+  constructor( 
+    @InjectRepository(User)
+    private readonly usersRepository: Repository<User>
+  ){}
   create(createUserDto: CreateUserDto) {
     return 'This action adds a new user';
+  }
+
+  async pagination(page: number, limit: number) {
+    const offset = (page - 1) * limit;
+
+    return await this.usersRepository.find({
+      select: ['id', 'name', 'email', 'idNumber' , 'role', 'createdAt' , 'courses'],
+      skip: offset,
+      take: limit,
+    }); 
   }
 
   findAll() {
