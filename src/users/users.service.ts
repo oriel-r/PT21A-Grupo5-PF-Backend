@@ -16,6 +16,16 @@ export class UsersService {
     private readonly usersRepo: UsersRepository,
   ) {}
 
+  async pagination(page: number, limit: number) {
+    const offset = (page - 1) * limit;
+
+    return await this.usersRepository.find({
+        select: ['id', 'idNumber', 'email', 'courses', 'createdAt', 'name', 'role', 'subscription'],
+        skip: offset,
+        take: limit,
+    });
+}
+
   async create(createUserDto: CreateUserDto) {
     const { name, email, idNumber } = createUserDto;
     const hashedPassword = await hash(idNumber, 10);
