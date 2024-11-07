@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
+
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { UsersRepository } from './users.repository';
@@ -14,6 +15,16 @@ export class UsersService {
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
     private readonly usersRepo: UsersRepository,
   ) {}
+
+  async pagination(page: number, limit: number) {
+    const offset = (page - 1) * limit;
+
+    return await this.usersRepository.find({
+        select: ['id', 'idNumber', 'email', 'courses', 'createdAt', 'name', 'role', 'subscription'],
+        skip: offset,
+        take: limit,
+    });
+}
 
   async create(createUserDto: CreateUserDto) {
     const { name, email, idNumber } = createUserDto;

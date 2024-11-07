@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -15,6 +16,14 @@ import { UserResponseDto } from './dto/response-user.dto';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
+  @Get('page')
+  findWithPagination(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 1,
+  ) {
+    return this.usersService.pagination(page, limit)
+  }
 
   @Post('register')
   async create(@Body() createUserDto: CreateUserDto) {
