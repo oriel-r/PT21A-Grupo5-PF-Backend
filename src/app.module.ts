@@ -11,6 +11,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { SeedsModule } from './seeds/seeds.module';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 import { ChatModule } from './chat/chat.module';
+import { EmailerModule } from './emailer/emailer.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { ChatModule } from './chat/chat.module';
     SeedsModule,
     SubscriptionsModule,
     ChatModule,
+    EmailerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
