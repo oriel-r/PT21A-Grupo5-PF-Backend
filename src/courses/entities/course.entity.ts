@@ -1,15 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Category } from 'src/categories/entities/category.entity';
-import { Language } from 'src/enums/languages.enum';
 import { Specialization } from 'src/enums/specializations.enum';
+import { Lenguage } from 'src/lenguages/entities/lenguage.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
@@ -36,8 +36,9 @@ export class Course {
     required: true,
     description: 'Course target language',
   })
-  @Column({ type: 'enum', enum: Language })
-  language: Language;
+  @ManyToOne(() => Lenguage, lenguage => lenguage.courses )
+  @JoinColumn()
+  language: Lenguage;
 
   @ApiProperty({
     type: String,
