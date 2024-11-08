@@ -1,10 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger"
 import { IsNotEmpty, IsOptional, IsString } from "class-validator"
+import { DeepPartial } from "typeorm"
 
-export class CreateLenguageDto{
+export class CreateLanguageDto{
 @ApiProperty({
     name: 'name',
-    description: 'lenguage name',
+    description: 'language name',
     example: 'Guarani'
 })
 @IsNotEmpty()
@@ -12,7 +13,7 @@ export class CreateLenguageDto{
 name: string
 
 @ApiProperty({
-    name: 'A refence image of the lenguage',
+    name: 'A refence image of the language',
     description: 'in jpg or png, webp is more optimized or web, Max size 2MB'
 })
 @IsOptional()
@@ -25,4 +26,7 @@ image_url: string
 @IsOptional()
 course: string[]
 
+constructor(partial: DeepPartial<CreateLanguageDto>) {
+    Object.assign(this, partial)
+}
 }

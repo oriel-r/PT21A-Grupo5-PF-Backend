@@ -5,7 +5,7 @@ import { defaultImage } from "./link.const";
 import { Course } from "src/courses/entities/course.entity";
 
 @Entity()
-export class Lenguage{
+export class Language{
 
 @ApiProperty({
     description: 'Autogeneretad UUID'
@@ -14,7 +14,7 @@ export class Lenguage{
 id: string = uuid()
 
 @ApiProperty({
-    description: 'the name of lenguage',
+    description: 'the name of language',
     example: 'Guarani',
     maxLength: 50
 })
@@ -23,7 +23,7 @@ name: string
 
 @ApiProperty({
     name: 'image_url',
-    description: 'A reference image of the lenguage',
+    description: 'A reference image of the language',
     type: 'string'
 })
 @Column({default: defaultImage})
