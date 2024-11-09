@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  UploadedFile,
+} from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
@@ -10,7 +20,7 @@ export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
 
   @ApiOperation({
-    summary: 'Create a new course'
+    summary: 'Create a new course',
   })
   @Post()
   @ApiConsumes('multipart/form-data')
@@ -19,16 +29,17 @@ export class CoursesController {
     schema: {
       type: 'object',
       properties: {
-        file: { 
+        file: {
           type: 'string',
           format: 'binary',
         },
       },
     },
   })
-  create(
+  async create(
     @UploadedFile() file: Express.Multer.File,
-    @Body() data: CreateCourseDto) {
+    @Body() data: CreateCourseDto,
+  ) {
     return this.coursesService.create(data, file);
   }
 
