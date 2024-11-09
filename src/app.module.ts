@@ -15,6 +15,7 @@ import { EmailerModule } from './emailer/emailer.module';
 import { LessonsModule } from './lessons/lessons.module';
 import { LanguageModule } from './language/language.module';
 import { CloudinaryService } from './services/cloudinary/cloudinary.service';
+import { CronsModule } from './crons/crons.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { CloudinaryService } from './services/cloudinary/cloudinary.service';
     EmailerModule,
     LessonsModule,
     LanguageModule,
+    CronsModule,
   ],
   controllers: [AppController],
   providers: [AppService, CloudinaryService],

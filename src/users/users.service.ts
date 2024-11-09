@@ -53,6 +53,14 @@ export class UsersService {
     return await this.usersRepository.find({ relations: { courses: true } });
   }
 
+  async findNewsletterList(): Promise<Array<string>> {
+    const users = await this.usersRepository.find({
+      where: { newsletter: true },
+      select: { email: true },
+    });
+    return users.map((user) => user.email);
+  }
+
   async findOne(id: string) {
     return await this.usersRepository.findOne({ where: { id } });
   }
