@@ -12,6 +12,8 @@ import { SeedsModule } from './seeds/seeds.module';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 import { ChatModule } from './chat/chat.module';
 import { EmailerModule } from './emailer/emailer.module';
+import { LessonsModule } from './lessons/lessons.module';
+import { LanguageModule } from './language/language.module';
 
 @Module({
   imports: [
@@ -34,6 +36,8 @@ import { EmailerModule } from './emailer/emailer.module';
     SubscriptionsModule,
     ChatModule,
     EmailerModule,
+    LessonsModule,
+    LanguageModule,
   ],
   controllers: [AppController],
   providers: [AppService],
