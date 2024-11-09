@@ -1,34 +1,33 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { v4 as uuid } from "uuid";
-import { defaultImage } from "./link.const";
-import { Course } from "src/courses/entities/course.entity";
+import { ApiProperty } from '@nestjs/swagger';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { v4 as uuid } from 'uuid';
+import { defaultImage } from './link.const';
+import { Course } from 'src/courses/entities/course.entity';
 
 @Entity()
-export class Language{
+export class Language {
+  @ApiProperty({
+    description: 'Autogeneretad UUID',
+  })
+  @PrimaryGeneratedColumn('uuid')
+  id: string = uuid();
 
-@ApiProperty({
-    description: 'Autogeneretad UUID'
-})
-@PrimaryGeneratedColumn('uuid')
-id: string = uuid()
-
-@ApiProperty({
+  @ApiProperty({
     description: 'the name of language',
     example: 'Guarani',
-    maxLength: 50
-})
-@Column({type: 'varchar', length: 50, nullable: false })
-name: string
+    maxLength: 50,
+  })
+  @Column({ type: 'varchar', length: 50, nullable: false })
+  name: string;
 
-@ApiProperty({
+  @ApiProperty({
     name: 'image_url',
     description: 'A reference image of the language',
-    type: 'string'
-})
-@Column({default: defaultImage})
-image_url: string
+    type: 'string',
+  })
+  @Column({ default: defaultImage })
+  image_url: string;
 
-@OneToMany(() => Course, course => course.language)
-courses: Course[]
+  @OneToMany(() => Course, (course) => course.language)
+  courses: Course[];
 }

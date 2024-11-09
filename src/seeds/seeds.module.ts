@@ -14,6 +14,6 @@ import { LanguagesSeed } from "./languages/languages-seeds";
     imports:[TypeOrmModule.forFeature([User, Category, Course, Language]), JwtModule],
     providers: [UsersSeed,CategoriesSeed,CoursesSeed,LanguagesSeed],
     exports: [UsersSeed,CategoriesSeed,CoursesSeed,LanguagesSeed]
-})
 
+})
 export class SeedsModule {}

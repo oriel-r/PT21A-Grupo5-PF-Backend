@@ -22,14 +22,13 @@ export class UsersController {
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 1,
   ) {
-    return this.usersService.pagination(page, limit)
+    return this.usersService.pagination(page, limit);
   }
 
   @Post('register')
   async create(@Body() createUserDto: CreateUserDto) {
-    
     const user = await this.usersService.create(createUserDto);
-    return new UserResponseDto(user)
+    return new UserResponseDto(user);
   }
 
   @Get()
