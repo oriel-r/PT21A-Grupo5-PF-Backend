@@ -14,6 +14,7 @@ import { ChatModule } from './chat/chat.module';
 import { EmailerModule } from './emailer/emailer.module';
 import { LessonsModule } from './lessons/lessons.module';
 import { LanguageModule } from './language/language.module';
+import { CloudinaryService } from './services/cloudinary/cloudinary.service';
 
 @Module({
   imports: [
@@ -40,6 +41,6 @@ import { LanguageModule } from './language/language.module';
     LanguageModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, CloudinaryService],
 })
 export class AppModule {}
