@@ -14,6 +14,7 @@ import { ChatModule } from './chat/chat.module';
 import { EmailerModule } from './emailer/emailer.module';
 import { LessonsModule } from './lessons/lessons.module';
 import { LanguageModule } from './language/language.module';
+import { CronsModule } from './crons/crons.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { LanguageModule } from './language/language.module';
     EmailerModule,
     LessonsModule,
     LanguageModule,
+    CronsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

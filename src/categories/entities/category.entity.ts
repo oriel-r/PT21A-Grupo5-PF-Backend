@@ -30,6 +30,6 @@ export class Category {
     type: Array<Course>,
     description: 'FK related to the courses belonging to the category.',
   })
-  @OneToMany(() => Course, (courses) => courses.category)
+  @OneToMany(() => Course, (courses) => courses.category, { nullable: true })
   courses: Course[];
 }
