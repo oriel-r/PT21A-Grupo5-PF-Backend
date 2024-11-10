@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsStrongPassword, Matches } from 'class-validator';
 
 export class SignInAuthDto {
   @ApiProperty({
@@ -19,6 +19,13 @@ export class SignInAuthDto {
     example: 'Alice1234$',
   })
   @IsNotEmpty()
+  @IsStrongPassword({
+    minLowercase: 1,
+    minUppercase: 1,
+    minNumbers: 1,
+    minSymbols: 1,
+})
+@Matches(/[!@#$%^&*]/, { message: 'La contraseña debe contener al menos un carácter especial: !@#$%^&*' })
   password: string;
 
   constructor(partial: Partial<SignInAuthDto>) {
