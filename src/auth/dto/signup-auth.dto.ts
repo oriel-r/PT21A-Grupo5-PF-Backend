@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString, Matches } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, Length, Matches } from 'class-validator';
 
 export class SignupUserDto {
     @ApiProperty({
@@ -9,8 +9,10 @@ export class SignupUserDto {
         description: 'The name of the user',
       })
       @IsString()
+      @Length(3, 80)
       @IsNotEmpty()
       name: string;
+
       @ApiProperty({
         type: String,
         required: true,
@@ -21,12 +23,14 @@ export class SignupUserDto {
       @IsNotEmpty()
       @IsString()
       email: string;
+
       @ApiProperty({
         type: String,
         required: true,
         description: 'The password of the user',
         example: 'Password123!',
       })
+      
       @Matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[=!@#$%^&])[A-Za-z\d=!@#$%^&]{8,15}$/,
         {

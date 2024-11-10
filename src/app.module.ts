@@ -10,6 +10,7 @@ import { CoursesModule } from './courses/courses.module';
 import { CategoriesModule } from './categories/categories.module';
 import { SeedsModule } from './seeds/seeds.module';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -30,6 +31,11 @@ import { SubscriptionsModule } from './subscriptions/subscriptions.module';
     CategoriesModule,
     SeedsModule,
     SubscriptionsModule,
+    JwtModule.register({
+      global: true,
+      signOptions: { expiresIn: '1h' },
+      secret: process.env.JWT_SECRET,
+    })
   ],
   controllers: [AppController],
   providers: [AppService],

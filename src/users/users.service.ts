@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -40,6 +40,16 @@ export class UsersService {
     return teacher;
   }
 
+  async createUser( user: CreateUserDto ) {
+    const existingUser = await this.findEmail(user.email)
+
+    if( existingUser ) {
+      throw new ConflictException('Email is already in use.')
+    }
+
+    return await this.usersRepository.save(user)
+  }
+
   async findAll() {
     return await this.usersRepository.find({ relations: { courses: true } });
   }
@@ -54,5 +64,9 @@ export class UsersService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+
+  async findEmail(email: string) {
+    return await this.usersRepository.findOne({ where: { email } });
   }
 }
