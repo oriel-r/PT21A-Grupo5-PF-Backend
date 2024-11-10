@@ -16,6 +16,7 @@ import { LessonsModule } from './lessons/lessons.module';
 import { LanguageModule } from './language/language.module';
 import { CloudinaryService } from './services/cloudinary/cloudinary.service';
 import { CronsModule } from './crons/crons.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -41,6 +42,11 @@ import { CronsModule } from './crons/crons.module';
     LessonsModule,
     LanguageModule,
     CronsModule,
+    JwtModule.register({
+      global: true,
+      signOptions: { expiresIn: '1h' },
+      secret: process.env.JWT_SECRET,
+    })
   ],
   controllers: [AppController],
   providers: [AppService, CloudinaryService],
