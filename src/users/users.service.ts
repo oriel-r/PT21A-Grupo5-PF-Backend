@@ -10,7 +10,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { UsersRepository } from './users.repository';
-import { hash } from 'bcrypt';
 import { Role } from 'src/enums/roles.enum';
 import { hash } from 'bcrypt';
 import { SignupUserDto } from 'src/auth/dto/signup-auth.dto';
