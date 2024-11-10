@@ -68,7 +68,7 @@ export class User {
   @Column({default:true})
   newsletter: boolean
   
-  @Column()
+  @Column({default: new Date()})
   createdAt: Date;
 
   @ManyToMany(() => Course, (courses) => courses.users)
