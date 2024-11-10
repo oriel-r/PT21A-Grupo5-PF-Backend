@@ -6,8 +6,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { UsersRepository } from './users.repository';
-import { Role } from 'src/enums/roles.enum';
 import { hash } from 'bcrypt';
+import { Role } from 'src/enums/roles.enum';
 
 @Injectable()
 export class UsersService {
@@ -56,7 +56,8 @@ export class UsersService {
       throw new ConflictException('Email is already in use.')
     }
 
-    return await this.usersRepository.save(user)
+    const newUser = this.usersRepository.create(user)
+    return await this.usersRepository.save(newUser)
   }
 
   async findAll() {
