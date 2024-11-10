@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -8,18 +12,22 @@ import { Repository } from 'typeorm';
 import { UsersRepository } from './users.repository';
 import { Role } from 'src/enums/roles.enum';
 import { hash } from 'bcrypt';
+import { SignupUserDto } from 'src/auth/dto/signup-auth.dto';
+import { SubscriptionsService } from 'src/subscriptions/subscriptions.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
     private readonly usersRepo: UsersRepository,
+    private readonly subscriptionService: SubscriptionsService,
   ) {}
 
   async pagination(page: number, limit: number) {
     const offset = (page - 1) * limit;
 
     return await this.usersRepository.find({
+      relations: { courses: true, subscription: true },
       select: [
         'id',
         'idNumber',
@@ -49,14 +57,25 @@ export class UsersService {
     return teacher;
   }
 
-  async createUser( user: CreateUserDto ) {
-    const existingUser = await this.findEmail(user.email)
-
-    if( existingUser ) {
-      throw new ConflictException('Email is already in use.')
+  async createUser(signUpUserDto: SignupUserDto) {
+    const { name, email, password, idNumber } = signUpUserDto;
+    const subscription = await this.subscriptionService.findByName('standard');
+    if (!subscription) {
+      throw new BadRequestException('Subscription not found');
     }
+    const existingUser = await this.findEmail(email);
 
-    return await this.usersRepository.save(user)
+    if (existingUser) {
+      throw new ConflictException('Email is already in use.');
+    }
+    const user = new User();
+    user.name = name;
+    user.email = email;
+    user.password = password;
+    user.subscription = subscription
+    user.idNumber = idNumber
+
+    return await this.usersRepository.save(user);
   }
 
   async findAll() {
@@ -64,23 +83,19 @@ export class UsersService {
   }
 
   async findNewsletterList(): Promise<Array<string>> {
-    const users = await this.usersRepository.find({
-      where: { newsletter: true },
-      select: { email: true },
-    });
-    return users.map((user) => user.email);
+    return this.usersRepo.findNewsletterList();
   }
 
   async findOne(id: string) {
-    return await this.usersRepository.findOne({ where: { id } });
+    return await this.usersRepo.findOne(id);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    return await this.usersRepo.update(id, updateUserDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    return await this.usersRepo.deleteUser(id);
   }
 
   async findEmail(email: string) {
