@@ -6,6 +6,7 @@ import { CategoriesSeed } from './seeds/categories/categories-seeds';
 import { LanguagesSeed } from './seeds/languages/languages-seeds';
 import { CoursesSeed } from './seeds/courses/courses-seeds';
 import { ValidationPipe } from '@nestjs/common';
+import { SubscriptionsSeeds } from './seeds/subscriptions/subscriptions-seeds';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -32,6 +33,10 @@ async function bootstrap() {
   const coursesSeed = app.get(CoursesSeed);
   await coursesSeed.seed();
   console.log('Courses injection completed.');
+
+  const subscriptionsSeed = app.get(SubscriptionsSeeds);
+  await subscriptionsSeed.seed();
+  console.log('Subscriptions injection completed.');
 
   //Swagger OpenApi settings
 
