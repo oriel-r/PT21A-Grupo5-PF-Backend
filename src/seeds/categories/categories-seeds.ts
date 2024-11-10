@@ -1,9 +1,4 @@
 import { Injectable } from '@nestjs/common';
-<<<<<<< HEAD
-
-@Injectable()
-export class CategoriesSeed {}
-=======
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from 'src/categories/entities/category.entity';
 import { In, Repository } from 'typeorm';
@@ -32,4 +27,4 @@ export class CategoriesSeed {
     }
   }
 }
->>>>>>> dev
+

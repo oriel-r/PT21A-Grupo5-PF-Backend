@@ -39,18 +39,14 @@ export class Course {
     description: "Course's video introduction",
     type: 'string',
   })
-<<<<<<< HEAD
-  @Column()
-  video_url: string;
 
-=======
   @Column({nullable:true})
   video_url: string;
 
   @Column()
   createdAt: Date;
 
->>>>>>> dev
+
   @ApiProperty({
     name: 'lessons',
     description: "Course's lessons",
@@ -66,11 +62,8 @@ export class Course {
   @JoinColumn()
   language: Language;
 
-<<<<<<< HEAD
-  @ManyToMany(() => User, (user) => user.courses)
-=======
   @ManyToMany(() => User, (user) => user.courses, { nullable: true })
->>>>>>> dev
+
   @JoinTable()
   users: User;
 

@@ -14,11 +14,9 @@ import { ChatModule } from './chat/chat.module';
 import { EmailerModule } from './emailer/emailer.module';
 import { LessonsModule } from './lessons/lessons.module';
 import { LanguageModule } from './language/language.module';
-<<<<<<< HEAD
 import { CloudinaryService } from './services/cloudinary/cloudinary.service';
-=======
 import { CronsModule } from './crons/crons.module';
->>>>>>> dev
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -44,6 +42,11 @@ import { CronsModule } from './crons/crons.module';
     LessonsModule,
     LanguageModule,
     CronsModule,
+    JwtModule.register({
+      global: true,
+      signOptions: { expiresIn: '1h' },
+      secret: process.env.JWT_SECRET,
+    })
   ],
   controllers: [AppController],
   providers: [AppService, CloudinaryService],

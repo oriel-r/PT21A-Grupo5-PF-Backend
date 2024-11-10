@@ -11,11 +11,14 @@ export class CoursesRepository {
   ) {}
 
   async getAllCourses(): Promise<Course[]> {
-    return await this.coursesRepository.find({});
+    return await this.coursesRepository.find({ relations: { lessons: true } });
   }
 
   async findByTitle(title: string): Promise<Course | null> {
-    return await this.coursesRepository.findOneBy({ title });
+    return await this.coursesRepository.findOne({
+      where: { title },
+      relations: { lessons: true },
+    });
   }
 
   async createCourse(data): Promise<Course[]> {

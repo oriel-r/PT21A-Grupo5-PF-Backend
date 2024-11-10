@@ -15,31 +15,31 @@ import { UpdateSubscriptionDto } from './dto/update-subscription.dto';
 export class SubscriptionsController {
   constructor(private readonly subscriptionsService: SubscriptionsService) {}
 
-  @Post()
-  create(@Body() createSubscriptionDto: CreateSubscriptionDto) {
-    return this.subscriptionsService.create(createSubscriptionDto);
+  @Post('create')
+  async create(@Body() createSubscriptionDto: CreateSubscriptionDto) {
+    return await this.subscriptionsService.create(createSubscriptionDto);
   }
 
   @Get()
-  findAll() {
-    return this.subscriptionsService.findAll();
+  async findAll() {
+    return await this.subscriptionsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.subscriptionsService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.subscriptionsService.findOne(id);
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateSubscriptionDto: UpdateSubscriptionDto,
   ) {
-    return this.subscriptionsService.update(+id, updateSubscriptionDto);
+    return await this.subscriptionsService.update(id, updateSubscriptionDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.subscriptionsService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.subscriptionsService.remove(id);
   }
 }

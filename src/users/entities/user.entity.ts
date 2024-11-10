@@ -57,7 +57,7 @@ export class User {
     description:
       'Enum indicating if the user is either a simple user, teacher or an admin. ',
   })
-  @Column({ type: 'enum', enum: Role })
+  @Column({ type: 'enum', enum: Role, default: Role.USER })
   role: Role;
 
   @ApiProperty({
@@ -68,7 +68,7 @@ export class User {
   @Column({default:true})
   newsletter: boolean
   
-  @Column()
+  @Column({default: new Date()})
   createdAt: Date;
 
   @ManyToMany(() => Course, (courses) => courses.users)

@@ -1,9 +1,4 @@
 import { Injectable } from '@nestjs/common';
-<<<<<<< HEAD
-
-@Injectable()
-export class CoursesSeed {}
-=======
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from 'src/categories/entities/category.entity';
 import { Course } from 'src/courses/entities/course.entity';
@@ -61,4 +56,4 @@ export class CoursesSeed {
     }
   }
 }
->>>>>>> dev
+
