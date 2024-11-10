@@ -13,12 +13,12 @@ const PostgresDataSourceOptions: DataSourceOptions = {
   port: parseInt(process.env.POSTGRES_PORT),
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
-  synchronize: false,
-  dropSchema: false,
+  synchronize: true,
+  dropSchema: true,
   logging: false,
-  //ssl: {
-  //    rejectUnauthorized: false, // This is necessary for self-signed certificates
-  //  },
+  ssl: {
+    rejectUnauthorized: false, // This is necessary for self-signed certificates
+  },
   entities: ['dist/**/*.entity{.ts,.js}'],
   migrations: ['dist/migrations/*{.js,.ts}'],
 };
