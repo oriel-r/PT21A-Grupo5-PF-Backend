@@ -10,10 +10,10 @@ export class Subscription {
   @Column()
   name: string;
 
-  @Column()
-  description: string;
+  @Column('text',  {array:true})
+  description: string[];
 
-  @Column()
+  @Column('decimal', { precision: 10, scale: 2 })
   price: number;
 
   @OneToMany(() => User, (users) => users.subscription)
