@@ -20,11 +20,20 @@ export class UsersService {
     const offset = (page - 1) * limit;
 
     return await this.usersRepository.find({
-        select: ['id', 'idNumber', 'email', 'courses', 'createdAt', 'name', 'role', 'subscription'],
-        skip: offset,
-        take: limit,
+      select: [
+        'id',
+        'idNumber',
+        'email',
+        'courses',
+        'createdAt',
+        'name',
+        'role',
+        'subscription',
+      ],
+      skip: offset,
+      take: limit,
     });
-}
+  }
 
   async create(createUserDto: CreateUserDto) {
     const { name, email, idNumber } = createUserDto;
@@ -52,6 +61,14 @@ export class UsersService {
 
   async findAll() {
     return await this.usersRepository.find({ relations: { courses: true } });
+  }
+
+  async findNewsletterList(): Promise<Array<string>> {
+    const users = await this.usersRepository.find({
+      where: { newsletter: true },
+      select: { email: true },
+    });
+    return users.map((user) => user.email);
   }
 
   async findOne(id: string) {

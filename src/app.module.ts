@@ -10,6 +10,12 @@ import { CoursesModule } from './courses/courses.module';
 import { CategoriesModule } from './categories/categories.module';
 import { SeedsModule } from './seeds/seeds.module';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
+import { ChatModule } from './chat/chat.module';
+import { EmailerModule } from './emailer/emailer.module';
+import { LessonsModule } from './lessons/lessons.module';
+import { LanguageModule } from './language/language.module';
+import { CloudinaryService } from './services/cloudinary/cloudinary.service';
+import { CronsModule } from './crons/crons.module';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({
@@ -31,6 +37,11 @@ import { JwtModule } from '@nestjs/jwt';
     CategoriesModule,
     SeedsModule,
     SubscriptionsModule,
+    ChatModule,
+    EmailerModule,
+    LessonsModule,
+    LanguageModule,
+    CronsModule,
     JwtModule.register({
       global: true,
       signOptions: { expiresIn: '1h' },
@@ -38,6 +49,6 @@ import { JwtModule } from '@nestjs/jwt';
     })
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, CloudinaryService],
 })
 export class AppModule {}

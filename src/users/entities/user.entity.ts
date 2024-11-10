@@ -60,7 +60,15 @@ export class User {
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   role: Role;
 
-  @Column({type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
+  @ApiProperty({
+    default: true,
+    description:
+      'It indicates weather the user should be included in the newsletter messaging or not.',
+  })
+  @Column({default:true})
+  newsletter: boolean
+  
+  @Column()
   createdAt: Date;
 
   @ManyToMany(() => Course, (courses) => courses.users)
