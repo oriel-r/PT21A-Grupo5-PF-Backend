@@ -49,8 +49,10 @@ export class CoursesSeed {
         const title = courseData.title;
         const language = await this.findLanguageByName(courseData.language);
         const category = await this.findCategoryByName(courseData.category);
+        const specialization = courseData.specialization;
+        const level = courseData.level;
         const createdAt = courseData.createdAt;
-        const course = new Course({ title, language, category, createdAt });
+        const course = new Course({ title, language, category, specialization, level, createdAt });
         await this.coursesRepository.save(course);
       }
     }

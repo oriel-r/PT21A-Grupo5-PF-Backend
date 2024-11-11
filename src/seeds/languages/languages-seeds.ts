@@ -18,10 +18,12 @@ export class LanguagesSeed {
 
     for (const languageName of languagesMock) {
       if (
-        !existingLanguage.some((language) => language.name === languageName)
+        !existingLanguage.some((language) => language.name === languageName.name)
       ) {
         const language = new Language();
-        language.name = languageName;
+        language.name = languageName.name;
+        language.image_url = languageName.image
+        language.flag_url = languageName.flag
         await this.languagesRepository.save(language);
       }
     }
