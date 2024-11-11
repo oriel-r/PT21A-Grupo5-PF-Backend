@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Course } from 'src/courses/entities/course.entity';
 import {
+  Column,
   DeepPartial,
   Entity,
   JoinColumn,
@@ -25,6 +26,7 @@ export class Lesson {
     type: 'string',
     example: 'Clase 1: Introducción al guarani',
   })
+  @Column()
   title: string;
 
   @ApiProperty({
@@ -34,12 +36,16 @@ export class Lesson {
     example:
       'El guarani es la segunda lengua de Paraguya y también es habalda en el noreste argentino...',
   })
+  @Column()
   content: string;
 
   @ApiProperty({
     name: 'video',
     description:
       "Lesson's video. Only use for document this api. Validation by file-upload pipe and upload externaly",
+  })
+  @Column({
+    default: 'https://www.youtube.com/embed/qxOkaU6RVz4?si=uNX_bov4i-FLzcOy',
   })
   video_url: string;
 

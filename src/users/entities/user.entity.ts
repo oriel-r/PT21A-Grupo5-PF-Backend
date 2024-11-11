@@ -65,10 +65,10 @@ export class User {
     description:
       'It indicates weather the user should be included in the newsletter messaging or not.',
   })
-  @Column({default:true})
-  newsletter: boolean
-  
-  @Column({default: new Date()})
+  @Column({ default: true })
+  newsletter: boolean;
+
+  @Column({ default: new Date() })
   createdAt: Date;
 
   @ManyToMany(() => Course, (courses) => courses.users)

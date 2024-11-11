@@ -23,8 +23,8 @@ export class CoursesService {
     return courses;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} course`;
+  async findOne(title: string) {
+    return await this.coursesRepository.findByTitle(title);
   }
 
   update(id: number, updateCourseDto: UpdateCourseDto) {

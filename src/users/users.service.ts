@@ -72,8 +72,8 @@ export class UsersService {
     user.name = name;
     user.email = email;
     user.password = password;
-    user.subscription = subscription
-    user.idNumber = idNumber
+    user.subscription = subscription;
+    user.idNumber = idNumber;
 
     return await this.usersRepository.save(user);
   }

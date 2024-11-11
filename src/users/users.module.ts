@@ -12,6 +12,6 @@ import { SubscriptionsService } from 'src/subscriptions/subscriptions.service';
   imports: [TypeOrmModule.forFeature([User]), JwtModule, SubscriptionsModule],
   controllers: [UsersController],
   providers: [UsersService, UsersRepository],
-  exports: [UsersRepository, UsersService]
+  exports: [UsersRepository, UsersService],
 })
 export class UsersModule {}
