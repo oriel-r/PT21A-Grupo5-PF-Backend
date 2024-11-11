@@ -12,18 +12,24 @@ export class CategoriesSeed {
   ) {}
 
   async seed() {
-    const existingCategories = await this.categoriesRepository.find({
-      where: { name: In(categoriesMock) },
-    });
+    try {
+      const existingCategories = await this.categoriesRepository.find({
+        where: { name: In(categoriesMock) },
+      });
 
-    for (const categoryName of categoriesMock) {
-      if (
-        !existingCategories.some((category) => category.name === categoryName)
-      ) {
-        const category = new Category();
-        category.name = categoryName;
-        await this.categoriesRepository.save(category);
+      for (const categoryName of categoriesMock) {
+        if (
+          !existingCategories.some((category) => category.name === categoryName)
+        ) {
+          const category = new Category();
+          category.name = categoryName;
+          await this.categoriesRepository.save(category);
+        }
       }
+
+      console.log('Categories injection completed.');
+    } catch (error) {
+      console.log(error);
     }
   }
 }

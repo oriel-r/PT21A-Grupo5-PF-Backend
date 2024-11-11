@@ -37,6 +37,14 @@ export class Course {
   title: string;
 
   @ApiProperty({
+    name: 'imgage',
+    type: 'string',
+    description: 'Imagen del curso',
+  })
+  @Column({ nullable: true })
+  img_url: string;
+
+  @ApiProperty({
     name: 'video',
     description: "Course's video introduction",
     type: 'string',
@@ -46,7 +54,7 @@ export class Course {
 
   @ApiProperty({
     name: 'specialization',
-    description: "Propósito del curso",
+    description: 'Propósito del curso',
     type: 'string',
   })
   @Column({ type: 'enum', enum: Specialization })
@@ -54,11 +62,11 @@ export class Course {
 
   @ApiProperty({
     name: 'level',
-    description: "Nivel del curso",
+    description: 'Nivel del curso',
     type: 'string',
   })
-  @Column({type:'enum', enum:Level})
-  level: Level
+  @Column({ type: 'enum', enum: Level })
+  level: Level;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
