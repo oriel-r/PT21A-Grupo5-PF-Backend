@@ -28,9 +28,17 @@ export class LanguageController {
     description: "By default's values: page 1, limit 5",
   })
   @HttpCode(HttpStatus.OK)
+  @Get('page')
+  async getPagination(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ) {
+    return await this.languageService.getPagination(page, limit);
+  }
+
   @Get()
-  async getAll(@Query('page') page: number, @Query('limit') limit: number) {
-    return await this.languageService.getAll(page, limit);
+  async getAll() {
+    return await this.languageService.getAll();
   }
 
   @ApiOperation({
