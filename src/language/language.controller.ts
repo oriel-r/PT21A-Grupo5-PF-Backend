@@ -33,6 +33,13 @@ export class LanguageController {
     return await this.languageService.getAll(page, limit);
   }
 
+  @ApiOperation({
+    summary: 'Get a language courses'
+  })
+  @Get(':id/courses')
+  async getById(id:string) {
+    return await this.languageService.getCoursesFromLanguage(id)
+  }
   @Post()
   @ApiOperation({
     summary: 'Add a new language',
