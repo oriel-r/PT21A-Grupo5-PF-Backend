@@ -11,6 +11,7 @@ import { CreateLanguageDto } from './dto/create-language.dto';
 import { CloudinaryService } from 'src/services/cloudinary/cloudinary.service';
 import { DeepPartial } from 'typeorm';
 import { isEqual } from 'src/helpers/is-equal';
+import { Course } from 'src/courses/entities/course.entity';
 
 @Injectable()
 export class LanguageService {
@@ -31,6 +32,12 @@ export class LanguageService {
     const language = await this.languageRepository.findById(id);
     if (!language) throw new NotFoundException('Language not found');
     return language;
+  }
+
+  async getCoursesFromLanguage(id: string): Promise<Course[]> {
+    const language = await this.languageRepository.findById(id);
+    if (!language) throw new NotFoundException('Language not found');
+    return language.courses;
   }
 
   async getByName(name: string): Promise<Language> {
