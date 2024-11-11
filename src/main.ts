@@ -44,6 +44,9 @@ async function bootstrap() {
   const lessonsSeed = app.get(LessonsSeeds);
   await lessonsSeed.seed();
 
+  const lessonsSeed = app.get(LessonsSeeds);
+  await lessonsSeed.seed();
+
   //Swagger OpenApi settings
 
   const swaggerConfig = new DocumentBuilder()
