@@ -68,7 +68,7 @@ export class User {
   @Column({ default: true })
   newsletter: boolean;
 
-  @Column({type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
   @ManyToMany(() => Course, (courses) => courses.users)

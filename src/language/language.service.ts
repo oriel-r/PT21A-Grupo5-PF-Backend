@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -46,28 +47,46 @@ export class LanguageService {
     return language;
   }
 
-  async addLanguage(data: CreateLanguageDto, file): Promise<Language | null> {
-    const url = await this.fileUploadService.uploadFile(file);
-    if (!url)
-      throw new ServiceUnavailableException(
-        'Have a problem from external service, retry later',
-      );
-    data.image_url = url;
+  async addLanguage(data: CreateLanguageDto): Promise<Language | null> {
+    const language = await this.languageRepository.findByName(data.name);
+    if (language) throw new BadRequestException('Este lenguaje ya  existe');
     const newLanguage = await this.languageRepository.create(data);
     return newLanguage;
   }
 
-  async update(id: string, data: Partial<Language>, file?) {
+  async addFlag(id: string, file?) {
     const language = await this.languageRepository.findById(id);
-    let url: string;
-    if (file) {
-      url = await this.fileUploadService.uploadFile(file);
-      data.image_url = url;
-    }
     if (!language) throw new NotFoundException('Product not found');
-    if (isEqual(data, language))
-      return new HttpException('The content is equal', HttpStatus.NO_CONTENT);
-    const result = await this.languageRepository.update(id, data);
+    const newData: Partial<Language> = { image_url: '' };
+    if (file) {
+      let url = await this.fileUploadService.uploadFile(file);
+      newData.flag_url = url;
+    }
+    const result = await this.languageRepository.update(id, newData);
+    return { message: 'Successfully updated', result };
+  }
+
+  async addCountryPhoto(id: string, file?) {
+    const language = await this.languageRepository.findById(id);
+    if (!language) throw new NotFoundException('Product not found');
+    const newData: Partial<Language> = { image_url: '' };
+    if (file) {
+      const url: string = await this.fileUploadService.uploadFile(file);
+      newData.country_photo_url = url;
+    }
+    const result = await this.languageRepository.update(id, newData);
+    return { message: 'Successfully updated', result };
+  }
+
+  async addImage(id: string, file?) {
+    const language = await this.languageRepository.findById(id);
+    if (!language) throw new NotFoundException('Product not found');
+    const newData: Partial<Language> = { image_url: '' };
+    if (file) {
+      const url: string = await this.fileUploadService.uploadFile(file);
+      newData.image_url = url;
+    }
+    const result = await this.languageRepository.update(id, newData);
     return { message: 'Successfully updated', result };
   }
 

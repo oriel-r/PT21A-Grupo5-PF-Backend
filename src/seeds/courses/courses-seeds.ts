@@ -50,7 +50,7 @@ export class CoursesSeed {
           const title = courseData.title;
           const language = await this.findLanguageByName(courseData.language);
           const category = await this.findCategoryByName(courseData.category);
-          const img_url = courseData.image
+          const img_url = courseData.image;
           const specialization = courseData.specialization;
           const level = courseData.level;
           const createdAt = courseData.createdAt;

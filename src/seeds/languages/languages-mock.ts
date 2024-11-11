@@ -1,38 +1,71 @@
-export const languagesMock = [
+import { Language } from 'src/language/entities/language.entity';
+import { DeepPartial } from 'typeorm';
+
+export const languagesMock: DeepPartial<Language[]> = [
   {
-    name: 'English',
-    image:
+    name: 'Ingles',
+    image_url:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGVqP2bP_-DHLAjJcXSRD6xsSY0z1xXVT2Ng&s',
-    flag: 'https://upload.wikimedia.org/wikipedia/commons/a/a5/Flag_of_the_United_Kingdom_%281-2%29.svg',
+    flag_url:
+      'https://upload.wikimedia.org/wikipedia/commons/a/a5/Flag_of_the_United_Kingdom_%281-2%29.svg',
+    description:
+      'El inglés es uno de los idiomas más influyentes y extendidos en el mundo, y su importancia abarca numerosos ámbitos, desde el académico hasta el profesional. Es el idioma más común para la comunicación internacional. En viajes, negocios y encuentros culturales, el inglés permite la interacción entre personas de diferentes países y culturas, facilitando el intercambio de ideas y la cooperación global. Entonces, el inglés es el idioma principal en tecnología e informática. Con esto podrás postular a muchas universidades y programas internacionales, muchos de los cuales se imparten en inglés, sin importar el país',
+    country_photo_url:
+      'https://drive.google.com/file/d/1JxIOCa7y9Sc7RwF_bNedusEOrMNv5p0h/preview',
   },
   {
-    name: 'Italian',
-    image:
+    name: 'Italiano',
+    image_url:
       'https://www.advantagelearningcenter.com/wp-content/uploads/2018/07/italian-language-1.jpg',
-    flag: 'https://upload.wikimedia.org/wikipedia/en/0/03/Flag_of_Italy.svg',
+    flag_url:
+      'https://upload.wikimedia.org/wikipedia/en/0/03/Flag_of_Italy.svg',
+    description:
+      'El italiano es una lengua rica en historia y cultura, ampliamente hablada en Italia y Suiza, así como en comunidades italianas alrededor del mundo. Aunque no es tan universal como el inglés o el español, su relevancia es notable en áreas como el arte, la moda, la música y la gastronomía, en las cuales Italia es un referente mundial. Conocer el italiano permite acceder a una vasta herencia literaria y artística, además de facilitar la comunicación en contextos internacionales, especialmente en la Unión Europea. Además, el dominio del italiano puede abrir puertas en sectores como el turismo, la investigación en historia del arte y los estudios culturales, haciendo del idioma una herramienta valiosa para quienes buscan ampliar sus oportunidades en estos ámbitos.',
+    country_photo_url:
+      'https://drive.google.com/file/d/1hSTGcp4W60noLu5-i2GOptExhwZG1ozw/preview',
   },
   {
-    name: 'French',
-    image:
+    name: 'Frances',
+    image_url:
       'https://ih1.redbubble.net/image.4731398653.5486/raf,360x360,075,t,fafafa:ca443f4786.jpg',
-    flag: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOEkldyTcvNaaBeUwX6_pI_lb8dS5SXvT9Bw&s',
+    flag_url:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOEkldyTcvNaaBeUwX6_pI_lb8dS5SXvT9Bw&s',
+    description:
+      'El francés es una lengua de gran relevancia global, hablada en diversos continentes y siendo oficial en numerosos países, como Francia, Canadá, Suiza, Bélgica y varias naciones africanas. Es uno de los idiomas más influyentes en diplomacia, relaciones internacionales y cooperación cultural, ya que es una de las lenguas oficiales de organismos como la ONU, la Unión Europea y la UNESCO. Además de ser un idioma clave en los negocios y el turismo, el francés permite acceder a un legado cultural rico en literatura, filosofía, cine y artes. Dominar el francés abre oportunidades académicas y profesionales en países francófonos y en áreas como las ciencias sociales, la moda, el arte y la gastronomía, siendo una herramienta invaluable para quienes buscan una conexión con la cultura y la historia de estas regiones.',
+    country_photo_url:
+      'https://drive.google.com/file/d/1LqYBKqdAhtaKYJxVyFLOj3zUKc8BjfP-/preview',
   },
   {
-    name: 'Portuguese',
-    image:
+    name: 'Portugues',
+    image_url:
       'https://thumbs.dreamstime.com/b/vector-illustration-speech-bubbles-portuguese-language-flag-portugal-two-hand-drawn-doodle-national-written-name-109521238.jpg',
-    flag: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCA7br_h6baPj_MPX0sQL0jtsbUTQ2aCANUg&s',
+    flag_url:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCA7br_h6baPj_MPX0sQL0jtsbUTQ2aCANUg&s',
+    description:
+      'El portugués es uno de los idiomas más hablados en el mundo, especialmente en países de América del Sur, África y Europa, siendo el idioma oficial en Brasil, Portugal, Angola, Mozambique y varios otros países. Su importancia radica en su creciente uso en negocios, educación y cultura, especialmente en Brasil, la economía más grande de América Latina. Al igual que el inglés, el portugués facilita la comunicación en una amplia gama de ámbitos internacionales, desde el turismo hasta la diplomacia y los intercambios comerciales. Dominar el portugués abre las puertas a múltiples oportunidades académicas y profesionales en países lusófonos y permite una mayor comprensión de su rica herencia cultural y literaria.',
+    country_photo_url:
+      'https://drive.google.com/file/d/1fHfh3YVkD0nSdxzoBrNcbDF-eCFJZTuk/preview',
   },
   {
-    name: 'German',
-    image:
+    name: 'Aleman',
+    image_url:
       'https://ecdn.teacherspayteachers.com/thumbitem/Words-Phrases-in-German-Speech-Bubble-Poster-Set-Flash-Cards-1115478-1652192621/original-1115478-1.jpg',
-    flag: 'https://cdn.britannica.com/82/65482-050-E43AB312/Flag-detail-Germany-crest.jpg',
+    flag_url:
+      'https://cdn.britannica.com/82/65482-050-E43AB312/Flag-detail-Germany-crest.jpg',
+    description:
+      'El alemán es uno de los idiomas más importantes de Europa, siendo oficial en Alemania, Austria, Suiza, Luxemburgo y Liechtenstein, y hablado por millones de personas en todo el mundo. Como lengua de una de las economías más fuertes del mundo, el alemán es fundamental en el comercio, la ingeniería y las ciencias, especialmente en sectores como la automoción, la tecnología y la investigación. Además, Alemania es un destino académico destacado, ofreciendo numerosas oportunidades de estudio en universidades de alto nivel que enseñan en alemán. Dominar este idioma abre puertas a diversas oportunidades en el ámbito profesional y cultural, facilitando el acceso a un rico legado literario, musical y filosófico que incluye grandes figuras de la historia intelectual europea.',
+    country_photo_url:
+      'https://drive.google.com/file/d/1WP63IQUeeuv3NH15lQc6vIUB62FBTJ4s/preview',
   },
   {
-    name: 'Chinese',
-    image:
+    name: 'Chino mandarin',
+    image_url:
       'https://www.shutterstock.com/image-vector/hello-chinese-ni-hao-speech-260nw-1877186812.jpg',
-    flag: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQequvUVjcEv1hl7r1Q3_XkwJ90XOOi76RvfQ&s',
+    flag_url:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQequvUVjcEv1hl7r1Q3_XkwJ90XOOi76RvfQ&s',
+    description:
+      'El chino mandarín es el idioma más hablado del mundo, siendo la lengua oficial de China y Taiwán y uno de los idiomas oficiales de Singapur y Naciones Unidas. Como lengua principal de una de las economías más grandes y de más rápido crecimiento, el mandarín es esencial en áreas de comercio, tecnología e innovación. China es un actor clave en sectores como la manufactura, la inteligencia artificial y el comercio internacional, lo que hace del mandarín una herramienta valiosa en el ámbito profesional global. Además, aprender chino mandarín abre puertas a una cultura milenaria rica en filosofía, literatura y arte, permitiendo un acceso más profundo a las tradiciones y al pensamiento chino. Dominar este idioma brinda la oportunidad de conectarse con más de mil millones de personas y facilita el acceso a un mercado dinámico, así como a múltiples oportunidades académicas y culturales en Asia y en el mundo.',
+    country_photo_url:
+      'https://drive.google.com/file/d/1i2jeedoQFAq-ANcKf6oKIlSAWYJ7hekA/preview',
   },
 ];
