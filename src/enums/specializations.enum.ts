@@ -1,6 +1,8 @@
 export enum Specialization {
   GENERAL = 'general',
-  TRAVEL = 'travel',
-  CONVERSATIONAL = 'conversational',
-  SPECIFIC = 'specific purposes',
+  TRAVEL = 'viajes',
+  CONVERSATIONAL = 'conversación',
+  WORK = 'trabajo',
+  LEGAL = 'legal',
+  IT = 'IT',
 }

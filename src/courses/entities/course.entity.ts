@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Category } from 'src/categories/entities/category.entity';
+import { Level } from 'src/enums/level.enum';
+import { Specialization } from 'src/enums/specializations.enum';
 import { Language } from 'src/language/entities/language.entity';
 import { Lesson } from 'src/lessons/entities/lesson.entity';
 import { User } from 'src/users/entities/user.entity';
@@ -42,7 +44,23 @@ export class Course {
   @Column({ nullable: true })
   video_url: string;
 
-  @Column()
+  @ApiProperty({
+    name: 'specialization',
+    description: "Propósito del curso",
+    type: 'string',
+  })
+  @Column({ type: 'enum', enum: Specialization })
+  specialization: Specialization;
+
+  @ApiProperty({
+    name: 'level',
+    description: "Nivel del curso",
+    type: 'string',
+  })
+  @Column({type:'enum', enum:Level})
+  level: Level
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
   @ApiProperty({

@@ -28,6 +28,14 @@ export class Language {
   @Column({ default: defaultImage })
   image_url: string;
 
+  @ApiProperty({
+    name: 'flag_url',
+    description: 'A reference image of the flag',
+    type: 'string',
+  })
+  @Column()
+  flag_url: string
+
   @OneToMany(() => Course, (course) => course.language, { cascade: true })
   courses: Course[];
 }
