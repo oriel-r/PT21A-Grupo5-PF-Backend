@@ -34,7 +34,22 @@ export class Language {
     type: 'string',
   })
   @Column()
-  flag_url: string
+  flag_url: string;
+
+  @ApiProperty({
+    name: 'country_photo',
+    description: 'a photo from a city or place in this country',
+    type: 'string',
+  })
+  @Column({ default: defaultImage })
+  country_photo_url: string;
+
+  @ApiProperty({
+    name: 'description',
+    description: 'A short description',
+  })
+  @Column()
+  description: string;
 
   @OneToMany(() => Course, (course) => course.language, { cascade: true })
   courses: Course[];

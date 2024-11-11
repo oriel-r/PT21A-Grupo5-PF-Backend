@@ -12,6 +12,7 @@ export class LanguageRepository {
     return await this.languageRepository.find({
       skip: (page - 1) * limit,
       take: limit,
+      relations:{courses:true}
     });
   }
 
