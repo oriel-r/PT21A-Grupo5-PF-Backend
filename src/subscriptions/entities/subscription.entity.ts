@@ -10,7 +10,7 @@ export class Subscription {
   @Column()
   name: string;
 
-  @Column('text',  {array:true})
+  @Column('text', { array: true })
   description: string[];
 
   @Column('decimal', { precision: 10, scale: 2 })

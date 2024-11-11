@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { Course } from 'src/courses/entities/course.entity';
 import { DeepPartial } from 'typeorm';
 
 export class CreateLessonDto {
@@ -30,7 +31,7 @@ export class CreateLessonDto {
       "Lesson's video. Only use for document this api. Validation by file-upload pipe and upload externaly",
   })
   @IsOptional()
-  video: Express.Multer.File;
+  video_url: string;
 
   @ApiProperty({
     name: 'course',

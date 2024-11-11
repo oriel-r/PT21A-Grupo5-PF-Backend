@@ -39,19 +39,20 @@ export class Course {
     description: "Course's video introduction",
     type: 'string',
   })
-
-  @Column({nullable:true})
+  @Column({ nullable: true })
   video_url: string;
 
   @Column()
   createdAt: Date;
 
-
   @ApiProperty({
     name: 'lessons',
     description: "Course's lessons",
   })
-  @OneToMany(() => Lesson, (lesson) => lesson.course, { nullable: true })
+  @OneToMany(() => Lesson, (lesson) => lesson.course, {
+    nullable: true,
+    cascade: true,
+  })
   lessons: Lesson[];
 
   @ApiProperty({
@@ -63,7 +64,6 @@ export class Course {
   language: Language;
 
   @ManyToMany(() => User, (user) => user.courses, { nullable: true })
-
   @JoinTable()
   users: User;
 
