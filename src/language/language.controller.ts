@@ -33,7 +33,14 @@ export class LanguageController {
     return await this.languageService.getAll(page, limit);
   }
 
-  @Post()
+  @ApiOperation({
+    summary: 'Get a language courses',
+  })
+  @Get(':id/courses')
+  async getById(id: string) {
+    return await this.languageService.getCoursesFromLanguage(id);
+  }
+  @Put('id:/flag_url')
   @ApiOperation({
     summary: 'Add a new language',
     description: 'This endpoint acepto send files with multipart',
@@ -52,8 +59,8 @@ export class LanguageController {
     },
   })
   @HttpCode(HttpStatus.OK)
-  async addLanguage(
-    @Body() data: CreateLanguageDto,
+  async updateFlagg(
+    @Param('id') id: string,
     @UploadedFile(
       new FilePipe(0, 2000, [
         'image/jpeg',
@@ -64,14 +71,13 @@ export class LanguageController {
     )
     file: Express.Multer.File,
   ) {
-    return await this.languageService.addLanguage(data, file);
+    return await this.languageService.addFlag(id, file);
   }
 
-  @Put(':id')
+  @Put(':id/image')
   @UseInterceptors(FileInterceptor('file'))
-  async updateLanguage(
-    @Param() id: string,
-    @Body() data: CreateLanguageDto,
+  async updateImage(
+    @Param('id') id: string,
     @UploadedFile(
       new FilePipe(0, 2000, [
         'image/jpeg',
@@ -82,7 +88,24 @@ export class LanguageController {
     )
     file?: Express.Multer.File | undefined,
   ) {
-    return await this.languageService.update(id, data, file);
+    return await this.languageService.addImage(id, file);
+  }
+
+  @Put(':id/country_photo')
+  @UseInterceptors(FileInterceptor('file'))
+  async updateCountryPhoto(
+    @Param('id') id: string,
+    @UploadedFile(
+      new FilePipe(0, 2000, [
+        'image/jpeg',
+        'image/png',
+        'image/webp',
+        'image/jpg',
+      ]),
+    )
+    file?: Express.Multer.File | undefined,
+  ) {
+    return await this.languageService.addCountryPhoto(id, file);
   }
 
   @Delete(':id')
