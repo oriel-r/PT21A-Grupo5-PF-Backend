@@ -11,10 +11,19 @@ import { Language } from 'src/language/entities/language.entity';
 import { LanguagesSeed } from './languages/languages-seeds';
 import { Subscription } from 'src/subscriptions/entities/subscription.entity';
 import { SubscriptionsSeeds } from './subscriptions/subscriptions-seeds';
+import { Lesson } from 'src/lessons/entities/lesson.entity';
+import { LessonsSeeds } from './lessons/lessons.seeder';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Category, Course, Language, Subscription]),
+    TypeOrmModule.forFeature([
+      User,
+      Category,
+      Course,
+      Language,
+      Subscription,
+      Lesson,
+    ]),
     JwtModule,
   ],
   providers: [
@@ -23,6 +32,7 @@ import { SubscriptionsSeeds } from './subscriptions/subscriptions-seeds';
     CoursesSeed,
     LanguagesSeed,
     SubscriptionsSeeds,
+    LessonsSeeds,
   ],
   exports: [
     UsersSeed,
@@ -30,6 +40,7 @@ import { SubscriptionsSeeds } from './subscriptions/subscriptions-seeds';
     CoursesSeed,
     LanguagesSeed,
     SubscriptionsSeeds,
+    LessonsSeeds,
   ],
 })
 export class SeedsModule {}
