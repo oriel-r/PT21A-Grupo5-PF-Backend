@@ -8,12 +8,16 @@ export class LanguageRepository {
     private readonly languageRepository: Repository<Language>,
   ) {}
 
-  async getAll(page, limit) {
+  async getPagination(page, limit) {
     return await this.languageRepository.find({
       skip: (page - 1) * limit,
       take: limit,
-      relations:{courses:true}
+      relations: { courses: true },
     });
+  }
+
+  async getAll(): Promise<Language[]> {
+    return await this.languageRepository.find({ relations: { courses: true } });
   }
 
   async findById(id: string): Promise<Language | null> {

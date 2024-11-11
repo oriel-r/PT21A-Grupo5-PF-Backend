@@ -11,7 +11,6 @@ import { Language } from './entities/language.entity';
 import { CreateLanguageDto } from './dto/create-language.dto';
 import { CloudinaryService } from 'src/services/cloudinary/cloudinary.service';
 import { DeepPartial } from 'typeorm';
-import { isEqual } from 'src/helpers/is-equal';
 import { Course } from 'src/courses/entities/course.entity';
 
 @Injectable()
@@ -21,10 +20,16 @@ export class LanguageService {
     private readonly fileUploadService: CloudinaryService,
   ) {}
 
-  async getAll(page, limit) {
+  async getPagination(page, limit) {
     page = Number(page) ? Number(page) : 1;
     limit = Number(limit) ? Number(limit) : 5;
-    const languages = await this.languageRepository.getAll(page, limit);
+    const languages = await this.languageRepository.getPagination(page, limit);
+    if (!languages) throw new NotFoundException('Languages not found');
+    return languages;
+  }
+
+  async getAll() {
+    const languages = await this.languageRepository.getAll();
     if (!languages) throw new NotFoundException('Languages not found');
     return languages;
   }
