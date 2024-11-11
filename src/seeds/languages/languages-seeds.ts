@@ -25,8 +25,10 @@ export class LanguagesSeed {
         ) {
           const language = new Language();
           language.name = languageName.name;
-          language.image_url = languageName.image;
-          language.flag_url = languageName.flag;
+          language.image_url = languageName.image_url;
+          language.flag_url = languageName.flag_url;
+          language.country_photo_url = languageName.country_photo_url;
+          language.description = languageName.description;
           await this.languagesRepository.save(language);
         }
       }
