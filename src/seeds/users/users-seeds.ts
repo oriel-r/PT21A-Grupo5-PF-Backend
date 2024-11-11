@@ -12,23 +12,28 @@ export class UsersSeed {
   ) {}
 
   async seed() {
-    for (const userData of usersMock) {
-      const existingUser = await this.usersRepository.findOne({
-        where: { email: userData.email },
-      });
+    try {
+      for (const userData of usersMock) {
+        const existingUser = await this.usersRepository.findOne({
+          where: { email: userData.email },
+        });
 
-      const hashedPassword = await hash(userData.password, 10);
+        const hashedPassword = await hash(userData.password, 10);
 
-      if (!existingUser) {
-        const user = new User();
-        user.name = userData.name;
-        user.email = userData.email;
-        user.password = hashedPassword;
-        user.idNumber = userData.idNumber;
-        user.role = userData.role;
-        user.createdAt = new Date();
-        await this.usersRepository.save(user);
+        if (!existingUser) {
+          const user = new User();
+          user.name = userData.name;
+          user.email = userData.email;
+          user.password = hashedPassword;
+          user.idNumber = userData.idNumber;
+          user.role = userData.role;
+          user.createdAt = new Date();
+          await this.usersRepository.save(user);
+        }
       }
+      console.log('Users injection completed');
+    } catch (error) {
+      console.log(error);
     }
   }
 }

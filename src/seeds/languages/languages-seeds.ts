@@ -12,20 +12,27 @@ export class LanguagesSeed {
   ) {}
 
   async seed() {
-    const existingLanguage = await this.languagesRepository.find({
-      where: { name: In(languagesMock) },
-    });
+    try {
+      const existingLanguage = await this.languagesRepository.find({
+        where: { name: In(languagesMock) },
+      });
 
-    for (const languageName of languagesMock) {
-      if (
-        !existingLanguage.some((language) => language.name === languageName.name)
-      ) {
-        const language = new Language();
-        language.name = languageName.name;
-        language.image_url = languageName.image
-        language.flag_url = languageName.flag
-        await this.languagesRepository.save(language);
+      for (const languageName of languagesMock) {
+        if (
+          !existingLanguage.some(
+            (language) => language.name === languageName.name,
+          )
+        ) {
+          const language = new Language();
+          language.name = languageName.name;
+          language.image_url = languageName.image;
+          language.flag_url = languageName.flag;
+          await this.languagesRepository.save(language);
+        }
       }
+      console.log('Languages injection completed');
+    } catch (error) {
+      console.log(error);
     }
   }
 }

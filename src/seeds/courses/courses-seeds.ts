@@ -40,21 +40,36 @@ export class CoursesSeed {
   }
 
   async seed() {
-    const existingCourse = (await this.coursesRepository.find()).map(
-      (course) => course.title,
-    );
+    try {
+      const existingCourse = (await this.coursesRepository.find()).map(
+        (course) => course.title,
+      );
 
-    for (const courseData of coursesMock) {
-      if (!existingCourse.includes(courseData.title)) {
-        const title = courseData.title;
-        const language = await this.findLanguageByName(courseData.language);
-        const category = await this.findCategoryByName(courseData.category);
-        const specialization = courseData.specialization;
-        const level = courseData.level;
-        const createdAt = courseData.createdAt;
-        const course = new Course({ title, language, category, specialization, level, createdAt });
-        await this.coursesRepository.save(course);
+      for (const courseData of coursesMock) {
+        if (!existingCourse.includes(courseData.title)) {
+          const title = courseData.title;
+          const language = await this.findLanguageByName(courseData.language);
+          const category = await this.findCategoryByName(courseData.category);
+          const img_url = courseData.image
+          const specialization = courseData.specialization;
+          const level = courseData.level;
+          const createdAt = courseData.createdAt;
+          const course = new Course({
+            title,
+            language,
+            category,
+            img_url,
+            specialization,
+            level,
+            createdAt,
+          });
+          await this.coursesRepository.save(course);
+        }
       }
+
+      console.log('Courses injection completed.');
+    } catch (error) {
+      console.log(error);
     }
   }
 }

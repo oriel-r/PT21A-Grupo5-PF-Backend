@@ -22,23 +22,23 @@ async function bootstrap() {
   //Seeds
   const usersSeed = app.get(UsersSeed);
   await usersSeed.seed();
-  console.log('Users injection completed');
+  
 
   const categoriesSeed = app.get(CategoriesSeed);
   await categoriesSeed.seed();
-  console.log('Categories injection completed.');
+  
 
   const langagesSeed = app.get(LanguagesSeed);
   await langagesSeed.seed();
-  console.log('Languages injection completed');
+  
 
   const coursesSeed = app.get(CoursesSeed);
   await coursesSeed.seed();
-  console.log('Courses injection completed.');
+  
 
   const subscriptionsSeed = app.get(SubscriptionsSeeds);
   await subscriptionsSeed.seed();
-  console.log('Subscriptions injection completed.');
+  
 
   //Swagger OpenApi settings
 

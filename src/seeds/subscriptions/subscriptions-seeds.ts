@@ -12,22 +12,25 @@ export class SubscriptionsSeeds {
   ) {}
 
   async seed() {
-    const existingSubscription = await this.subscriptionsRepository.find({
-      where: { name: In(subscriptionsMock) },
-    });
+    try {
+      const existingSubscription = await this.subscriptionsRepository.find({
+        where: { name: In(subscriptionsMock) },
+      });
 
-    for (const subscriptionData of subscriptionsMock) {
-      if (
-        !existingSubscription.some(
-          (subscription) => subscription.name === subscriptionData.name,
-        )
-      ) {
-        const subscription = new Subscription();
-        subscription.name = subscriptionData.name;
-        subscription.description = subscriptionData.description;
-        subscription.price = subscriptionData.price;
-        await this.subscriptionsRepository.save(subscription);
+      for (const subscriptionData of subscriptionsMock) {
+        if (
+          !existingSubscription.some(
+            (subscription) => subscription.name === subscriptionData.name,
+          )
+        ) {
+          const subscription = new Subscription();
+          subscription.name = subscriptionData.name;
+          subscription.description = subscriptionData.description;
+          subscription.price = subscriptionData.price;
+          await this.subscriptionsRepository.save(subscription);
+        }
       }
-    }
+      console.log('Subscriptions injection completed.');
+    } catch (error) {}
   }
 }
