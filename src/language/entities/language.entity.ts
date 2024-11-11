@@ -28,6 +28,6 @@ export class Language {
   @Column({ default: defaultImage })
   image_url: string;
 
-  @OneToMany(() => Course, (course) => course.language)
+  @OneToMany(() => Course, (course) => course.language, { cascade: true })
   courses: Course[];
 }

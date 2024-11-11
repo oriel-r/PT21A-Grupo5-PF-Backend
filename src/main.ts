@@ -12,10 +12,12 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   //Enable global validation pipe for request data validation
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,
-    forbidNonWhitelisted: true,
-  }))
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
 
   //Seeds
   const usersSeed = app.get(UsersSeed);

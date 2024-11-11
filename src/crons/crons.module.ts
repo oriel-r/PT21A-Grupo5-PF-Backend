@@ -6,7 +6,12 @@ import { EmailerModule } from 'src/emailer/emailer.module';
 import { CoursesModule } from 'src/courses/courses.module';
 
 @Module({
-  imports: [ScheduleModule.forRoot(), UsersModule, EmailerModule, CoursesModule],
+  imports: [
+    ScheduleModule.forRoot(),
+    UsersModule,
+    EmailerModule,
+    CoursesModule,
+  ],
   providers: [CronsService],
 })
 export class CronsModule {}
