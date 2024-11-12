@@ -61,12 +61,12 @@ export class UsersService {
     const { name, email, password, idNumber } = signUpUserDto;
     const subscription = await this.subscriptionService.findByName('standard');
     if (!subscription) {
-      throw new BadRequestException('Subscription not found');
+      throw new BadRequestException('Suscripción no encontrada');
     }
     const existingUser = await this.findEmail(email);
 
     if (existingUser) {
-      throw new ConflictException('Email is already in use.');
+      throw new ConflictException('Email ya existente.');
     }
     const user = new User();
     user.name = name;
