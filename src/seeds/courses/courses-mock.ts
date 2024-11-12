@@ -46,7 +46,7 @@ export const coursesMock = [
   },
   {
     title: 'German Conversation',
-    language: 'Aleman',
+    language: 'Alemán',
     image:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSusHXnoZeAM6NmJ9OMAS2JKX98zGvMzgzgzA&s',
     specialization: Specialization.CONVERSATIONAL,
@@ -60,7 +60,7 @@ export const coursesMock = [
   },
   {
     title: 'French Legal Language',
-    language: 'Frances',
+    language: 'Francés',
     image:
       'https://cursa-json-routes.s3.amazonaws.com/texts/byId/1000492/imgs/35.jpg',
     specialization: Specialization.LEGAL,
