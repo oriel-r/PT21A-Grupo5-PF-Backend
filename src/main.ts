@@ -8,6 +8,8 @@ import { CoursesSeed } from './seeds/courses/courses-seeds';
 import { ValidationPipe } from '@nestjs/common';
 import { SubscriptionsSeeds } from './seeds/subscriptions/subscriptions-seeds';
 import { LessonsSeeds } from './seeds/lessons/lessons.seeder';
+import { auth } from 'express-openid-connect';
+import { auth0config } from './config/auth0.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,6 +21,8 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
+
+  app.use(auth({ ...auth0config }));
 
   //Seeds
   const usersSeed = app.get(UsersSeed);
