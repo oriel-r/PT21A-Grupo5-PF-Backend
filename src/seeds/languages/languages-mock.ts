@@ -3,6 +3,7 @@ import { DeepPartial } from 'typeorm';
 
 export const languagesMock: DeepPartial<Language[]> = [
   {
+    path: 'english',
     name: 'Ingles',
     image_url:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGVqP2bP_-DHLAjJcXSRD6xsSY0z1xXVT2Ng&s',
@@ -14,6 +15,7 @@ export const languagesMock: DeepPartial<Language[]> = [
       'https://i.pinimg.com/564x/bf/d4/0e/bfd40ef29056e3e1fc86edc3253e399b.jpg',
   },
   {
+    path: 'italian',
     name: 'Italiano',
     image_url:
       'https://www.advantagelearningcenter.com/wp-content/uploads/2018/07/italian-language-1.jpg',
@@ -25,6 +27,7 @@ export const languagesMock: DeepPartial<Language[]> = [
       'https://i.pinimg.com/564x/d3/0a/3d/d30a3de079f7cb27459b6928d93d4087.jpg',
   },
   {
+    path: 'french',
     name: 'Frances',
     image_url:
       'https://ih1.redbubble.net/image.4731398653.5486/raf,360x360,075,t,fafafa:ca443f4786.jpg',
@@ -36,6 +39,7 @@ export const languagesMock: DeepPartial<Language[]> = [
       'https://i.pinimg.com/564x/50/93/be/5093be3e848f1ba3440373ca2a9c04c0.jpg',
   },
   {
+    path: 'portuguese',
     name: 'Portugues',
     image_url:
       'https://thumbs.dreamstime.com/b/vector-illustration-speech-bubbles-portuguese-language-flag-portugal-two-hand-drawn-doodle-national-written-name-109521238.jpg',
@@ -47,6 +51,7 @@ export const languagesMock: DeepPartial<Language[]> = [
       'https://i.pinimg.com/564x/26/ca/33/26ca33021ddb71e01f817d59e59d2196.jpg',
   },
   {
+    path: 'german',
     name: 'Aleman',
     image_url:
       'https://ecdn.teacherspayteachers.com/thumbitem/Words-Phrases-in-German-Speech-Bubble-Poster-Set-Flash-Cards-1115478-1652192621/original-1115478-1.jpg',
@@ -58,6 +63,7 @@ export const languagesMock: DeepPartial<Language[]> = [
       'https://i.pinimg.com/236x/5f/2d/f2/5f2df2028c29cf6774fbe5faa720f442.jpg',
   },
   {
+    path: 'chinese',
     name: 'Chino mandarin',
     image_url:
       'https://www.shutterstock.com/image-vector/hello-chinese-ni-hao-speech-260nw-1877186812.jpg',

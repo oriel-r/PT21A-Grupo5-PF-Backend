@@ -13,7 +13,15 @@ export class Language {
   id: string = uuid();
 
   @ApiProperty({
-    description: 'the name of language',
+    description: 'atribute for get a language',
+    example: 'Guarani',
+    maxLength: 50,
+  })
+  @Column({ type: 'varchar', length: 50, nullable: false })
+  path: string;
+
+  @ApiProperty({
+    description: 'the name of language for render views',
     example: 'Guarani',
     maxLength: 50,
   })
