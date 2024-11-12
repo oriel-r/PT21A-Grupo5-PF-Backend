@@ -1,12 +1,34 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Language } from './entities/language.entity';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { FilterCourses } from 'src/helpers/Filter';
 
 export class LanguageRepository {
   constructor(
     @InjectRepository(Language)
     private readonly languageRepository: Repository<Language>,
   ) {}
+
+  async getAndFilter(path: string, filters: FilterCourses): Promise<Language[]> {
+    const queryBuilder = await this.languageRepository.createQueryBuilder('language')
+    .leftJoinAndSelect('language.courses', 'course')
+    .leftJoinAndSelect('course.category', 'category') 
+    .where('language.path = :path', { path });
+
+    if(filters.specialization) {
+      queryBuilder.andWhere('course.specialization = :specialization', { specialization: filters.specialization })
+    }
+
+    if(filters.level) {
+      queryBuilder.andWhere('course.level = :level', {level: filters.level})
+    }
+
+    if (filters.category) {
+      queryBuilder.andWhere('category.name = :category', { category: filters.category });
+    }
+
+    return await queryBuilder.getMany()
+  }
 
   async getPagination(page, limit) {
     return await this.languageRepository.find({
