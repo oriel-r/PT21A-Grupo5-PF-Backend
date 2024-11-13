@@ -12,6 +12,9 @@ import { CreateLanguageDto } from './dto/create-language.dto';
 import { CloudinaryService } from 'src/services/cloudinary/cloudinary.service';
 import { DeepPartial } from 'typeorm';
 import { Course } from 'src/courses/entities/course.entity';
+import { FilterCourses } from 'src/helpers/Filter';
+import { Level } from 'src/enums/level.enum';
+import { Specialization } from 'src/enums/specializations.enum';
 
 @Injectable()
 export class LanguageService {
@@ -26,6 +29,14 @@ export class LanguageService {
     const languages = await this.languageRepository.getPagination(page, limit);
     if (!languages) throw new NotFoundException('Languages not found');
     return languages;
+  }
+
+  async getAndFilter(path: string, filter: FilterCourses) {
+    if (filter.level && !Object.values(Level).includes(filter.level)) throw new BadRequestException('El nivel buscado no existe')
+    if (filter.specialization && !Object.values(Specialization).includes(filter.specialization)) throw new BadRequestException('la especialización buscado no existe')
+    const result = await this.languageRepository.getAndFilter(path, filter)
+    if(!result) throw new NotFoundException('No se encontraron resultados')
+    return result
   }
 
   async getAll() {

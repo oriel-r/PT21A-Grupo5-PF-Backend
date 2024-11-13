@@ -17,6 +17,7 @@ import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateLanguageDto } from './dto/create-language.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FilePipe } from 'src/pipes/file/file.pipe';
+import { FilterCourses } from 'src/helpers/Filter';
 
 @ApiTags('Languages')
 @Controller('language')
@@ -39,6 +40,14 @@ export class LanguageController {
   @Get()
   async getAll() {
     return await this.languageService.getAll();
+  }
+
+  @Get(':path/courses')
+  async getAndFilter(
+    @Param('path') path: string,
+    @Query() filters: FilterCourses,
+  ) {
+    return await this.languageService.getAndFilter(path, filters);
   }
 
   @ApiOperation({

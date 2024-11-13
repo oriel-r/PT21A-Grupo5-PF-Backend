@@ -68,6 +68,20 @@ export class Course {
   @Column({ type: 'enum', enum: Level })
   level: Level;
 
+  @ApiProperty({
+    name: 'general_description',
+    description: 'A description',
+  })
+  @Column()
+  general_description: string;
+  
+  @ApiProperty({
+    name: 'brief_description',
+    description: 'A short description',
+  })
+  @Column()
+  brief_description: string;
+
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 

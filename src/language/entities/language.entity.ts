@@ -13,7 +13,15 @@ export class Language {
   id: string = uuid();
 
   @ApiProperty({
-    description: 'the name of language',
+    description: 'atribute for get a language',
+    example: 'Guarani',
+    maxLength: 50,
+  })
+  @Column({ type: 'varchar', length: 50, nullable: false })
+  path: string;
+
+  @ApiProperty({
+    description: 'the name of language for render views',
     example: 'Guarani',
     maxLength: 50,
   })
@@ -45,11 +53,18 @@ export class Language {
   country_photo_url: string;
 
   @ApiProperty({
-    name: 'description',
+    name: 'general_description',
+    description: 'A description',
+  })
+  @Column()
+  general_description: string;
+  
+  @ApiProperty({
+    name: 'brief_description',
     description: 'A short description',
   })
   @Column()
-  description: string;
+  brief_description: string;
 
   @OneToMany(() => Course, (course) => course.language, { cascade: true })
   courses: Course[];
