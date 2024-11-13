@@ -1,6 +1,8 @@
 import {
   BadRequestException,
   ConflictException,
+  HttpException,
+  HttpStatus,
   Injectable,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -58,22 +60,30 @@ export class UsersService {
   }
 
   async createUser(signUpUserDto: SignupUserDto) {
-    const { name, email, password, idNumber } = signUpUserDto;
+    const { name, email, password, idNumber, photo } = signUpUserDto;
+
     const subscription = await this.subscriptionService.findByName('standard');
     if (!subscription) {
       throw new BadRequestException('Suscripción no encontrada');
     }
-    const existingUser = await this.findEmail(email);
 
+    const existingUser = await this.findEmail(email);
     if (existingUser) {
       throw new ConflictException('Email ya existente.');
     }
+
+    const existingIdNumber = await this.usersRepository.findOne({ where: {idNumber} });
+    if(existingIdNumber) {
+      throw new HttpException('El documento de identidad ya esta registrado!', HttpStatus.BAD_REQUEST)
+    }
+
     const user = new User();
     user.name = name;
     user.email = email;
     user.password = password;
     user.subscription = subscription;
     user.idNumber = idNumber;
+    user.photo = photo || 'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg'
 
     return await this.usersRepository.save(user);
   }
@@ -99,6 +109,9 @@ export class UsersService {
   }
 
   async findEmail(email: string) {
-    return await this.usersRepository.findOne({ where: { email } });
+    return await this.usersRepository.findOne({ 
+      where: { email } ,
+      relations: ['subscription']
+    });
   }
 }
