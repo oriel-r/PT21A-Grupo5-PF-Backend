@@ -45,6 +45,7 @@ export class AuthService {
       id: user.id,
       email: user.email,
       role: user.role,
+      photo: user.photo,
     };
 
     const token = this.jwtService.sign(userPayload);
@@ -56,6 +57,8 @@ export class AuthService {
         name: user.name,
         email: user.email,
         idNumber: user.idNumber,
+        role: user.role,
+        photo: user.photo,
       },
     };
   }
