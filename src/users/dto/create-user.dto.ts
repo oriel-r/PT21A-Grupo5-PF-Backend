@@ -1,13 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
-  IsEnum,
   IsNotEmpty,
   IsOptional,
-  IsString,
-  Matches,
+  IsString
 } from 'class-validator';
-import { Role } from 'src/enums/roles.enum';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -47,4 +44,13 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   idNumber: string;
+
+  @ApiProperty({
+    required: false,
+    default: 'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg',
+    description: 'User profile image'
+  })
+  @IsString()
+  @IsOptional()
+  photo?: string;
 }

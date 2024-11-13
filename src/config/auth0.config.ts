@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
 
 dotenv.config({
-  path: '.env.development',
+  path: '.env.development.local',
 });
 
 export const auth0config = {
