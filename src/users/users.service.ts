@@ -8,14 +8,14 @@ import {
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { UsersRepository } from './users.repository';
 import { Role } from 'src/enums/roles.enum';
-import { hash } from 'bcrypt';
+import { hash, compare } from 'bcrypt';
 import { SignupUserDto } from 'src/auth/dto/signup-auth.dto';
 import { SubscriptionsService } from 'src/subscriptions/subscriptions.service';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Injectable()
 export class UsersService {
@@ -72,9 +72,14 @@ export class UsersService {
       throw new ConflictException('Email ya existente.');
     }
 
-    const existingIdNumber = await this.usersRepository.findOne({ where: {idNumber} });
-    if(existingIdNumber) {
-      throw new HttpException('El documento de identidad ya esta registrado!', HttpStatus.BAD_REQUEST)
+    const existingIdNumber = await this.usersRepository.findOne({
+      where: { idNumber },
+    });
+    if (existingIdNumber) {
+      throw new HttpException(
+        'El documento de identidad ya esta registrado!',
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     const user = new User();
@@ -83,7 +88,9 @@ export class UsersService {
     user.password = password;
     user.subscription = subscription;
     user.idNumber = idNumber;
-    user.photo = photo || 'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg'
+    user.photo =
+      photo ||
+      'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg';
 
     return await this.usersRepository.save(user);
   }
@@ -101,7 +108,19 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    return await this.usersRepo.update(id, updateUserDto);
+    const userToUpdate = await this.findOne(id);
+    if (!userToUpdate) {
+      throw new BadRequestException('Usuario inexistente.');
+    }
+
+    const updatedUser = {
+      ...userToUpdate,
+      ...updateUserDto,
+    };
+
+    await this.usersRepository.save(updatedUser);
+
+    return updatedUser;
   }
 
   async remove(id: string) {
@@ -109,9 +128,40 @@ export class UsersService {
   }
 
   async findEmail(email: string) {
-    return await this.usersRepository.findOne({ 
-      where: { email } ,
-      relations: ['subscription']
+    return await this.usersRepository.findOne({
+      where: { email },
+      relations: { subscription: true },
     });
+  }
+
+  async changePassword(id: string, changePasswordDto: ChangePasswordDto) {
+    const { oldPassword, newPassword, repeatPassword } = changePasswordDto;
+    const userToUpdate = await this.findOne(id);
+    const isPasswordMatching = await compare(
+      oldPassword,
+      userToUpdate.password,
+    );
+
+    if (!isPasswordMatching) {
+      throw new HttpException(
+        'El password no es correcto.',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+
+    if (newPassword !== repeatPassword) {
+      throw new HttpException(
+        'Las contraseñas no coinciden',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const hashedPassword = await hash(newPassword, 10);
+
+    userToUpdate.password = hashedPassword;
+
+    await this.usersRepository.save(userToUpdate);
+
+    return userToUpdate;
   }
 }
