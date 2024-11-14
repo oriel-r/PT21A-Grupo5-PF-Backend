@@ -16,7 +16,7 @@ export class AuthService {
 
   async signUp(signUpUser: SignupUserDto) {
     if (signUpUser.password !== signUpUser.repeatPassword) {
-      throw new HttpException('Las contraseñas no coinciden', 400);
+      throw new HttpException('Passwords do not match', 400);
     }
 
     signUpUser.password = await hash(signUpUser.password, 10);
@@ -29,7 +29,7 @@ export class AuthService {
     const user = await this.userRepo.getUserByEmail(credentials.email);
 
     if (!user) {
-      throw new HttpException('Usuario no encontrado', 404);
+      throw new HttpException('User not found', 404);
     }
 
     const isPasswordMatching = await compare(
@@ -38,14 +38,13 @@ export class AuthService {
     );
 
     if (!isPasswordMatching) {
-      throw new HttpException('Credenciales Incorrectas', HttpStatus.UNAUTHORIZED);
+      throw new HttpException('Incorrect credentials', HttpStatus.UNAUTHORIZED);
     }
 
     const userPayload = {
       id: user.id,
       email: user.email,
       role: user.role,
-      photo: user.photo,
     };
 
     const token = this.jwtService.sign(userPayload);
@@ -57,8 +56,6 @@ export class AuthService {
         name: user.name,
         email: user.email,
         idNumber: user.idNumber,
-        role: user.role,
-        photo: user.photo,
       },
     };
   }
