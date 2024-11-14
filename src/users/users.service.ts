@@ -63,6 +63,7 @@ export class UsersService {
     if (!subscription) {
       throw new BadRequestException('Suscripción no encontrada');
     }
+
     const existingUser = await this.findEmail(email);
 
     if (existingUser) {
@@ -74,6 +75,9 @@ export class UsersService {
     user.password = password;
     user.subscription = subscription;
     user.idNumber = idNumber;
+
+   
+    
 
     return await this.usersRepository.save(user);
   }

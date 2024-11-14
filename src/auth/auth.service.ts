@@ -27,6 +27,7 @@ export class AuthService {
 
   async signIn(credentials: SignInAuthDto) {
     const user = await this.userRepo.getUserByEmail(credentials.email);
+    
 
     if (!user) {
       throw new HttpException('User not found', 404);
@@ -45,9 +46,12 @@ export class AuthService {
       id: user.id,
       email: user.email,
       role: user.role,
+      subscription: user.subscription,
     };
 
     const token = this.jwtService.sign(userPayload);
+    console.log('This is the payload: ',userPayload);
+    
 
     return {
       token,
