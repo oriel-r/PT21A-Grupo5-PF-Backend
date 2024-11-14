@@ -61,6 +61,13 @@ export class User {
   role: Role;
 
   @ApiProperty({
+    default: 'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg',
+    description: 'User profile image'
+  })
+  @Column({ default: 'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg'})
+  photo: string;
+
+  @ApiProperty({
     default: true,
     description:
       'It indicates weather the user should be included in the newsletter messaging or not.',
