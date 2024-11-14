@@ -1,3 +1,4 @@
+import { Payment } from 'src/payments/entities/payment.entity';
 import { User } from 'src/users/entities/user.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { v4 as uuid } from 'uuid';
@@ -18,4 +19,7 @@ export class Subscription {
 
   @OneToMany(() => User, (users) => users.subscription)
   users: User[];
+
+  @OneToMany(() => Payment, (payment) => payment.subscription)
+  payments: Payment[]
 }

@@ -4,7 +4,7 @@ import { DeepPartial } from 'typeorm';
 export const languagesMock: DeepPartial<Language[]> = [
   {
     path: 'english',
-    name: 'Inglés',
+    name: 'Ingles',
     image_url:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGVqP2bP_-DHLAjJcXSRD6xsSY0z1xXVT2Ng&s',
     flag_url:
