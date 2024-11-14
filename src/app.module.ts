@@ -18,6 +18,7 @@ import { CloudinaryService } from './services/cloudinary/cloudinary.service';
 import { CronsModule } from './crons/crons.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PaymentsModule } from './payments/payments.module';
+import { MercadopagoService } from './services/mercadopago/mercadopago.service';
 
 @Module({
   imports: [
@@ -51,6 +52,6 @@ import { PaymentsModule } from './payments/payments.module';
     PaymentsModule,
   ],
   controllers: [AppController],
-  providers: [AppService, CloudinaryService],
+  providers: [AppService, CloudinaryService, MercadopagoService],
 })
 export class AppModule {}

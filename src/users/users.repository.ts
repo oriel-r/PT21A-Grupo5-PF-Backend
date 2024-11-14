@@ -39,7 +39,8 @@ export class UsersRepository {
     if (!user) {
       throw new BadRequestException('User not found');
     }
-    return await this.usersRepository.update(user, updateUserDto);
+    await this.usersRepository.update(user, updateUserDto);
+    return await this.usersRepository.findOneBy({id})
   }
 
   async deleteUser(id: string) {
