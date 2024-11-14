@@ -17,7 +17,7 @@ export class UsersRepository {
   ) {}
 
   async getUserByEmail(email: string) {
-    const user = await this.usersRepository.findOne({ where: { email } });
+    const user = await this.usersRepository.findOne({ where: { email }, relations:{subscription:true} });
     if (!user) throw new BadRequestException('User not found');
     return user;
   }
@@ -34,13 +34,7 @@ export class UsersRepository {
     return await this.usersRepository.findOne({ where: { id } });
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
-    const user = await this.findOne(id);
-    if (!user) {
-      throw new BadRequestException('User not found');
-    }
-    return await this.usersRepository.update(user, updateUserDto);
-  }
+
 
   async deleteUser(id: string) {
     const userToDelete = await this.findOne(id);

@@ -53,4 +53,14 @@ export class CreateUserDto {
   @IsString()
   @IsOptional()
   photo?: string;
+
+  @ApiProperty({
+    type: String,
+    required: false,
+    description: 'Subscription',
+    example: 'premium',
+  })
+  @IsString()
+  @IsOptional()
+  subscription: string;
 }
