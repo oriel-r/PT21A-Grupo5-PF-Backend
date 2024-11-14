@@ -72,9 +72,14 @@ export class UsersService {
       throw new ConflictException('Email ya existente.');
     }
 
-    const existingIdNumber = await this.usersRepository.findOne({ where: {idNumber} });
-    if(existingIdNumber) {
-      throw new HttpException('El documento de identidad ya esta registrado!', HttpStatus.BAD_REQUEST)
+    const existingIdNumber = await this.usersRepository.findOne({
+      where: { idNumber },
+    });
+    if (existingIdNumber) {
+      throw new HttpException(
+        'El documento de identidad ya esta registrado!',
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     const user = new User();
@@ -83,7 +88,9 @@ export class UsersService {
     user.password = password;
     user.subscription = subscription;
     user.idNumber = idNumber;
-    user.photo = photo || 'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg'
+    user.photo =
+      photo ||
+      'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg';
 
     return await this.usersRepository.save(user);
   }
@@ -101,7 +108,24 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    return await this.usersRepo.update(id, updateUserDto);
+    const userToUpdate = await this.findOne(id);
+    if (!userToUpdate) {
+      throw new BadRequestException('Usuario inexistente.');
+    }
+    
+    const updatedUser = {
+      ...userToUpdate,
+      ...updateUserDto,
+      ...{
+        subscription: await this.subscriptionService.findOne(
+          updateUserDto.subscription,
+        ),
+      },
+    };
+
+    await this.usersRepository.save(updatedUser);
+
+    return updatedUser;
   }
 
   async remove(id: string) {
@@ -109,9 +133,9 @@ export class UsersService {
   }
 
   async findEmail(email: string) {
-    return await this.usersRepository.findOne({ 
-      where: { email } ,
-      relations: ['subscription']
+    return await this.usersRepository.findOne({
+      where: { email },
+      relations: { subscription: true },
     });
   }
 }
