@@ -8,14 +8,14 @@ import {
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { UsersRepository } from './users.repository';
 import { Role } from 'src/enums/roles.enum';
-import { hash } from 'bcrypt';
+import { hash, compare } from 'bcrypt';
 import { SignupUserDto } from 'src/auth/dto/signup-auth.dto';
 import { SubscriptionsService } from 'src/subscriptions/subscriptions.service';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Injectable()
 export class UsersService {
@@ -112,15 +112,10 @@ export class UsersService {
     if (!userToUpdate) {
       throw new BadRequestException('Usuario inexistente.');
     }
-    
+
     const updatedUser = {
       ...userToUpdate,
       ...updateUserDto,
-      ...{
-        subscription: await this.subscriptionService.findOne(
-          updateUserDto.subscription,
-        ),
-      },
     };
 
     await this.usersRepository.save(updatedUser);
@@ -137,5 +132,36 @@ export class UsersService {
       where: { email },
       relations: { subscription: true },
     });
+  }
+
+  async changePassword(id: string, changePasswordDto: ChangePasswordDto) {
+    const { oldPassword, newPassword, repeatPassword } = changePasswordDto;
+    const userToUpdate = await this.findOne(id);
+    const isPasswordMatching = await compare(
+      oldPassword,
+      userToUpdate.password,
+    );
+
+    if (!isPasswordMatching) {
+      throw new HttpException(
+        'El password no es correcto.',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+
+    if (newPassword !== repeatPassword) {
+      throw new HttpException(
+        'Las contraseñas no coinciden',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const hashedPassword = await hash(newPassword, 10);
+
+    userToUpdate.password = hashedPassword;
+
+    await this.usersRepository.save(userToUpdate);
+
+    return userToUpdate;
   }
 }

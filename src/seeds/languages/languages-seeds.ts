@@ -17,21 +17,23 @@ export class LanguagesSeed {
         where: { name: In(languagesMock) },
       });
 
-      for (const languageName of languagesMock) {
-        if (
-          !existingLanguage.some(
-            (language) => language.name === languageName.name,
-          )
-        ) {
-          const language = new Language();
-          language.path = languageName.path;
-          language.name = languageName.name;
-          language.image_url = languageName.image_url;
-          language.flag_url = languageName.flag_url;
-          language.country_photo_url = languageName.country_photo_url;
-          language.general_description = languageName.general_description;
-          language.brief_description = languageName.brief_description;
-          await this.languagesRepository.save(language);
+      if (!existingLanguage) {
+        for (const languageName of languagesMock) {
+          if (
+            !existingLanguage.some(
+              (language) => language.name === languageName.name,
+            )
+          ) {
+            const language = new Language();
+            language.path = languageName.path;
+            language.name = languageName.name;
+            language.image_url = languageName.image_url;
+            language.flag_url = languageName.flag_url;
+            language.country_photo_url = languageName.country_photo_url;
+            language.general_description = languageName.general_description;
+            language.brief_description = languageName.brief_description;
+            await this.languagesRepository.save(language);
+          }
         }
       }
       console.log('Languages injection completed');
