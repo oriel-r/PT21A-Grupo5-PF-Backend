@@ -4,7 +4,7 @@ import { v4 as uuid } from 'uuid';
 import { defaultImage } from './link.const';
 import { Course } from 'src/courses/entities/course.entity';
 
-@Entity()
+@Entity({name: 'languages'})
 export class Language {
   @ApiProperty({
     description: 'Autogeneretad UUID',
