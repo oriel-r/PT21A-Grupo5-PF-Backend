@@ -10,7 +10,7 @@ import { SubscriptionsSeeds } from './seeds/subscriptions/subscriptions-seeds';
 import { LessonsSeeds } from './seeds/lessons/lessons.seeder';
 import { auth } from 'express-openid-connect';
 import { auth0config } from './config/auth0.config';
-import { LogerMiddleware } from './middlewares/loger/loger.middleware';
+import { loggerMiddleware } from './middlewares/logger/logger.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -58,7 +58,7 @@ async function bootstrap() {
 
   app.enableCors();
 
-  app.use(LogerMiddleware)
+  app.use(loggerMiddleware);
 
   await app.listen(process.env.PORT ?? 3000);
 }
