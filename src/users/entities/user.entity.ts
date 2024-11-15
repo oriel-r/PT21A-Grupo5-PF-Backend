@@ -1,12 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Course } from 'src/courses/entities/course.entity';
 import { Role } from 'src/enums/roles.enum';
+import { Payment } from 'src/payments/entities/payment.entity';
 import { Subscription } from 'src/subscriptions/entities/subscription.entity';
 import {
   Column,
   Entity,
   ManyToMany,
   ManyToOne,
+  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
@@ -83,4 +86,7 @@ export class User {
 
   @ManyToOne(() => Subscription, (subscriptions) => subscriptions.users)
   subscription: Subscription;
+
+  @OneToMany(() => Payment, (payment) => payment.user)
+  payments: Payment[]
 }

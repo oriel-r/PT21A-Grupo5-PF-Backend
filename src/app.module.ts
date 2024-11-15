@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -17,6 +17,8 @@ import { LanguageModule } from './language/language.module';
 import { CloudinaryService } from './services/cloudinary/cloudinary.service';
 import { CronsModule } from './crons/crons.module';
 import { JwtModule } from '@nestjs/jwt';
+import { PaymentsModule } from './payments/payments.module';
+import { MercadopagoService } from './services/mercadopago/mercadopago.service';
 
 @Module({
   imports: [
@@ -47,8 +49,9 @@ import { JwtModule } from '@nestjs/jwt';
       signOptions: { expiresIn: '1h' },
       secret: process.env.JWT_SECRET,
     }),
+    PaymentsModule,
   ],
   controllers: [AppController],
-  providers: [AppService, CloudinaryService],
+  providers: [AppService, CloudinaryService, MercadopagoService],
 })
 export class AppModule {}

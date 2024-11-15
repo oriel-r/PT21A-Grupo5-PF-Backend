@@ -13,16 +13,12 @@ export class LanguagesSeed {
 
   async seed() {
     try {
-      const existingLanguage = await this.languagesRepository.find({
-        where: { name: In(languagesMock) },
-      });
+      const existingLanguage = (await this.languagesRepository.find()).map(
+        (language) => language.name,
+      );
 
       for (const languageName of languagesMock) {
-        if (
-          !existingLanguage.some(
-            (language) => language.name === languageName.name,
-          )
-        ) {
+        if (!existingLanguage.includes(languageName.name)) {
           const language = new Language();
           language.path = languageName.path;
           language.name = languageName.name;
