@@ -59,6 +59,7 @@ export class AuthService {
         idNumber: user.idNumber,
         role: user.role,
         photo: user.photo,
+        subscription: user.subscription,
       },
     };
   }
