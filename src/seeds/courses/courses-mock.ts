@@ -4,7 +4,7 @@ import { Specialization } from 'src/enums/specializations.enum';
 export const coursesMock = [
   {
     title: 'Travellers Course',
-    language: 'Ingles',
+    language: 'Inglés',
     image:
       'https://cdn01.alison-static.net/courses/1288/alison_courseware_intro_1288.jpg',
     specialization: Specialization.TRAVEL,
@@ -18,7 +18,7 @@ export const coursesMock = [
   },
   {
     title: 'Business English',
-    language: 'Ingles',
+    language: 'Inglés',
     image:
       'https://thinkinginenglish.blog/wp-content/uploads/2021/05/img_0258.jpg',
     specialization: Specialization.WORK,
