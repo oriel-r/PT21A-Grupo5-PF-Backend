@@ -19,6 +19,7 @@ import { CronsModule } from './crons/crons.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PaymentsModule } from './payments/payments.module';
 import { MercadopagoService } from './services/mercadopago/mercadopago.service';
+import { MembershipModule } from './membership/membership.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { MercadopagoService } from './services/mercadopago/mercadopago.service';
       secret: process.env.JWT_SECRET,
     }),
     PaymentsModule,
+    MembershipModule,
   ],
   controllers: [AppController],
   providers: [AppService, CloudinaryService, MercadopagoService],

@@ -27,7 +27,6 @@ export class AuthService {
 
   async signIn(credentials: SignInAuthDto) {
     const user = await this.userRepo.getUserByEmail(credentials.email);
-    
 
     if (!user) {
       throw new HttpException('Usuario no encontrado', 404);
@@ -39,7 +38,10 @@ export class AuthService {
     );
 
     if (!isPasswordMatching) {
-      throw new HttpException('Credenciales Incorrectas', HttpStatus.UNAUTHORIZED);
+      throw new HttpException(
+        'Credenciales Incorrectas',
+        HttpStatus.UNAUTHORIZED,
+      );
     }
 
     const userPayload = {
@@ -51,8 +53,7 @@ export class AuthService {
     };
 
     const token = this.jwtService.sign(userPayload);
-    console.log('This is the payload: ',userPayload);
-    
+    console.log('This is the payload: ', userPayload);
 
     return {
       token,

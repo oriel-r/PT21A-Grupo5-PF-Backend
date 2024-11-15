@@ -38,7 +38,6 @@
     "@nestjs/swagger": "^8.0.1",
     "@nestjs/typeorm": "^10.0.2",
     "@nestjs/websockets": "^10.4.7",
-    "@types/mercadopago": "^1.5.11",
     "bcrypt": "^5.1.1",
     "buffer-to-stream": "^1.0.0",
     "class-transformer": "^0.5.1",
