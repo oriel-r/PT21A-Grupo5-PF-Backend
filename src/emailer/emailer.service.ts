@@ -17,4 +17,14 @@ export class EmailerService {
 
     return 'Email sent successfully.';
   }
+
+  async sendWelcomeEmail(sendEmailDto: SendEmailDto): Promise<void> {
+    const { from, to, subject, message } = sendEmailDto;
+    await this.mailService.sendMail({
+      from: from,
+      to: to,
+      subject: subject,
+      html: message,
+    });
+  }
 }
