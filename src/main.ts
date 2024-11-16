@@ -58,7 +58,7 @@ async function bootstrap() {
 
   app.enableCors();
 
-  app.use(LogerMiddleware);
+ // app.use(LogerMiddleware);
 
   await app.listen(process.env.PORT ?? 3000);
 }

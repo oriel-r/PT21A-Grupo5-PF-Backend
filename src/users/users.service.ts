@@ -16,6 +16,7 @@ import { hash, compare } from 'bcrypt';
 import { SignupUserDto } from 'src/auth/dto/signup-auth.dto';
 import { SubscriptionsService } from 'src/subscriptions/subscriptions.service';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { MembershipService } from 'src/membership/membership.service';
 
 @Injectable()
 export class UsersService {
@@ -23,6 +24,7 @@ export class UsersService {
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
     private readonly usersRepo: UsersRepository,
     private readonly subscriptionService: SubscriptionsService,
+    private readonly membershipService: MembershipService,
   ) {}
 
   async pagination(page: number, limit: number) {
@@ -39,6 +41,7 @@ export class UsersService {
         'name',
         'role',
         'subscription',
+        'membership'
       ],
       skip: offset,
       take: limit,
@@ -92,7 +95,13 @@ export class UsersService {
       photo ||
       'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg';
 
-    return await this.usersRepository.save(user);
+    await this.usersRepository.save(user);
+  
+    const newUser = await this.usersRepository.findOneBy({email: user.email})
+    const newMembership = await this.membershipService.createMembership(newUser)
+    console.log({userService: newMembership})
+    await this.usersRepository.save(newUser)
+    return await this.usersRepository.findOneBy({email: user.email})
   }
 
   async findAll() {
