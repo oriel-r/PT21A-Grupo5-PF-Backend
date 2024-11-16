@@ -5,6 +5,9 @@ import { UsersService } from 'src/users/users.service';
 import { SignInAuthDto } from './dto/signin-auth.dto';
 import { UsersRepository } from 'src/users/users.repository';
 import { JwtService } from '@nestjs/jwt';
+import { EmailerService } from 'src/emailer/emailer.service';
+import { SendEmailDto } from 'src/emailer/dto/send-email.dto';
+import { emailHtml } from 'src/utils/email-template';
 
 @Injectable()
 export class AuthService {
@@ -12,6 +15,7 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly userRepo: UsersRepository,
     private readonly jwtService: JwtService,
+    private readonly emailService: EmailerService,
   ) {}
 
   async signUp(signUpUser: SignupUserDto) {
@@ -22,12 +26,16 @@ export class AuthService {
     signUpUser.password = await hash(signUpUser.password, 10);
 
     await this.usersService.createUser(signUpUser);
+    const message = emailHtml.replace('{{userName}}', signUpUser.name);
+    const from = 'Uniendo Culturas <no-reply@uniendoculturas.edu.ar>'
+    const to = [signUpUser.email]
+    const subject = 'Bienvenido a Uniendo Culturas'
+    await this.emailService.sendWelcomeEmail({from, to, subject, message});
     return signUpUser;
   }
 
   async signIn(credentials: SignInAuthDto) {
     const user = await this.userRepo.getUserByEmail(credentials.email);
-    
 
     if (!user) {
       throw new HttpException('Usuario no encontrado', 404);
@@ -39,7 +47,10 @@ export class AuthService {
     );
 
     if (!isPasswordMatching) {
-      throw new HttpException('Credenciales Incorrectas', HttpStatus.UNAUTHORIZED);
+      throw new HttpException(
+        'Credenciales Incorrectas',
+        HttpStatus.UNAUTHORIZED,
+      );
     }
 
     const userPayload = {
@@ -51,8 +62,7 @@ export class AuthService {
     };
 
     const token = this.jwtService.sign(userPayload);
-    console.log('This is the payload: ',userPayload);
-    
+    console.log('This is the payload: ', userPayload);
 
     return {
       token,
