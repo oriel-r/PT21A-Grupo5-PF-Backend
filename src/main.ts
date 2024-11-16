@@ -13,6 +13,7 @@ import { auth0config } from './config/auth0.config';
 import * as session from 'express-session';
 import * as cookieParser from 'cookie-parser';
 import * as passport from 'passport';
+import { loggerMiddleware } from './middlewares/logger/logger.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -74,6 +75,8 @@ async function bootstrap() {
   SwaggerModule.setup('docs', app, document);
 
   app.enableCors();
+
+  app.use(loggerMiddleware);
 
   await app.listen(process.env.PORT ?? 3000);
 }
