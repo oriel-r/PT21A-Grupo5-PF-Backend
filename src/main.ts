@@ -10,10 +10,27 @@ import { SubscriptionsSeeds } from './seeds/subscriptions/subscriptions-seeds';
 import { LessonsSeeds } from './seeds/lessons/lessons.seeder';
 import { auth } from 'express-openid-connect';
 import { auth0config } from './config/auth0.config';
-import { LogerMiddleware } from './middlewares/loger/loger.middleware';
+import * as session from 'express-session';
+import * as cookieParser from 'cookie-parser';
+import * as passport from 'passport';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  //config cookie
+  app.use(cookieParser())
+
+  app.use(
+    session({
+      secret: 'f9c2ba3e7f524b4a9095c8e75c98fef4b029b7faeead8f3319c4fcedb94a756a1a0b4f7f2600f2899b1e6e4b3a645f09310e8d912aec1aef52eafe7c54d9e3f4', 
+      resave: false,
+      saveUninitialized: true,
+      cookie: { httpOnly: true, secure: false }, // Cambiar a true si se usa HTTPS
+    }),
+  );
+
+  app.use(passport.initialize());
+  app.use(passport.session());
 
   //Enable global validation pipe for request data validation
   app.useGlobalPipes(
@@ -57,8 +74,6 @@ async function bootstrap() {
   SwaggerModule.setup('docs', app, document);
 
   app.enableCors();
-
-  app.use(LogerMiddleware)
 
   await app.listen(process.env.PORT ?? 3000);
 }
