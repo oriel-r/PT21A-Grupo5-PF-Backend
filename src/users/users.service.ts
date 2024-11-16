@@ -16,6 +16,8 @@ import { hash, compare } from 'bcrypt';
 import { SignupUserDto } from 'src/auth/dto/signup-auth.dto';
 import { SubscriptionsService } from 'src/subscriptions/subscriptions.service';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { Auth0SignupDto } from 'src/auth/dto/auth0.dto';
+import { UpdateUserAuthDto } from 'src/auth/dto/auth0.update.dto';
 
 @Injectable()
 export class UsersService {
@@ -95,6 +97,24 @@ export class UsersService {
     return await this.usersRepository.save(user);
   }
 
+  async createUserFromAuth0(auth0Dto: Auth0SignupDto) {
+    const { authId, email, name } = auth0Dto;
+    
+    let user = await this.findEmail(email)
+    
+    if (!user) {
+      user = this.usersRepository.create(
+        { authId,
+          email,
+          name,
+          isProfileComplete: false,
+        });
+        
+      await this.usersRepository.save(user);
+    }
+    return user;
+  }
+
   async findAll() {
     return await this.usersRepository.find({ relations: { courses: true } });
   }
@@ -116,6 +136,22 @@ export class UsersService {
     const updatedUser = {
       ...userToUpdate,
       ...updateUserDto,
+    };
+
+    await this.usersRepository.save(updatedUser);
+
+    return updatedUser;
+  }
+
+  async updateUserAuth0(id: string, updateUserAuthDto: UpdateUserAuthDto) {
+    const userToUpdate = await this.findOne(id);
+    if (!userToUpdate) {
+      throw new BadRequestException('Usuario inexistente.');
+    }
+
+    const updatedUser = {
+      ...userToUpdate,
+      ...updateUserAuthDto,
     };
 
     await this.usersRepository.save(updatedUser);

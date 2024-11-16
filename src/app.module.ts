@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -19,6 +19,7 @@ import { CronsModule } from './crons/crons.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PaymentsModule } from './payments/payments.module';
 import { MercadopagoService } from './services/mercadopago/mercadopago.service';
+import { ProtectedModule } from './protected/protected.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { MercadopagoService } from './services/mercadopago/mercadopago.service';
     LessonsModule,
     LanguageModule,
     CronsModule,
+    ProtectedModule,
     JwtModule.register({
       global: true,
       signOptions: { expiresIn: '1h' },
