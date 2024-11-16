@@ -32,7 +32,7 @@ export class Membership {
         name: 'payments',
         description: "memebership's payment"
     })
-    @OneToMany(() => Payment, (payment) => payment.membership)
+    @OneToMany(() => Payment, (payment) => payment.membership, {cascade: true})
     payments: Payment[]
 
     constructor(partial: DeepPartial<Membership>) {
