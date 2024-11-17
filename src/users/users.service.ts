@@ -18,6 +18,7 @@ import { SubscriptionsService } from 'src/subscriptions/subscriptions.service';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { Auth0SignupDto } from 'src/auth/dto/auth0.dto';
 import { UpdateUserAuthDto } from 'src/auth/dto/auth0.update.dto';
+import { MembershipService } from 'src/membership/membership.service';
 
 @Injectable()
 export class UsersService {
@@ -25,6 +26,7 @@ export class UsersService {
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
     private readonly usersRepo: UsersRepository,
     private readonly subscriptionService: SubscriptionsService,
+    private readonly membershipService: MembershipService,
   ) {}
 
   async pagination(page: number, limit: number) {
@@ -94,29 +96,40 @@ export class UsersService {
       photo ||
       'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg';
 
-    return await this.usersRepository.save(user);
+    await this.usersRepository.save(user);
+
+    const newUser = await this.usersRepository.findOneBy({ email: user.email });
+    const newMembership =
+      await this.membershipService.createMembership(newUser);
+    await this.usersRepository.save(newUser);
+    return await this.usersRepository.findOneBy({ email: user.email });
   }
 
   async createUserFromAuth0(auth0Dto: Auth0SignupDto) {
     const { authId, email, name } = auth0Dto;
-    
-    let user = await this.findEmail(email)
-    
+
+    let user = await this.findEmail(email);
+
     if (!user) {
-      user = this.usersRepository.create(
-        { authId,
-          email,
-          name,
-          isProfileComplete: false,
-        });
-        
+      user = this.usersRepository.create({
+        authId,
+        email,
+        name,
+        isProfileComplete: false,
+      });
+
       await this.usersRepository.save(user);
     }
     return user;
   }
 
   async findAll() {
-    return await this.usersRepository.find({ relations: { courses: true } });
+    return await this.usersRepository.find({
+      relations: {
+        courses: true,
+        membership: { subscription: true, payments: true },
+      },
+    });
   }
 
   async findNewsletterList(): Promise<Array<string>> {
@@ -166,7 +179,7 @@ export class UsersService {
   async findEmail(email: string) {
     return await this.usersRepository.findOne({
       where: { email },
-      relations: { subscription: true },
+      relations: { subscription: true, membership: { subscription: true } },
     });
   }
 

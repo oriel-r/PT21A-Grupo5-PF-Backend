@@ -8,6 +8,7 @@ import { Subscription } from 'src/subscriptions/entities/subscription.entity';
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToMany,
   ManyToOne,
   OneToMany,
@@ -101,9 +102,10 @@ export class User {
   @ManyToMany(() => Course, (courses) => courses.users)
   courses?: Course[];
 
-  @ManyToOne(() => Membership, (membership) => membership.user, {
+  @OneToOne(() => Membership, (membership) => membership.user, {
     nullable: true,
   })
+  @JoinColumn()
   membership: Membership;
 
   @ManyToOne(() => Subscription, (membership) => membership.users, {
