@@ -16,9 +16,9 @@ export class PaymentsRepository {
   }
 
   async create(data: Membership): Promise<Payment>{
-    console.log(data)
+  //  console.log(data)
     const result = await this.paymentRepository.save(this.paymentRepository.create(data))
-    console.log(result) 
+  //  console.log(result) 
     return result
   }
 

@@ -23,8 +23,7 @@ export class MembershipController {
   @Put(':id')
   async updateMembership(
     @Param('id') id: string,
-    @Body() data: Partial<UpdateMembershipDto>
-  ) {
-    return await this.membershipService.updateMembership({id: id, name: data.name, data: data.data})
+    @Body() data: UpdateMembershipDto) {
+    return await this.membershipService.updateMembership(id, data)
   }
 }
