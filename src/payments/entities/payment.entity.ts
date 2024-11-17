@@ -33,7 +33,7 @@ export class Payment {
     name: 'date',
     description: "payment's date",
   })
-  @Column()
+  @Column('date', {default: new Date()})
   date: Date;
 
   @Column({ nullable: true })

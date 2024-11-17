@@ -8,11 +8,12 @@ import { Subscription } from 'src/subscriptions/entities/subscription.entity';
 import { MembershipRepostory } from './membership.repository';
 import { SubscriptionsModule } from 'src/subscriptions/subscriptions.module';
 import { PaymentsModule } from 'src/payments/payments.module';
+import { MercadopagoService } from 'src/services/mercadopago/mercadopago.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Membership, Payment, Subscription]), SubscriptionsModule, PaymentsModule],
   controllers: [MembershipController],
-  providers: [MembershipService, MembershipRepostory],
+  providers: [MercadopagoService, MembershipService, MembershipRepostory],
   exports: [MembershipService, MembershipRepostory]
 })
 export class MembershipModule {}

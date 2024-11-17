@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Payment } from './entities/payment.entity';
 import { Repository } from 'typeorm';
+import { Membership } from 'src/membership/entities/membership.entity';
 
 @Injectable()
 export class PaymentsRepository {
@@ -14,8 +15,11 @@ export class PaymentsRepository {
     return await this.paymentRepository.find()
   }
 
-  async create(data) {
-    return await this.paymentRepository.save(this.paymentRepository.create(data))[0]
+  async create(data: Membership): Promise<Payment>{
+    console.log(data)
+    const result = await this.paymentRepository.save(this.paymentRepository.create(data))
+    console.log(result) 
+    return result
   }
 
   async findOne(id: string) {
