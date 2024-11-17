@@ -44,8 +44,7 @@ async function bootstrap() {
   app.use(auth({ ...auth0config }));
 
   //Seeds
-  const usersSeed = app.get(UsersSeed);
-  await usersSeed.seed();
+  
 
   const categoriesSeed = app.get(CategoriesSeed);
   await categoriesSeed.seed();
@@ -58,6 +57,9 @@ async function bootstrap() {
 
   const subscriptionsSeed = app.get(SubscriptionsSeeds);
   await subscriptionsSeed.seed();
+
+  const usersSeed = app.get(UsersSeed);
+  await usersSeed.seed();
 
   const lessonsSeed = app.get(LessonsSeeds);
   await lessonsSeed.seed();

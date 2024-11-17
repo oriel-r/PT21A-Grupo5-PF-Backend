@@ -24,6 +24,10 @@ export class CoursesService {
     return courses;
   }
 
+  async findOne(title:string) {
+    return await this.coursesRepository.findByTitle(title)
+  }
+
   async findById(id: string): Promise<Course> {
     return await this.coursesRepository.findById(id);
   }

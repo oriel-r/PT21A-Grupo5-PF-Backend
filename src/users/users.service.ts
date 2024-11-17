@@ -19,7 +19,6 @@ import { ChangePasswordDto } from './dto/change-password.dto';
 import { Auth0SignupDto } from 'src/auth/dto/auth0.dto';
 import { UpdateUserAuthDto } from 'src/auth/dto/auth0.update.dto';
 import { MembershipService } from 'src/membership/membership.service';
-import { MembershipService } from 'src/membership/membership.service';
 
 @Injectable()
 export class UsersService {
@@ -27,7 +26,6 @@ export class UsersService {
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
     private readonly usersRepo: UsersRepository,
     private readonly subscriptionService: SubscriptionsService,
-    private readonly membershipService: MembershipService,
     private readonly membershipService: MembershipService,
   ) {}
 
@@ -127,7 +125,10 @@ export class UsersService {
 
   async findAll() {
     return await this.usersRepository.find({
-      relations: { courses: true, membership: {subscription:true, payments:true}},
+      relations: {
+        courses: true,
+        membership: { subscription: true, payments: true },
+      },
     });
   }
 
@@ -178,7 +179,7 @@ export class UsersService {
   async findEmail(email: string) {
     return await this.usersRepository.findOne({
       where: { email },
-      relations: { subscription: true, membership: {subscription:true} },
+      relations: { subscription: true, membership: { subscription: true } },
     });
   }
 
