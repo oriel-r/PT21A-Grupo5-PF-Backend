@@ -43,7 +43,6 @@ export class UsersService {
         'name',
         'role',
         'subscription',
-        'membership'
       ],
       skip: offset,
       take: limit,
@@ -98,16 +97,39 @@ export class UsersService {
       'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg';
 
     await this.usersRepository.save(user);
-  
-    const newUser = await this.usersRepository.findOneBy({email: user.email})
-    const newMembership = await this.membershipService.createMembership(newUser)
-    console.log({userService: newMembership})
-    await this.usersRepository.save(newUser)
-    return await this.usersRepository.findOneBy({email: user.email})
+
+    const newUser = await this.usersRepository.findOneBy({ email: user.email });
+    const newMembership =
+      await this.membershipService.createMembership(newUser);
+    await this.usersRepository.save(newUser);
+    return await this.usersRepository.findOneBy({ email: user.email });
+  }
+
+  async createUserFromAuth0(auth0Dto: Auth0SignupDto) {
+    const { authId, email, name } = auth0Dto;
+
+    let user = await this.findEmail(email);
+
+    if (!user) {
+      user = this.usersRepository.create({
+        authId,
+        email,
+        name,
+        isProfileComplete: false,
+      });
+
+      await this.usersRepository.save(user);
+    }
+    return user;
   }
 
   async findAll() {
-    return await this.usersRepository.find({ relations: { courses: true } });
+    return await this.usersRepository.find({
+      relations: {
+        courses: true,
+        membership: { subscription: true, payments: true },
+      },
+    });
   }
 
   async findNewsletterList(): Promise<Array<string>> {
@@ -157,7 +179,7 @@ export class UsersService {
   async findEmail(email: string) {
     return await this.usersRepository.findOne({
       where: { email },
-      relations: { subscription: true },
+      relations: { subscription: true, membership: { subscription: true } },
     });
   }
 

@@ -24,7 +24,7 @@ export class CoursesRepository {
   }
 
   async findById(id: string): Promise<Course> {
-    const result = await this.coursesRepository.findOne({where: {id}, relations: {users: true, lessons: true}})
+    const result = await this.coursesRepository.findOne({where: {id}, relations: {users: true, lessons: true, language:true}})
     if(!result) throw new NotFoundException('Curso no encontrado')
     return result
   }
@@ -35,10 +35,5 @@ export class CoursesRepository {
     );
   }
 
-  async findById(id: string): Promise<Course> {
-    return await this.coursesRepository.findOne({
-      where: { id },
-      relations: { lessons: true, users: true, language: true },
-    });
-  }
+
 }

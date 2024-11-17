@@ -33,7 +33,7 @@ export class UsersController {
   @Post('register')
   async create(@Body() createUserDto: CreateUserDto) {
     const user = await this.usersService.create(createUserDto);
-    return new UserResponseDto(user);
+    return user;
   }
 
   @Get()

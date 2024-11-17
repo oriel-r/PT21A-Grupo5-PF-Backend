@@ -13,14 +13,16 @@ export class UserResponseDto {
   idNumber: string;
   createdAt: Date;
   role: string;
+  membership:string
 
   constructor(partial: Partial<UserResponseDto>) {
-    const { id, name, email, idNumber, createdAt, role } = partial;
+    const { id, name, email, idNumber, createdAt, role, membership } = partial;
     this.id = id;
     this.name = name;
     this.email = email;
     this.idNumber = idNumber;
     this.createdAt = createdAt;
     this.role = role;
+    this.membership = membership
   }
 }
