@@ -27,7 +27,6 @@ export class MembershipRepostory {
 
     async create(data:DeepPartial<Membership>):Promise<Membership> {
         const result = await this.membershipRepository.save(this.membershipRepository.create(data))
-        console.log({repo: result})
         return result
     }
 
