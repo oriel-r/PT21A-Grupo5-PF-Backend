@@ -19,6 +19,7 @@ import { ChangePasswordDto } from './dto/change-password.dto';
 import { Auth0SignupDto } from 'src/auth/dto/auth0.dto';
 import { UpdateUserAuthDto } from 'src/auth/dto/auth0.update.dto';
 import { MembershipService } from 'src/membership/membership.service';
+import { Membership } from 'src/membership/entities/membership.entity';
 
 @Injectable()
 export class UsersService {
@@ -96,8 +97,11 @@ export class UsersService {
       photo ||
       'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg';
 
-    user.membership = await this.membershipService.createMembership(user)[0];
     await this.usersRepository.save(user);
+    const membership: Membership = await this.membershipService.createMembership(user);
+    console.log({inUser:membership})
+    user.membership = membership
+    await this.usersRepository.save(user)
     return await this.usersRepository.findOneBy({ email: user.email });
   }
 
