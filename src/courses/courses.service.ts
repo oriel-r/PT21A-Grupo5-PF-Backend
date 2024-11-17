@@ -24,19 +24,15 @@ export class CoursesService {
     return courses;
   }
 
-  async findOne(title: string) {
-    return await this.coursesRepository.findByTitle(title);
-  }
-
   async findById(id: string): Promise<Course> {
     return await this.coursesRepository.findById(id);
   }
 
-  update(id: number, updateCourseDto: UpdateCourseDto) {
+  async update(id: number, updateCourseDto: UpdateCourseDto) {
     return `This action updates a #${id} course`;
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     return `This action removes a #${id} course`;
   }
 }

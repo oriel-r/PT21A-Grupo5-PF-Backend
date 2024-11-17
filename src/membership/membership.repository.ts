@@ -26,7 +26,8 @@ export class MembershipRepostory {
     }
 
     async create(data) {
-        return await this.membershipRepository.save(this.membershipRepository.create(data))
+        const result = await this.membershipRepository.save(this.membershipRepository.create(data))
+        return result
     }
 
     async updateMembership(id: string, data) {

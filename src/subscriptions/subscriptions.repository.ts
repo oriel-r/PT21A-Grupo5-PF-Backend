@@ -28,9 +28,7 @@ export class SubscriptionsRepository {
   }
 
   async findOne(id: string) {
-    const subscription = await this.subscriptionsRepository.findOne({
-      where: { id },
-    });
+    const subscription = await this.subscriptionsRepository.findOneBy({id})
     if (!subscription) {
       throw new BadRequestException('Susbscription not found');
     }
