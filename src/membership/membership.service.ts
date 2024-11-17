@@ -22,25 +22,24 @@ export class MembershipService {
     private readonly externalPayment: MercadopagoService,
   ) {}
 
-  async createMembership(user: User) {
+  async createMembership(user: User): Promise<Membership> {
     const subscription = await this.subscriptionsService.findByName('Standard');
     if (!subscription)
       throw new NotFoundException(
-        'No se encontraron subscripciones asignables',
+        'No se encontraron s  ubscripciones asignables',
       );
     const membership = await this.membershipsRepository.create({
       user,
       subscription,
     });
-    
     return membership;
   }
 
-  async updateMembership(updateData: UpdateMembershipDto) {
-    const membership = await this.membershipsRepository.getById(updateData.id);
+  async updateMembership(id: string, updateData: UpdateMembershipDto) {
+    const membership = await this.membershipsRepository.getById(id);
     if (!membership)
       throw new NotFoundException('No se encontro la memebresia');
-    const newSubs = await this.subscriptionsService.findByName(updateData.name);
+    const newSubs = await this.subscriptionsService.findOne(updateData.subs_id);
     if (!newSubs)
       throw new NotFoundException(
         'No se encontraron subscripciones asignables',

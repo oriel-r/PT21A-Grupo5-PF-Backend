@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Membership } from "./entities/membership.entity";
-import { Repository } from "typeorm";
+import { DeepPartial, Repository } from "typeorm";
 import { User } from "src/users/entities/user.entity";
 
 @Injectable()
@@ -25,8 +25,9 @@ export class MembershipRepostory {
         })
     }
 
-    async create(data) {
+    async create(data:DeepPartial<Membership>):Promise<Membership> {
         const result = await this.membershipRepository.save(this.membershipRepository.create(data))
+        console.log({repo: result})
         return result
     }
 

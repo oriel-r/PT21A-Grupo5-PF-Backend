@@ -6,18 +6,10 @@ import { PreApprovalPlanCreateClient } from "mercadopago/dist/clients/preApprova
 import { DeepPartial } from "typeorm";
 
 export class UpdateMembershipDto {
-    
-    @ApiProperty({
-        name: 'id',
-        description: "the membership's id sended from params"
-    })
-    @IsNotEmpty()
-    @IsUUID()
-    id: string
 
-    @IsString()
+    @IsUUID()
     @IsNotEmpty()
-    name: string
+    subs_id: string
 
     @ApiProperty({
         name: 'data',
