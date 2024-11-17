@@ -32,11 +32,16 @@ export class LanguageService {
   }
 
   async getAndFilter(path: string, filter: FilterCourses) {
-    if (filter.level && !Object.values(Level).includes(filter.level)) throw new BadRequestException('El nivel buscado no existe')
-    if (filter.specialization && !Object.values(Specialization).includes(filter.specialization)) throw new BadRequestException('la especialización buscado no existe')
-    const result = await this.languageRepository.getAndFilter(path, filter)
-    if(!result) throw new NotFoundException('No se encontraron resultados')
-    return result
+    if (filter.level && !Object.values(Level).includes(filter.level))
+      throw new BadRequestException('El nivel buscado no existe');
+    if (
+      filter.specialization &&
+      !Object.values(Specialization).includes(filter.specialization)
+    )
+      throw new BadRequestException('la especialización buscado no existe');
+    const result = await this.languageRepository.getAndFilter(path, filter);
+    if (!result) throw new NotFoundException('No se encontraron resultados');
+    return result;
   }
 
   async getAll() {

@@ -20,7 +20,7 @@ export class RolesGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const user = (request as any).user;
 
-    const hasRole = requiredRoles.some(role => role === user?.role);
+    const hasRole = requiredRoles.some((role) => role === user?.role);
 
     if (!user || !hasRole) {
       throw new UnauthorizedException('No tienes los permisos adecuados.');
