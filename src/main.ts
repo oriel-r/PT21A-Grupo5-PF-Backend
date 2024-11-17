@@ -7,7 +7,7 @@ import { LanguagesSeed } from './seeds/languages/languages-seeds';
 import { CoursesSeed } from './seeds/courses/courses-seeds';
 import { ValidationPipe } from '@nestjs/common';
 import { SubscriptionsSeeds } from './seeds/subscriptions/subscriptions-seeds';
-import { LessonsSeeds } from './seeds/lessons/lessons.seeder';
+import { LessonsSeeder } from './seeds/lessons/lessons.seeder';
 import { auth } from 'express-openid-connect';
 import { auth0config } from './config/auth0.config';
 import * as session from 'express-session';
@@ -61,8 +61,8 @@ async function bootstrap() {
   const usersSeed = app.get(UsersSeed);
   await usersSeed.seed();
 
-  const lessonsSeed = app.get(LessonsSeeds);
-  await lessonsSeed.seed();
+  //const lessonsSeed = app.get(LessonsSeeder);
+  //await lessonsSeed.seed();
 
   //Swagger OpenApi settings
 
