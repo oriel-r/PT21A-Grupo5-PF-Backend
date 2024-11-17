@@ -9,25 +9,33 @@ export class LanguageRepository {
     private readonly languageRepository: Repository<Language>,
   ) {}
 
-  async getAndFilter(path: string, filters: FilterCourses): Promise<Language[]> {
-    const queryBuilder = await this.languageRepository.createQueryBuilder('language')
-    .leftJoinAndSelect('language.courses', 'course')
-    .leftJoinAndSelect('course.category', 'category') 
-    .where('language.path = :path', { path });
+  async getAndFilter(
+    path: string,
+    filters: FilterCourses,
+  ): Promise<Language[]> {
+    const queryBuilder = await this.languageRepository
+      .createQueryBuilder('language')
+      .leftJoinAndSelect('language.courses', 'course')
+      .leftJoinAndSelect('course.category', 'category')
+      .where('language.path = :path', { path });
 
-    if(filters.specialization) {
-      queryBuilder.andWhere('course.specialization = :specialization', { specialization: filters.specialization })
+    if (filters.specialization) {
+      queryBuilder.andWhere('course.specialization = :specialization', {
+        specialization: filters.specialization,
+      });
     }
 
-    if(filters.level) {
-      queryBuilder.andWhere('course.level = :level', {level: filters.level})
+    if (filters.level) {
+      queryBuilder.andWhere('course.level = :level', { level: filters.level });
     }
 
     if (filters.category) {
-      queryBuilder.andWhere('category.name = :category', { category: filters.category });
+      queryBuilder.andWhere('category.name = :category', {
+        category: filters.category,
+      });
     }
 
-    return await queryBuilder.getMany()
+    return await queryBuilder.getMany();
   }
 
   async getPagination(page, limit) {
