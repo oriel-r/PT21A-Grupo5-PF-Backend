@@ -28,7 +28,7 @@ export class SubscriptionsRepository {
   }
 
   async findOne(id: string) {
-    const subscription = await this.subscriptionsRepository.findOneBy({id})
+    const subscription = await this.subscriptionsRepository.findOneBy({ id });
     if (!subscription) {
       throw new BadRequestException('Susbscription not found');
     }
@@ -63,9 +63,7 @@ export class SubscriptionsRepository {
     const subscription = await this.subscriptionsRepository.findOne({
       where: { name },
     });
-    if (!subscription) {
-      throw new BadRequestException('Susbscription not found');
-    }
+
     return subscription;
   }
 }

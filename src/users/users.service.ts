@@ -66,7 +66,7 @@ export class UsersService {
   async createUser(signUpUserDto: SignupUserDto) {
     const { name, email, password, idNumber, photo } = signUpUserDto;
 
-    const subscription = await this.subscriptionService.findByName('standard');
+    const subscription = await this.subscriptionService.findByName('Standard');
     if (!subscription) {
       throw new BadRequestException('Suscripción no encontrada');
     }
@@ -96,12 +96,8 @@ export class UsersService {
       photo ||
       'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg';
 
+    user.membership = await this.membershipService.createMembership(user)[0];
     await this.usersRepository.save(user);
-
-    const newUser = await this.usersRepository.findOneBy({ email: user.email });
-    const newMembership =
-      await this.membershipService.createMembership(newUser);
-    await this.usersRepository.save(newUser);
     return await this.usersRepository.findOneBy({ email: user.email });
   }
 
