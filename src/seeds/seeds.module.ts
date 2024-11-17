@@ -12,7 +12,7 @@ import { LanguagesSeed } from './languages/languages-seeds';
 import { Subscription } from 'src/subscriptions/entities/subscription.entity';
 import { SubscriptionsSeeds } from './subscriptions/subscriptions-seeds';
 import { Lesson } from 'src/lessons/entities/lesson.entity';
-import { LessonsSeeds } from './lessons/lessons.seeder';
+import { LessonsSeeder } from './lessons/lessons.seeder';
 import { Membership } from 'src/membership/entities/membership.entity';
 
 @Module({
@@ -34,7 +34,7 @@ import { Membership } from 'src/membership/entities/membership.entity';
     CoursesSeed,
     LanguagesSeed,
     SubscriptionsSeeds,
-    LessonsSeeds,
+    LessonsSeeder,
   ],
   exports: [
     UsersSeed,
@@ -42,7 +42,7 @@ import { Membership } from 'src/membership/entities/membership.entity';
     CoursesSeed,
     LanguagesSeed,
     SubscriptionsSeeds,
-    LessonsSeeds,
+    LessonsSeeder,
   ],
 })
 export class SeedsModule {}

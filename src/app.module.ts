@@ -21,6 +21,7 @@ import { PaymentsModule } from './payments/payments.module';
 import { MercadopagoService } from './services/mercadopago/mercadopago.service';
 import { MembershipModule } from './membership/membership.module';
 import { ProtectedModule } from './protected/protected.module';
+import { WebhooksModule } from './webhooks/webhooks.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { ProtectedModule } from './protected/protected.module';
     }),
     PaymentsModule,
     MembershipModule,
+    WebhooksModule,
   ],
   controllers: [AppController],
   providers: [AppService, CloudinaryService, MercadopagoService],
