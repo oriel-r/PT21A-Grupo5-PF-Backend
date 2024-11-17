@@ -30,7 +30,7 @@ export class UsersSeed {
   async seed() {
     try {
       const standardSubscription =
-        await this.findSubscriptionByName('standard');
+        await this.findSubscriptionByName('Standard');
 
       for (const userData of usersMock) {
         const existingUser = await this.usersRepository.findOne({
