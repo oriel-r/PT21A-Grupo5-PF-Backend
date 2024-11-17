@@ -6,6 +6,7 @@ import {
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { CoursesRepository } from './courses.repository';
+import { Course } from './entities/course.entity';
 
 @Injectable()
 export class CoursesService {
@@ -25,6 +26,10 @@ export class CoursesService {
 
   async findOne(title: string) {
     return await this.coursesRepository.findByTitle(title);
+  }
+
+  async findById(id: string): Promise<Course> {
+    return await this.coursesRepository.findById(id);
   }
 
   update(id: number, updateCourseDto: UpdateCourseDto) {
