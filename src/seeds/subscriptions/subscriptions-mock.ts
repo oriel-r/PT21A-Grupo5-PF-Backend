@@ -1,6 +1,6 @@
 export const subscriptionsMock = [
   {
-    name: 'standard',
+    name: 'Standard',
     description: [
       'Acceso a dos cursos (Categoría Basic)',
       'Acceso a cursos On-Demand',
@@ -9,7 +9,7 @@ export const subscriptionsMock = [
     price: 0.0,
   },
   {
-    name: 'premium',
+    name: 'Premium',
     description: [
       'Acceso a más de 100 cursos (Categoría Basic)',
       'Acceso a cursos On-Demand',
@@ -20,7 +20,7 @@ export const subscriptionsMock = [
     price: 9.99,
   },
   {
-    name: 'pro',
+    name: 'Pro',
     description: [
       'Acceso completo a todos los cursos (Categoría Basic)',
       'Acceso completo a todos los cursos (Categoría Premium)',
