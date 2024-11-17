@@ -7,9 +7,10 @@ import { JwtModule } from '@nestjs/jwt';
 import { UsersRepository } from './users.repository';
 import { SubscriptionsModule } from 'src/subscriptions/subscriptions.module';
 import { SubscriptionsService } from 'src/subscriptions/subscriptions.service';
+import { MembershipModule } from 'src/membership/membership.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), JwtModule, SubscriptionsModule],
+  imports: [TypeOrmModule.forFeature([User]), JwtModule, MembershipModule, SubscriptionsModule],
   controllers: [UsersController],
   providers: [UsersService, UsersRepository],
   exports: [UsersRepository, UsersService],

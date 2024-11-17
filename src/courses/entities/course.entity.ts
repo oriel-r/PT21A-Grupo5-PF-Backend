@@ -74,7 +74,7 @@ export class Course {
   })
   @Column()
   general_description: string;
-  
+
   @ApiProperty({
     name: 'brief_description',
     description: 'A short description',
