@@ -18,7 +18,7 @@ const PostgresDataSourceOptions: DataSourceOptions = {
   logging: ['error'],
   ssl: {
     rejectUnauthorized: false, // This is necessary for self-signed certificates
-   },
+  },
   entities: ['dist/**/*.entity{.ts,.js}'],
   migrations: ['dist/migrations/*{.js,.ts}'],
 };

@@ -30,10 +30,13 @@ export class UsersService {
     private readonly membershipService: MembershipService,
   ) {}
 
-  async pagination(page: number, limit: number) {
+  async pagination(page: number, limit: number, role) {
     const offset = (page - 1) * limit;
 
+    if(!Object.values(Role).includes(role)) throw new BadRequestException('El rol enviado es incorrecto')
+    
     return await this.usersRepository.find({
+      where: {role: role},
       relations: { courses: true, subscription: true },
       select: [
         'id',
