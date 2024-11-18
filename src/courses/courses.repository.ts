@@ -10,6 +10,14 @@ export class CoursesRepository {
     private readonly coursesRepository: Repository<Course>,
   ) {}
 
+  async getPagination(page, limit) {
+    return await this.coursesRepository.find({
+      skip: (page - 1) * limit,
+      take: limit,
+      relations: { lessons: true },
+    });
+  }
+
   async getAllCourses(): Promise<Course[]> {
     return await this.coursesRepository.find({ relations: { lessons: true } });
   }

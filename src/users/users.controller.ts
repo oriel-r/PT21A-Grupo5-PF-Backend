@@ -9,12 +9,14 @@ import {
   Query,
   UseGuards,
   Put,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserResponseDto } from './dto/response-user.dto';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { ChangePasswordDto } from './dto/change-password.dto';
 
 @ApiBearerAuth()
@@ -22,6 +24,11 @@ import { ChangePasswordDto } from './dto/change-password.dto';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @ApiOperation({
+    summary: 'Get all users',
+    description: "By default's values: page 1, limit 5",
+  })
+  @HttpCode(HttpStatus.OK)
   @Get('page')
   findWithPagination(
     @Query('page') page: number = 1,

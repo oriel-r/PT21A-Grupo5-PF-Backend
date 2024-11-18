@@ -8,6 +8,9 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
+  Query,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
@@ -18,6 +21,19 @@ import { FileInterceptor } from '@nestjs/platform-express/multer/interceptors/fi
 @Controller('courses')
 export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
+
+  @ApiOperation({
+    summary: 'Get all courses',
+    description: "By default's values: page 1, limit 5",
+  })
+  @HttpCode(HttpStatus.OK)
+  @Get('page')
+  async getPagination(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ) {
+    return await this.coursesService.getPagination(page, limit);
+  }
 
   @ApiOperation({
     summary: 'Create a new course',
