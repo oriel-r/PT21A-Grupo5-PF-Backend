@@ -5,6 +5,7 @@ import { UserResponseDto } from 'src/users/dto/response-user.dto';
 import { SignInAuthDto } from './dto/signin-auth.dto';
 import { UsersService } from 'src/users/users.service';
 import { AuthGuard } from '@nestjs/passport';
+import { UserResponseAuthDto } from './dto/user-response-auth.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -17,7 +18,7 @@ export class AuthController {
   @HttpCode(201)
   async signUp(@Body() signUpUser: SignupUserDto) {
     const newUser = await this.authService.signUp(signUpUser);
-    return newUser;
+    return new UserResponseAuthDto(newUser);
   }
 
   @Post('signin')
