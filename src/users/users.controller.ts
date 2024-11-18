@@ -16,6 +16,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UserResponseDto } from './dto/response-user.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { Role } from 'src/enums/roles.enum';
 
 @ApiBearerAuth()
 @Controller('users')
@@ -26,8 +27,9 @@ export class UsersController {
   findWithPagination(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 1,
+    @Query('role') role: Role
   ) {
-    return this.usersService.pagination(page, limit);
+    return this.usersService.pagination(page, limit, role);
   }
 
   @Post('register')
