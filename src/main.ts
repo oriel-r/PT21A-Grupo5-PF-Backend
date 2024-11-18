@@ -52,8 +52,8 @@ async function bootstrap() {
   const langagesSeed = app.get(LanguagesSeed);
   await langagesSeed.seed();
 
-  const coursesSeed = app.get(CoursesSeed);
-  await coursesSeed.seed();
+  // const coursesSeed = app.get(CoursesSeed);
+  // await coursesSeed.seed();
 
   const subscriptionsSeed = app.get(SubscriptionsSeeds);
   await subscriptionsSeed.seed();
@@ -61,8 +61,8 @@ async function bootstrap() {
   const usersSeed = app.get(UsersSeed);
   await usersSeed.seed();
 
-  //const lessonsSeed = app.get(LessonsSeeder);
-  //await lessonsSeed.seed();
+  const lessonsSeed = app.get(LessonsSeeder);
+  await lessonsSeed.seed();
 
   //Swagger OpenApi settings
 

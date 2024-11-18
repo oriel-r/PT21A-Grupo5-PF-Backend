@@ -56,6 +56,7 @@ export class CoursesSeed {
           const createdAt = courseData.createdAt;
           const brief_description = courseData.brief_description;
           const general_description = courseData.general_description;
+          const lessons = []
           const course = new Course({
             title,
             language,
@@ -66,6 +67,7 @@ export class CoursesSeed {
             createdAt,
             brief_description,
             general_description,
+            lessons
           });
           await this.coursesRepository.save(course);
         }
