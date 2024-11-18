@@ -33,10 +33,11 @@ export class UsersService {
   async pagination(page: number, limit: number, role) {
     const offset = (page - 1) * limit;
 
-    if(!Object.values(Role).includes(role)) throw new BadRequestException('El rol enviado es incorrecto')
-    
+    if (!Object.values(Role).includes(role))
+      throw new BadRequestException('El rol enviado es incorrecto');
+
     return await this.usersRepository.find({
-      where: {role: role},
+      where: { role: role },
       relations: { courses: true, subscription: true },
       select: [
         'id',
@@ -101,11 +102,12 @@ export class UsersService {
       'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg';
 
     await this.usersRepository.save(user);
-    const membership: Membership = await this.membershipService.createMembership(user);
-    console.log({inUser:membership})
-    user.membership = membership
-    await this.usersRepository.save(user)
-    return await this.usersRepository.findOneBy({ email: user.email });
+    const membership: Membership =
+      await this.membershipService.createMembership(user);
+    console.log({ inUser: membership });
+    user.membership = membership;
+    await this.usersRepository.save(user);
+    return user;
   }
 
   async createUserFromAuth0(auth0Dto: Auth0SignupDto) {

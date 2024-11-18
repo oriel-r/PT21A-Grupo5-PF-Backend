@@ -25,13 +25,13 @@ export class AuthService {
 
     signUpUser.password = await hash(signUpUser.password, 10);
 
-    await this.usersService.createUser(signUpUser);
+    const newUser = await this.usersService.createUser(signUpUser);
     const message = emailHtml.replace('{{userName}}', signUpUser.name);
     const from = 'Uniendo Culturas <no-reply@uniendoculturas.edu.ar>'
     const to = [signUpUser.email]
     const subject = 'Bienvenido a Uniendo Culturas'
     await this.emailService.sendWelcomeEmail({from, to, subject, message});
-    return signUpUser;
+    return newUser;
   }
 
   async signIn(credentials: SignInAuthDto) {
