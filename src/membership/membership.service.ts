@@ -44,7 +44,8 @@ export class MembershipService {
       throw new NotFoundException(
         'No se encontraron subscripciones asignables',
       );
-    //const data = await this.externalPayment.createSubscription(updateData.data)
+    const mpresponse = await this.externalPayment.createSubscription(updateData.data)
+    console.log({memService: mpresponse})
     const firstPayment = await this.paymentsServicec.addPayment({
       membership: membership,
     });

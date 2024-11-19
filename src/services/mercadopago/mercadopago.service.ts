@@ -1,28 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import MercadoPagoConfig, { PreApproval } from 'mercadopago';
 import { PreApprovalRequest } from 'mercadopago/dist/clients/preApproval/commonTypes';
-import { PreApprovalCreateData } from 'mercadopago/dist/clients/preApproval/create/types';
+import * as dotenv from 'dotenv'
+
+dotenv.config({path: '.env.development.local'})
 
 @Injectable()
 export class MercadopagoService {
-    private accesToken: string
-    constructor() {
-        this.accesToken = process.env.MP_ACCESS_TOKEN
-    }
+    accesToken: string
+    constructor() {}
     
     async createSubscription(data: PreApprovalRequest) {
+         
         
-        const mp = new MercadoPagoConfig({accessToken: this.accesToken})
+        const preaproval = await new PreApproval(new MercadoPagoConfig({accessToken: process.env.MP_ACCESS_TOKEN})).create({body:data})
+        .then((response) => {
+            const data = JSON.stringify(response)
+            console.log(data)
+        }).catch((err) => console.log(err))
+         
+        return preaproval
         
-        const preaproval = new PreApproval(mp)
-
-        try{
-           const response = preaproval.create({body: data})
-           console.log(response)
-           return response
-        } catch(err) {
-           return console.log(err)
-        }
     }
 
     
