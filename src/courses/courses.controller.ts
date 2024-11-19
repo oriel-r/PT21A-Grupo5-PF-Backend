@@ -35,7 +35,6 @@ export class CoursesController {
     return await this.coursesService.getPagination(page, limit);
   }
 
-
   @ApiOperation({
     summary: 'Create a new course',
   })
@@ -61,11 +60,12 @@ export class CoursesController {
   }
 
   @Get('byDate')
-  async findAllByDate(page, limit) {
+  async findAllByDate(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ) {
     return await this.coursesService.findAll(page, limit);
   }
-
-
 
   @Get(':id')
   findOne(@Param('id') id: string) {
