@@ -6,19 +6,19 @@ export const lessonsMock: Partial<CreateLessonDto>[] = [
     title: 'Introducción a los saludos en inglés',
     content:
       'Aprende los saludos básicos en inglés para presentarte durante tus viajes.',
-    course: 'Curso de Viajeros',
+    course: 'Curso para Viajeros',
   },
   {
     title: 'Vocabulario esencial para viajar',
     content:
       'Esta lección incluye palabras y frases importantes para desenvolverte en países de habla inglesa.',
-    course: 'Curso de Viajeros',
+    course: 'Curso para Viajeros',
   },
   {
     title: 'Conversaciones básicas con los locales',
     content:
       'Descubre habilidades simples para conectar con personas locales durante tus viajes.',
-    course: 'Curso de Viajeros',
+    course: 'Curso para Viajeros',
   },
 
   // Inglés para Negocios
@@ -26,19 +26,19 @@ export const lessonsMock: Partial<CreateLessonDto>[] = [
     title: 'Fundamentos de inglés profesional',
     content:
       'Aprende vocabulario clave para situaciones laborales y presentaciones de negocios.',
-    course: 'Inglés para Negocios',
+    course: 'Inglés de Negocios',
   },
   {
     title: 'Redacción de correos electrónicos profesionales',
     content:
       'Conoce la estructura y el lenguaje necesarios para escribir correos electrónicos formales en inglés.',
-    course: 'Inglés para Negocios',
+    course: 'Inglés de Negocios',
   },
   {
     title: 'Networking y conversaciones casuales',
     content:
       'Domina frases y términos esenciales para crear conexiones profesionales.',
-    course: 'Inglés para Negocios',
+    course: 'Inglés de Negocios',
   },
 
   // Italiano para Viajeros
