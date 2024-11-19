@@ -56,12 +56,15 @@ export class CoursesController {
     @UploadedFile() file: Express.Multer.File,
     @Body() data: CreateCourseDto,
   ) {
-    return this.coursesService.create(data, file);
+    return await this.coursesService.create(data, file);
   }
 
-  @Get()
-  findAll() {
-    return this.coursesService.findAll();
+  @Get('byDate')
+  async findAllByDate(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ) {
+    return await this.coursesService.findAll(page, limit);
   }
 
   @Get(':id')

@@ -31,7 +31,7 @@ export class CronsService {
   @Cron(CronExpression.EVERY_WEEK)
   async sendNewCoursesInfo() {
     const to = await this.usersService.findNewsletterList();
-    const courses = await this.coursesService.findAll();
+    const courses = await this.coursesService.findAllCourses();
     const latestCourses = courses.filter((course) =>
       this.filterCallback(course),
     );

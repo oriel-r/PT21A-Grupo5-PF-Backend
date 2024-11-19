@@ -38,7 +38,10 @@ export class AuthController {
   async callback(@Req() req, @Res() res) {
     const userData = req.user;
 
-    return res.json({ message: 'Login exitoso', userData });
+     console.log({ message: 'Login exitoso', userData });
+     const loginURL = `${process.env.AUTH0_BASE_URL}`;
+     res.redirect(loginURL)
+
   }
 
   @Get('logout')
