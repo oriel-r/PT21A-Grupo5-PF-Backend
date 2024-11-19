@@ -55,7 +55,8 @@ export class AuthController {
         });
       });
 
-      const logoutURL = `${process.env.AUTH0_DOMAIN}/v2/logout?returnTo=${encodeURIComponent('http://localhost:3000')}&client_id=${process.env.AUTH0_CLIENT_ID}`;
+      const logoutURL = `${process.env.AUTH0_DOMAIN}/v2/logout?returnTo=${encodeURIComponent(process.env.AUTH0_BASE_URL)}&client_id=${process.env.AUTH0_CLIENT_ID}`;
+
 
       res.redirect(logoutURL);
 
