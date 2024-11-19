@@ -1,3 +1,4 @@
+import { Membership } from 'src/membership/entities/membership.entity';
 import { Payment } from 'src/payments/entities/payment.entity';
 import { User } from 'src/users/entities/user.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
@@ -17,9 +18,9 @@ export class Subscription {
   @Column('decimal', { precision: 10, scale: 2 })
   price: number;
 
-  @OneToMany(() => User, (users) => users.subscription)
-  users: User[];
+  @OneToMany(() => Membership, (membership) => membership.subscription)
+  memberships: Membership[];
 
-  @OneToMany(() => Payment, (payment) => payment.subscription)
-  payments: Payment[]
+  @OneToMany(() => User, (user) => user.subscription)
+  users: User[]
 }

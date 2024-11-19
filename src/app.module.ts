@@ -19,7 +19,9 @@ import { CronsModule } from './crons/crons.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PaymentsModule } from './payments/payments.module';
 import { MercadopagoService } from './services/mercadopago/mercadopago.service';
+import { MembershipModule } from './membership/membership.module';
 import { ProtectedModule } from './protected/protected.module';
+import { WebhooksModule } from './webhooks/webhooks.module';
 
 @Module({
   imports: [
@@ -52,6 +54,8 @@ import { ProtectedModule } from './protected/protected.module';
       secret: process.env.JWT_SECRET,
     }),
     PaymentsModule,
+    MembershipModule,
+    WebhooksModule,
   ],
   controllers: [AppController],
   providers: [AppService, CloudinaryService, MercadopagoService],

@@ -17,7 +17,9 @@ import { SignupUserDto } from 'src/auth/dto/signup-auth.dto';
 import { SubscriptionsService } from 'src/subscriptions/subscriptions.service';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { Auth0SignupDto } from 'src/auth/dto/auth0.dto';
-import { UpdateUserAuthDto } from './dto/update-userAuth0.dto';
+import { UpdateUserAuthDto } from 'src/auth/dto/auth0.update.dto';
+import { MembershipService } from 'src/membership/membership.service';
+import { Membership } from 'src/membership/entities/membership.entity';
 
 @Injectable()
 export class UsersService {
@@ -25,12 +27,17 @@ export class UsersService {
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
     private readonly usersRepo: UsersRepository,
     private readonly subscriptionService: SubscriptionsService,
+    private readonly membershipService: MembershipService,
   ) {}
 
-  async pagination(page: number, limit: number) {
+  async pagination(page: number, limit: number, role) {
     const offset = (page - 1) * limit;
 
+    if (!Object.values(Role).includes(role))
+      throw new BadRequestException('El rol enviado es incorrecto');
+
     return await this.usersRepository.find({
+      where: { role: role },
       relations: { courses: true, subscription: true },
       select: [
         'id',
@@ -64,7 +71,7 @@ export class UsersService {
   async createUser(signUpUserDto: SignupUserDto) {
     const { name, email, password, idNumber, photo } = signUpUserDto;
 
-    const subscription = await this.subscriptionService.findByName('standard');
+    const subscription = await this.subscriptionService.findByName('Standard');
     if (!subscription) {
       throw new BadRequestException('Suscripción no encontrada');
     }
@@ -94,7 +101,13 @@ export class UsersService {
       photo ||
       'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg';
 
-    return await this.usersRepository.save(user);
+    await this.usersRepository.save(user);
+    const membership: Membership =
+      await this.membershipService.createMembership(user);
+    console.log({ inUser: membership });
+    user.membership = membership;
+    await this.usersRepository.save(user);
+    return user;
   }
 
   async createUserFromAuth0(auth0Dto: Auth0SignupDto) {
@@ -102,7 +115,6 @@ export class UsersService {
     
     let user = await this.findEmail(email)
   
-
     if (!user) {
       user = this.usersRepository.create(
         { authId,
@@ -117,7 +129,12 @@ export class UsersService {
   }
 
   async findAll() {
-    return await this.usersRepository.find({ relations: { courses: true } });
+    return await this.usersRepository.find({
+      relations: {
+        courses: true,
+        membership: { subscription: true, payments: true },
+      },
+    });
   }
 
   async findNewsletterList(): Promise<Array<string>> {
@@ -167,7 +184,7 @@ export class UsersService {
   async findEmail(email: string) {
     return await this.usersRepository.findOne({
       where: { email },
-      relations: { subscription: true },
+      relations: { subscription: true, membership: { subscription: true } },
     });
   }
 

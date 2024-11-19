@@ -12,7 +12,8 @@ import { LanguagesSeed } from './languages/languages-seeds';
 import { Subscription } from 'src/subscriptions/entities/subscription.entity';
 import { SubscriptionsSeeds } from './subscriptions/subscriptions-seeds';
 import { Lesson } from 'src/lessons/entities/lesson.entity';
-import { LessonsSeeds } from './lessons/lessons.seeder';
+import { LessonsSeeder } from './lessons/lessons.seeder';
+import { Membership } from 'src/membership/entities/membership.entity';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { LessonsSeeds } from './lessons/lessons.seeder';
       Language,
       Subscription,
       Lesson,
+      Membership
     ]),
     JwtModule,
   ],
@@ -32,7 +34,7 @@ import { LessonsSeeds } from './lessons/lessons.seeder';
     CoursesSeed,
     LanguagesSeed,
     SubscriptionsSeeds,
-    LessonsSeeds,
+    LessonsSeeder,
   ],
   exports: [
     UsersSeed,
@@ -40,7 +42,7 @@ import { LessonsSeeds } from './lessons/lessons.seeder';
     CoursesSeed,
     LanguagesSeed,
     SubscriptionsSeeds,
-    LessonsSeeds,
+    LessonsSeeder,
   ],
 })
 export class SeedsModule {}

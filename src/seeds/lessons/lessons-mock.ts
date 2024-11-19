@@ -1,195 +1,202 @@
 import { CreateLessonDto } from 'src/lessons/dto/create-lesson.dto';
 
 export const lessonsMock: Partial<CreateLessonDto>[] = [
-  // Travellers Course
+  // Curso de Viajeros
   {
-    title: 'Introduction to English Greetings',
+    title: 'Introducción a los saludos en inglés',
     content:
-      'Learn basic English greetings to introduce yourself while traveling.',
-    course: 'Travellers Course',
+      'Aprende los saludos básicos en inglés para presentarte durante tus viajes.',
+    course: 'Curso para Viajeros',
   },
   {
-    title: 'Essential Travel Vocabulary',
+    title: 'Vocabulario esencial para viajar',
     content:
-      'This lesson covers important words and phrases for traveling in English-speaking countries.',
-    course: 'Travellers Course',
+      'Esta lección incluye palabras y frases importantes para desenvolverte en países de habla inglesa.',
+    course: 'Curso para Viajeros',
   },
   {
-    title: 'Making Small Talk with Locals',
+    title: 'Conversaciones básicas con los locales',
     content:
-      'Understand simple conversational skills to connect with locals during your travels.',
-    course: 'Travellers Course',
+      'Descubre habilidades simples para conectar con personas locales durante tus viajes.',
+    course: 'Curso para Viajeros',
   },
 
-  // Business English
+  // Inglés para Negocios
   {
-    title: 'Business English Basics',
+    title: 'Fundamentos de inglés profesional',
     content:
-      'Learn key vocabulary for professional settings and business introductions.',
-    course: 'Business English',
+      'Aprende vocabulario clave para situaciones laborales y presentaciones de negocios.',
+    course: 'Inglés de Negocios',
   },
   {
-    title: 'Writing Professional Emails',
+    title: 'Redacción de correos electrónicos profesionales',
     content:
-      'This lesson covers the structure and language for crafting professional emails in English.',
-    course: 'Business English',
+      'Conoce la estructura y el lenguaje necesarios para escribir correos electrónicos formales en inglés.',
+    course: 'Inglés de Negocios',
   },
   {
-    title: 'Networking and Small Talk',
+    title: 'Networking y conversaciones casuales',
     content:
-      'Master phrases and vocabulary for building professional relationships.',
-    course: 'Business English',
+      'Domina frases y términos esenciales para crear conexiones profesionales.',
+    course: 'Inglés de Negocios',
   },
 
-  // Italian for Travellers
+  // Italiano para Viajeros
   {
-    title: 'Italian Greetings for Travelers',
-    content: 'Learn how to greet people and introduce yourself in Italian.',
-    course: 'Italian for Travellers',
+    title: 'Saludos básicos en italiano',
+    content:
+      'Aprende a saludar y presentarte en italiano para desenvolverte mejor en tus viajes.',
+    course: 'Italiano para Viajeros',
   },
   {
-    title: 'Ordering Food in Italian',
+    title: 'Cómo pedir comida en italiano',
     content:
-      'This lesson covers common phrases to order food and drink in Italian restaurants.',
-    course: 'Italian for Travellers',
+      'Esta lección incluye frases comunes para ordenar comida y bebida en restaurantes italianos.',
+    course: 'Italiano para Viajeros',
   },
   {
-    title: 'Asking for Directions',
+    title: 'Pidiendo y entendiendo direcciones',
     content:
-      'Learn essential phrases to ask for and understand directions in Italian.',
-    course: 'Italian for Travellers',
+      'Aprende las frases esenciales para solicitar y comprender direcciones en italiano.',
+    course: 'Italiano para Viajeros',
   },
 
-  // German Conversation
+  // Conversación en Alemán
   {
-    title: 'Basic German Conversations',
-    content: 'Start with simple German phrases and sentences for everyday use.',
-    course: 'German Conversation',
+    title: 'Frases básicas en alemán',
+    content: 'Comienza a hablar alemán con frases y expresiones simples para el día a día.',
+    course: 'Conversación en Alemán',
   },
   {
-    title: 'Talking about Daily Activities',
+    title: 'Hablar sobre actividades diarias',
     content:
-      'Learn vocabulary and phrases to discuss daily routines and hobbies in German.',
-    course: 'German Conversation',
+      'Aprende vocabulario útil para hablar de tus rutinas y pasatiempos en alemán.',
+    course: 'Conversación en Alemán',
   },
   {
-    title: 'Describing People and Places',
+    title: 'Describiendo personas y lugares',
     content:
-      'This lesson covers descriptive vocabulary to talk about people and locations.',
-    course: 'German Conversation',
+      'Esta lección te enseña el vocabulario necesario para describir personas y ubicaciones.',
+    course: 'Conversación en Alemán',
   },
 
-  // French Legal Language
+  // Francés Jurídico
   {
-    title: 'Introduction to Legal French',
+    title: 'Introducción al francés legal',
     content:
-      'Learn basic legal terms and phrases used in French-speaking legal contexts.',
-    course: 'French Legal Language',
+      'Familiarízate con términos y frases clave utilizadas en contextos legales en francés.',
+    course: 'Francés Jurídico',
   },
   {
-    title: 'Contract Vocabulary',
+    title: 'Vocabulario de contratos en francés',
     content:
-      'This lesson covers essential French vocabulary for discussing contracts and agreements.',
-    course: 'French Legal Language',
+      'Aprende las palabras esenciales para hablar sobre contratos y acuerdos en francés.',
+    course: 'Francés Jurídico',
   },
   {
-    title: 'Courtroom Terminology',
-    content: 'Understand common terms and phrases used in French courtrooms.',
-    course: 'French Legal Language',
+    title: 'Terminología común en tribunales',
+    content:
+      'Conoce los términos más usados en procedimientos legales en francés.',
+    course: 'Francés Jurídico',
   },
 
-  // Portuguese for Beginners
+  // Portugués para Principiantes
   {
-    title: 'Basic Portuguese Greetings',
-    content: 'Learn how to greet others and introduce yourself in Portuguese.',
-    course: 'Portuguese for Beginners',
-  },
-  {
-    title: 'Essential Portuguese Phrases',
+    title: 'Saludos básicos en portugués',
     content:
-      'This lesson includes common phrases to use in everyday situations.',
-    course: 'Portuguese for Beginners',
+      'Descubre cómo saludar e introducirte en portugués de manera sencilla.',
+    course: 'Portugués para Principiantes',
   },
   {
-    title: 'Talking About Family and Friends',
-    content: 'Learn how to describe your family and friends in Portuguese.',
-    course: 'Portuguese for Beginners',
+    title: 'Frases esenciales para el día a día',
+    content:
+      'Aprende expresiones útiles para desenvolverte en situaciones cotidianas en portugués.',
+    course: 'Portugués para Principiantes',
+  },
+  {
+    title: 'Hablando sobre familia y amigos',
+    content:
+      'Conoce las palabras y frases para describir a tus seres queridos en portugués.',
+    course: 'Portugués para Principiantes',
   },
 
-  // English Conversation
+  // Conversación en Inglés
   {
-    title: 'Starting a Conversation in English',
+    title: 'Iniciar una conversación en inglés',
     content:
-      'This lesson covers simple ways to start a conversation in English.',
-    course: 'English Conversation',
+      'Explora formas sencillas y efectivas para comenzar una conversación en inglés.',
+    course: 'Conversación en Inglés',
   },
   {
-    title: 'Talking About Hobbies',
+    title: 'Hablar de tus pasatiempos',
     content:
-      'Learn vocabulary and expressions to discuss your hobbies in English.',
-    course: 'English Conversation',
+      'Aprende vocabulario y expresiones para compartir tus intereses y hobbies.',
+    course: 'Conversación en Inglés',
   },
   {
-    title: 'Expressing Opinions',
+    title: 'Cómo expresar opiniones',
     content:
-      'This lesson provides phrases to share your opinions in everyday conversations.',
-    course: 'English Conversation',
+      'Descubre frases útiles para expresar tus ideas y puntos de vista en inglés.',
+    course: 'Conversación en Inglés',
   },
 
-  // Italian First Certificate
+  // Certificado de Italiano
   {
-    title: 'Exam Overview and Structure',
+    title: 'Introducción al examen de certificación',
     content:
-      'An introduction to the Italian First Certificate exam and its sections.',
-    course: 'Italian First Certificate',
+      'Conoce la estructura y las secciones del examen del Certificado Italiano.',
+    course: 'Certificado de Italiano',
   },
   {
-    title: 'Grammar for Certification',
-    content: 'Review essential Italian grammar topics for the exam.',
-    course: 'Italian First Certificate',
+    title: 'Repaso de gramática italiana',
+    content:
+      'Revisa los temas gramaticales más importantes para superar el examen.',
+    course: 'Certificado de Italiano',
   },
   {
-    title: 'Practice with Listening and Speaking',
+    title: 'Prácticas de escucha y conversación',
     content:
-      'Focus on listening and speaking skills necessary for the Italian First Certificate.',
-    course: 'Italian First Certificate',
+      'Fortalece tus habilidades auditivas y de conversación en italiano para el examen.',
+    course: 'Certificado de Italiano',
   },
 
-  // Advanced Business German
+  // Alemán Avanzado para Negocios
   {
-    title: 'Advanced Business Vocabulary',
-    content: 'Learn complex German vocabulary for advanced business contexts.',
-    course: 'Advanced Business German',
-  },
-  {
-    title: 'Writing Formal Business Letters',
+    title: 'Vocabulario empresarial avanzado en alemán',
     content:
-      'Understand the structure and language of formal letters in German business.',
-    course: 'Advanced Business German',
+      'Aprende términos avanzados para usar en contextos laborales y profesionales en alemán.',
+    course: 'Alemán Avanzado para Negocios',
   },
   {
-    title: 'Presenting in German',
-    content: 'Learn how to give professional presentations in German.',
-    course: 'Advanced Business German',
+    title: 'Redacción de cartas formales',
+    content:
+      'Conoce la estructura y el estilo para escribir cartas empresariales en alemán.',
+    course: 'Alemán Avanzado para Negocios',
+  },
+  {
+    title: 'Presentaciones profesionales en alemán',
+    content:
+      'Domina las habilidades necesarias para realizar presentaciones en entornos empresariales.',
+    course: 'Alemán Avanzado para Negocios',
   },
 
-  // French for Travellers
+  // Francés para Viajeros
   {
-    title: 'Essential French Greetings for Travelers',
+    title: 'Saludos esenciales en francés',
     content:
-      'Master basic French greetings and introductions for travel situations.',
-    course: 'French for Travellers',
+      'Aprende a saludar y presentarte en francés para viajar con mayor confianza.',
+    course: 'Francés para Viajeros',
   },
   {
-    title: 'Ordering at a Café',
+    title: 'Cómo pedir en cafeterías y restaurantes',
     content:
-      'Learn how to order food and drinks in French cafes and restaurants.',
-    course: 'French for Travellers',
+      'Conoce las frases necesarias para pedir comida y bebidas en francés.',
+    course: 'Francés para Viajeros',
   },
   {
-    title: 'Shopping and Bargaining',
+    title: 'Compras y negociación en francés',
     content:
-      'This lesson covers vocabulary for shopping and negotiating prices in French.',
-    course: 'French for Travellers',
+      'Aprende vocabulario clave para ir de compras y negociar precios durante tus viajes.',
+    course: 'Francés para Viajeros',
   },
 ];

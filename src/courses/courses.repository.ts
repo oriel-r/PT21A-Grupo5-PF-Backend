@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Course } from './entities/course.entity';
 import { Repository } from 'typeorm';
@@ -19,14 +19,22 @@ export class CoursesRepository {
   }
 
   async getAllCourses(): Promise<Course[]> {
-    return await this.coursesRepository.find({ relations: { lessons: true } });
+    return await this.coursesRepository.find({
+      relations: { lessons: true, users: true, language: true },
+    });
   }
 
   async findByTitle(title: string): Promise<Course | null> {
     return await this.coursesRepository.findOne({
       where: { title },
-      relations: { lessons: true },
+      relations: { lessons: true, users: true, language: true },
     });
+  }
+
+  async findById(id: string): Promise<Course> {
+    const result = await this.coursesRepository.findOne({where: {id}, relations: {users: true, lessons: true, language:true}})
+    if(!result) throw new NotFoundException('Curso no encontrado')
+    return result
   }
 
   async createCourse(data): Promise<Course[]> {
@@ -34,4 +42,6 @@ export class CoursesRepository {
       this.coursesRepository.create(data),
     );
   }
+
+
 }
