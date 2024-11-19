@@ -17,7 +17,6 @@ import { SignupUserDto } from 'src/auth/dto/signup-auth.dto';
 import { SubscriptionsService } from 'src/subscriptions/subscriptions.service';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { Auth0SignupDto } from 'src/auth/dto/auth0.dto';
-import { UpdateUserAuthDto } from 'src/auth/dto/auth0.update.dto';
 import { MembershipService } from 'src/membership/membership.service';
 import { Membership } from 'src/membership/entities/membership.entity';
 
@@ -161,21 +160,21 @@ export class UsersService {
     return updatedUser;
   }
 
-  async updateUserAuth0(id: string, updateUserAuthDto: UpdateUserAuthDto) {
-    const userToUpdate = await this.findOne(id);
-    if (!userToUpdate) {
-      throw new BadRequestException('Usuario inexistente.');
-    }
+  // async updateUserAuth0(id: string, updateUserAuthDto: UpdateUserAuthDto) {
+  //   const userToUpdate = await this.findOne(id);
+  //   if (!userToUpdate) {
+  //     throw new BadRequestException('Usuario inexistente.');
+  //   }
 
-    const updatedUser = {
-      ...userToUpdate,
-      ...updateUserAuthDto,
-    };
+  //   const updatedUser = {
+  //     ...userToUpdate,
+  //     ...updateUserAuthDto,
+  //   };
 
-    await this.usersRepository.save(updatedUser);
+  //   await this.usersRepository.save(updatedUser);
 
-    return updatedUser;
-  }
+  //   return updatedUser;
+  // }
 
   async remove(id: string) {
     return await this.usersRepo.deleteUser(id);
