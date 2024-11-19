@@ -4,5 +4,4 @@ export class UpdateUserAuthDto {
     name?: string;
     idNumber?: string;
     photo?: string;
-    isProfileComplete: boolean;
   }
