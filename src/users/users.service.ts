@@ -160,21 +160,21 @@ export class UsersService {
     return updatedUser;
   }
 
-  async updateUserAuth0(id: string, updateUserAuthDto: UpdateUserAuthDto) {
-    const userToUpdate = await this.findOne(id);
-    if (!userToUpdate) {
-      throw new BadRequestException('Usuario inexistente.');
-    }
+  // async updateUserAuth0(id: string, updateUserAuthDto: UpdateUserAuthDto) {
+  //   const userToUpdate = await this.findOne(id);
+  //   if (!userToUpdate) {
+  //     throw new BadRequestException('Usuario inexistente.');
+  //   }
 
-    const updatedUser = {
-      ...userToUpdate,
-      ...updateUserAuthDto,
-    };
+  //   const updatedUser = {
+  //     ...userToUpdate,
+  //     ...updateUserAuthDto,
+  //   };
 
-    await this.usersRepository.save(updatedUser);
+  //   await this.usersRepository.save(updatedUser);
 
-    return updatedUser;
-  }
+  //   return updatedUser;
+  // }
 
   async remove(id: string) {
     return await this.usersRepo.deleteUser(id);
