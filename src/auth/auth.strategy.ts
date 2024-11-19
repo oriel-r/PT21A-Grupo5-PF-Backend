@@ -22,6 +22,12 @@ export class AuthStrategy extends PassportStrategy(Strategy, 'auth0') {
 
     validate(accessToken: string, refreshToken: string, extraParams: any, profile: any, done: Function) {
         console.log("Perfil del usuario autenticado:", profile)
-        return done(null, profile);
+        const user = {
+            authId: profile.id, 
+            email: profile.emails[0].value, 
+            name: profile.name,    
+            photo: profile.picture
+          };
+        return done(null, user);
     }
 }

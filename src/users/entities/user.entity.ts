@@ -52,7 +52,9 @@ export class User {
     required: true,
     description: 'Personal identification number',
   })
-  @Column({ unique: true})
+  @Column({ 
+    unique: true, 
+    default: 'valor_predeterminado' })
   idNumber: string;
 
   @ApiProperty({
@@ -83,9 +85,6 @@ export class User {
     description:
       'It indicates weather the user should be included in the newsletter messaging or not.',
   })
-
-  @Column({ default: false }) // Campo adicional para verificar el estado del perfil de auth0
-  isProfileComplete: boolean;
 
   @Column({ default: true })
   newsletter: boolean;

@@ -12,7 +12,7 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly userRepo: UsersRepository,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   async signUp(signUpUser: SignupUserDto) {
     if (signUpUser.password !== signUpUser.repeatPassword) {
@@ -27,7 +27,7 @@ export class AuthService {
 
   async signIn(credentials: SignInAuthDto) {
     const user = await this.userRepo.getUserByEmail(credentials.email);
-    
+
 
     if (!user) {
       throw new HttpException('Usuario no encontrado', 404);
@@ -51,8 +51,6 @@ export class AuthService {
     };
 
     const token = this.jwtService.sign(userPayload);
-    console.log('This is the payload: ',userPayload);
-    
 
     return {
       token,

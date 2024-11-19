@@ -17,7 +17,7 @@ import { SignupUserDto } from 'src/auth/dto/signup-auth.dto';
 import { SubscriptionsService } from 'src/subscriptions/subscriptions.service';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { Auth0SignupDto } from 'src/auth/dto/auth0.dto';
-import { UpdateUserAuthDto } from 'src/auth/dto/auth0.update.dto';
+import { UpdateUserAuthDto } from './dto/update-userAuth0.dto';
 
 @Injectable()
 export class UsersService {
@@ -98,16 +98,17 @@ export class UsersService {
   }
 
   async createUserFromAuth0(auth0Dto: Auth0SignupDto) {
-    const { authId, email, name } = auth0Dto;
+    const { authId, email, name , photo } = auth0Dto;
     
     let user = await this.findEmail(email)
-    
+  
+
     if (!user) {
       user = this.usersRepository.create(
         { authId,
           email,
           name,
-          isProfileComplete: false,
+          photo,
         });
         
       await this.usersRepository.save(user);
