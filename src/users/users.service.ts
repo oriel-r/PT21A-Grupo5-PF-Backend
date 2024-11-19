@@ -17,7 +17,6 @@ import { SignupUserDto } from 'src/auth/dto/signup-auth.dto';
 import { SubscriptionsService } from 'src/subscriptions/subscriptions.service';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { Auth0SignupDto } from 'src/auth/dto/auth0.dto';
-import { UpdateUserAuthDto } from 'src/auth/dto/auth0.update.dto';
 import { MembershipService } from 'src/membership/membership.service';
 import { Membership } from 'src/membership/entities/membership.entity';
 
