@@ -76,7 +76,7 @@ export const languagesMock: DeepPartial<Language[]> = [
     path: 'chinese',
     name: 'Chino Mandarín',
     image_url:
-      'https://www.shutterstock.com/image-vector/hello-chinese-ni-hao-speech-260nw-1877186812.jpg',
+      'https://imagizer.imageshack.com/img923/3880/owsnOF.jpg',
     flag_url:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQequvUVjcEv1hl7r1Q3_XkwJ90XOOi76RvfQ&s',
     general_description:
