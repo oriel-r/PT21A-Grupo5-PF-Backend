@@ -35,6 +35,7 @@ export class CoursesController {
     return await this.coursesService.getPagination(page, limit);
   }
 
+
   @ApiOperation({
     summary: 'Create a new course',
   })
@@ -56,13 +57,15 @@ export class CoursesController {
     @UploadedFile() file: Express.Multer.File,
     @Body() data: CreateCourseDto,
   ) {
-    return this.coursesService.create(data, file);
+    return await this.coursesService.create(data, file);
   }
 
-  @Get()
-  findAll() {
-    return this.coursesService.findAll();
+  @Get('byDate')
+  async findAllByDate(page, limit) {
+    return await this.coursesService.findAll(page, limit);
   }
+
+
 
   @Get(':id')
   findOne(@Param('id') id: string) {
