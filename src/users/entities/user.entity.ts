@@ -98,6 +98,9 @@ export class User {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
+  @Column({default:true})
+  isActive:boolean
+
   @ManyToMany(() => Course, (courses) => courses.users)
   courses?: Course[];
 
