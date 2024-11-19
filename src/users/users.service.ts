@@ -110,18 +110,13 @@ export class UsersService {
   }
 
   async createUserFromAuth0(auth0Dto: Auth0SignupDto) {
-    const { authId, email, name , photo } = auth0Dto;
-    
-    let user = await this.findEmail(email)
-  
+    const { authId, email, name, photo } = auth0Dto;
+
+    let user = await this.findEmail(email);
+
     if (!user) {
-      user = this.usersRepository.create(
-        { authId,
-          email,
-          name,
-          photo,
-        });
-        
+      user = this.usersRepository.create({ authId, email, name, photo });
+
       await this.usersRepository.save(user);
     }
     return user;
