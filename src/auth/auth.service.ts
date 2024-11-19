@@ -63,6 +63,7 @@ export class AuthService {
     };
 
     const token = this.jwtService.sign(userPayload);
+    
     console.log('This is the payload: ', userPayload);
 
     return {
