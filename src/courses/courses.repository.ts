@@ -10,11 +10,28 @@ export class CoursesRepository {
     private readonly coursesRepository: Repository<Course>,
   ) {}
 
-  async getAllCourses(): Promise<Course[]> {
+  async getPagination(page, limit) {
     return await this.coursesRepository.find({
-      relations: { lessons: true, users: true, language: true },
+      skip: (page - 1) * limit,
+      take: limit,
+      relations: { lessons: true, users:true, language:true },
+      order: {title:'ASC'}
     });
   }
+
+  async getAllCourses(page, limit): Promise<Course[]> {
+    return await this.coursesRepository.find({
+      relations: { lessons: true, users: true, language: true },
+      order: { createdAt: 'ASC' },
+      skip: (page - 1) * limit,
+      take: limit
+    });
+  }
+
+  async findAll() {
+    return await this.coursesRepository.find({relations: { lessons: true, users: true, language: true },})
+  }
+  
 
   async findByTitle(title: string): Promise<Course | null> {
     return await this.coursesRepository.findOne({
@@ -24,9 +41,12 @@ export class CoursesRepository {
   }
 
   async findById(id: string): Promise<Course> {
-    const result = await this.coursesRepository.findOne({where: {id}, relations: {users: true, lessons: true, language:true}})
-    if(!result) throw new NotFoundException('Curso no encontrado')
-    return result
+    const result = await this.coursesRepository.findOne({
+      where: { id },
+      relations: { users: true, lessons: true, language: true },
+    });
+    if (!result) throw new NotFoundException('Curso no encontrado');
+    return result;
   }
 
   async createCourse(data): Promise<Course[]> {
@@ -34,6 +54,4 @@ export class CoursesRepository {
       this.coursesRepository.create(data),
     );
   }
-
-
 }

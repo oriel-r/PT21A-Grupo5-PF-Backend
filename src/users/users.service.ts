@@ -17,9 +17,9 @@ import { SignupUserDto } from 'src/auth/dto/signup-auth.dto';
 import { SubscriptionsService } from 'src/subscriptions/subscriptions.service';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { Auth0SignupDto } from 'src/auth/dto/auth0.dto';
-import { UpdateUserAuthDto } from 'src/auth/dto/auth0.update.dto';
 import { MembershipService } from 'src/membership/membership.service';
 import { Membership } from 'src/membership/entities/membership.entity';
+import { allowedNodeEnvironmentFlags } from 'process';
 
 @Injectable()
 export class UsersService {
@@ -111,17 +111,12 @@ export class UsersService {
   }
 
   async createUserFromAuth0(auth0Dto: Auth0SignupDto) {
-    const { authId, email, name } = auth0Dto;
+    const { authId, email, name, photo } = auth0Dto;
 
     let user = await this.findEmail(email);
 
     if (!user) {
-      user = this.usersRepository.create({
-        authId,
-        email,
-        name,
-        isProfileComplete: false,
-      });
+      user = this.usersRepository.create({ authId, email, name, photo });
 
       await this.usersRepository.save(user);
     }
@@ -161,24 +156,32 @@ export class UsersService {
     return updatedUser;
   }
 
-  async updateUserAuth0(id: string, updateUserAuthDto: UpdateUserAuthDto) {
-    const userToUpdate = await this.findOne(id);
-    if (!userToUpdate) {
-      throw new BadRequestException('Usuario inexistente.');
-    }
+  // async updateUserAuth0(id: string, updateUserAuthDto: UpdateUserAuthDto) {
+  //   const userToUpdate = await this.findOne(id);
+  //   if (!userToUpdate) {
+  //     throw new BadRequestException('Usuario inexistente.');
+  //   }
 
-    const updatedUser = {
-      ...userToUpdate,
-      ...updateUserAuthDto,
-    };
+  //   const updatedUser = {
+  //     ...userToUpdate,
+  //     ...updateUserAuthDto,
+  //   };
 
-    await this.usersRepository.save(updatedUser);
+  //   await this.usersRepository.save(updatedUser);
 
-    return updatedUser;
-  }
+  //   return updatedUser;
+  // }
 
   async remove(id: string) {
-    return await this.usersRepo.deleteUser(id);
+    const user = await this.usersRepository.findOneBy({ id });
+    if (!user) {
+      throw new BadRequestException('Usuario inexistente.');
+    }
+    user.isActive = false;
+    await this.usersRepository.save(user);
+    console.log(`El usuario ${user.email} ha sido eliminado con éxito.`);
+    
+    return {message: `Usuario ${user.email} eliminado con éxito`, user}
   }
 
   async findEmail(email: string) {
