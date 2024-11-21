@@ -1,10 +1,15 @@
 import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-auth0';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthStrategy extends PassportStrategy(Strategy, 'auth0') {
-  constructor() {
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService
+  ) {
     super({
       domain: process.env.AUTH0_DOMAIN.replace(/^https?:\/\//, ''),
       clientID: process.env.AUTH0_CLIENT_ID,
@@ -21,17 +26,30 @@ export class AuthStrategy extends PassportStrategy(Strategy, 'auth0') {
     });
   }
 
- validate(accessToken: string, refreshToken: string, extraParams: any, profile: any, done: Function) {
-        console.log("Perfil del usuario autenticado:", profile)
-        
-        const user = {
-            authId: profile.id, 
-            email: profile.emails[0].value, 
-            name: profile.name,    
-            photo: profile.picture,
-            accessToken
-          };
-        return done(null, user);
+  async validate(accessToken: string, refreshToken: string, extraParams: any, profile: any, done: Function) {
+    console.log("Perfil del usuario autenticado:", profile)
+    console.log(accessToken);
+
+    const user = {
+      authId: profile.id,
+      email: profile.emails[0].value,
+      name: profile.name,
+      photo: profile.picture
+    };
+
+    let userExisting = await this.usersService.findEmail(user.email);
+
+    if (!userExisting) {
+      userExisting = await this.usersService.createUserFromAuth0(user)
     }
+
+    const jwt = await this.jwtService.signAsync({
+      email: userExisting.email,
+      name: userExisting.name,
+      role: userExisting.role,
+    });
+    
+    return done(null, userExisting, {tokens: jwt});
+  }
 }
 

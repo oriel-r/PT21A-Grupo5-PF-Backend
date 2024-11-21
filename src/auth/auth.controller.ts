@@ -13,7 +13,6 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignupUserDto } from './dto/signup-auth.dto';
-import { UserResponseDto } from 'src/users/dto/response-user.dto';
 import { SignInAuthDto } from './dto/signin-auth.dto';
 import { UsersService } from 'src/users/users.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -49,7 +48,13 @@ export class AuthController {
 
   @Get('callback')
   @UseGuards(AuthGuard('auth0'))
-  async callback(@Req() req: Request, @Res() res) {}
+  async callback(@Req() req, @Res() res) {
+    const user = req.user;
+
+    const token = await this.authService.generateJwt(user);
+
+    res.json({token, user})
+  }
 
   @Get('logout')
   async logout(@Req() req, @Res() res): Promise<void> {
