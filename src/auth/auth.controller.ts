@@ -1,7 +1,6 @@
 import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Post, Redirect, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignupUserDto } from './dto/signup-auth.dto';
-import { UserResponseDto } from 'src/users/dto/response-user.dto';
 import { SignInAuthDto } from './dto/signin-auth.dto';
 import { UsersService } from 'src/users/users.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -36,12 +35,11 @@ export class AuthController {
   @Get('callback')
   @UseGuards(AuthGuard('auth0'))
   async callback(@Req() req, @Res() res) {
-    const userData = req.user;
+    const user = req.user;
 
-     console.log({ message: 'Login exitoso', userData });
-     const loginURL = `${process.env.AUTH0_BASE_URL}`;
-     res.redirect(loginURL)
+    const token = await this.authService.generateJwt(user);
 
+    res.json({token, user})
   }
 
   @Get('logout')
