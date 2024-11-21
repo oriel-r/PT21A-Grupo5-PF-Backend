@@ -20,6 +20,7 @@ import { Auth0SignupDto } from 'src/auth/dto/auth0.dto';
 import { MembershipService } from 'src/membership/membership.service';
 import { Membership } from 'src/membership/entities/membership.entity';
 import { allowedNodeEnvironmentFlags } from 'process';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class UsersService {
@@ -111,16 +112,7 @@ export class UsersService {
   }
 
   async createUserFromAuth0(auth0Dto: Auth0SignupDto) {
-    const { authId, email, name, photo } = auth0Dto;
-
-    let user = await this.findEmail(email);
-
-    if (!user) {
-      user = this.usersRepository.create({ authId, email, name, photo });
-
-      await this.usersRepository.save(user);
-    }
-    return user;
+    
   }
 
   async findAll() {
@@ -180,8 +172,8 @@ export class UsersService {
     user.isActive = false;
     await this.usersRepository.save(user);
     console.log(`El usuario ${user.email} ha sido eliminado con éxito.`);
-    
-    return {message: `Usuario ${user.email} eliminado con éxito`, user}
+
+    return { message: `Usuario ${user.email} eliminado con éxito`, user };
   }
 
   async findEmail(email: string) {
