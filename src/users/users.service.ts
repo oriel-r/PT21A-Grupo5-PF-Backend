@@ -39,7 +39,7 @@ export class UsersService {
 
     return await this.usersRepository.find({
       where: { role: role },
-      relations: { courses: true, subscription: true },
+      relations: { courses: true, subscription: true , membership: true},
       select: [
         'id',
         'idNumber',
@@ -49,6 +49,9 @@ export class UsersService {
         'name',
         'role',
         'subscription',
+        'membership',
+        'isActive',
+        'photo',
       ],
       skip: offset,
       take: limit,
