@@ -7,6 +7,7 @@ import { User } from 'src/users/entities/user.entity';
 import { AuthStrategy } from './auth.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { EmailerModule } from 'src/emailer/emailer.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -14,6 +15,10 @@ import { EmailerModule } from 'src/emailer/emailer.module';
     TypeOrmModule.forFeature([User]),
     PassportModule.register({ session: true }),
     EmailerModule,
+    JwtModule.register({
+        secret: process.env.JWT_SECRET,
+        signOptions: { expiresIn: '1h' },
+    }),
   ],
   controllers: [AuthController],
   providers: [AuthService, AuthStrategy],

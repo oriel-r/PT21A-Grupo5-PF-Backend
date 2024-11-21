@@ -20,6 +20,7 @@ import { Auth0SignupDto } from 'src/auth/dto/auth0.dto';
 import { MembershipService } from 'src/membership/membership.service';
 import { Membership } from 'src/membership/entities/membership.entity';
 import { allowedNodeEnvironmentFlags } from 'process';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class UsersService {
@@ -111,16 +112,22 @@ export class UsersService {
   }
 
   async createUserFromAuth0(auth0Dto: Auth0SignupDto) {
-    const { authId, email, name, photo } = auth0Dto;
+    const { email, name, photo } = auth0Dto;
 
-    let user = await this.findEmail(email);
-
-    if (!user) {
-      user = this.usersRepository.create({ authId, email, name, photo });
-
+      const user = new User();         
+        user.email = email, 
+        user.name = name, 
+        user.photo =  photo ||
+        'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg',
+        user.password = uuid(),
+        user.idNumber = uuid(),
       await this.usersRepository.save(user);
-    }
-    return user;
+      const membership: Membership =
+      await this.membershipService.createMembership(user);
+      user.membership = membership;
+      await this.usersRepository.save(user);
+      
+      return user;
   }
 
   async findAll() {
