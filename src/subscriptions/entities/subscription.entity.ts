@@ -21,6 +21,5 @@ export class Subscription {
   @OneToMany(() => Membership, (membership) => membership.subscription)
   memberships: Membership[];
 
-  @OneToMany(() => User, (user) => user.subscription)
-  users: User[]
+
 }

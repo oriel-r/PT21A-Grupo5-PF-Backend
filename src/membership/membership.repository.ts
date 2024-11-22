@@ -34,5 +34,9 @@ export class MembershipRepostory {
         return await this.membershipRepository.update(id, data)
     }
 
+    async save(membership:Membership):Promise<void> {
+        await this.membershipRepository.save(membership)
+    }
+
     
 }
