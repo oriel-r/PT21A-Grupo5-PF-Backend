@@ -39,7 +39,7 @@ export class UsersService {
 
     return await this.usersRepository.find({
       where: { role: role },
-      relations: { courses: true, subscription: true, membership: true },
+      relations: { courses: true, membership: true },
       select: [
         'id',
         'idNumber',
@@ -48,7 +48,6 @@ export class UsersService {
         'createdAt',
         'name',
         'role',
-        'subscription',
         'membership',
         'isActive',
         'photo',
@@ -99,7 +98,6 @@ export class UsersService {
     user.name = name;
     user.email = email;
     user.password = password;
-    user.subscription = subscription;
     user.idNumber = idNumber;
     user.photo =
       photo ||
@@ -177,7 +175,7 @@ export class UsersService {
     if (!subscriptionToChange) {
       throw new BadRequestException('Subscripción inexistente.');
     }
-    userToUpdate.subscription = subscriptionToChange;
+    userToUpdate.membership.subscription = subscriptionToChange;
     await this.usersRepository.save(userToUpdate);
     return userToUpdate
   }
@@ -197,7 +195,7 @@ export class UsersService {
   async findEmail(email: string) {
     return await this.usersRepository.findOne({
       where: { email },
-      relations: { subscription: true, membership: { subscription: true } },
+      relations: { membership: { subscription: true } },
     });
   }
 
