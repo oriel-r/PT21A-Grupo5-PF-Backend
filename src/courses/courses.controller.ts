@@ -17,6 +17,7 @@ import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { ApiBody, ApiConsumes, ApiOperation } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express/multer/interceptors/file.interceptor';
+import { RateCourseDto } from './dto/rate-course.dto';
 
 @Controller('courses')
 export class CoursesController {
@@ -74,9 +75,9 @@ export class CoursesController {
   @Post(':id/rate')
   async rateCourse(
     @Param('id') courseId: string,
-    @Body('userId') userId: string, 
-    @Body('stars') stars: number,
+    @Body() rateCourseDto: RateCourseDto,
   ) {
+    const { userId, stars } = rateCourseDto;
     return this.coursesService.rateCourse(courseId,userId, stars);
   }
 
