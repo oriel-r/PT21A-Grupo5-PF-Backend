@@ -56,7 +56,11 @@ export class AuthController {
 
     const token = await this.authService.generateJwt(user);
 
-    res.json({token, user})
+    const redirectUrl = `https://rompiendo-barreras-pf.vercel.app/?token=${encodeURIComponent(
+      token,
+    )}&user=${encodeURIComponent(JSON.stringify(user))}`;
+  
+    return res.redirect(redirectUrl);
   }
 
   @ApiOperation({summary: 'Log out the user and redirect to Auth0 logout URL'})
