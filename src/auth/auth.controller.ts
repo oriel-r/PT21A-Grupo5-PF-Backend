@@ -2,7 +2,6 @@ import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Post, Redir
 import { AuthService } from './auth.service';
 import { SignupUserDto } from './dto/signup-auth.dto';
 import { SignInAuthDto } from './dto/signin-auth.dto';
-import { UsersService } from 'src/users/users.service';
 import { AuthGuard } from '@nestjs/passport';
 import { UserResponseAuthDto } from './dto/user-response-auth.dto';
 
@@ -10,7 +9,6 @@ import { UserResponseAuthDto } from './dto/user-response-auth.dto';
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly usersService: UsersService
   ) { }
 
   @Post('signup')

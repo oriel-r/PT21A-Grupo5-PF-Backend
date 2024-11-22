@@ -11,7 +11,6 @@ import {
   JoinColumn,
   ManyToMany,
   ManyToOne,
-  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -54,9 +53,7 @@ export class User {
     required: true,
     description: 'Personal identification number',
   })
-@Column({ 
-    unique: true, 
-    default: 'valor_predeterminado' })
+@Column({unique: true})
   idNumber: string;
 
   @ApiProperty({
@@ -114,5 +111,4 @@ export class User {
     nullable: true,
   })
   subscription: Subscription;
-
 }
