@@ -39,7 +39,7 @@ export class UsersService {
 
     return await this.usersRepository.find({
       where: { role: role },
-      relations: { courses: true, subscription: true , membership: true},
+      relations: { courses: true, subscription: true, membership: true },
       select: [
         'id',
         'idNumber',
@@ -117,20 +117,21 @@ export class UsersService {
   async createUserFromAuth0(auth0Dto: Auth0SignupDto) {
     const { email, name, photo } = auth0Dto;
 
-      const user = new User();         
-        user.email = email, 
-        user.name = name, 
-        user.photo =  photo ||
-        'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg',
-        user.password = uuid(),
-        user.idNumber = uuid(),
+    const user = new User();
+    (user.email = email),
+      (user.name = name),
+      (user.photo =
+        photo ||
+        'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg'),
+      (user.password = uuid()),
+      (user.idNumber = uuid()),
       await this.usersRepository.save(user);
-      const membership: Membership =
+    const membership: Membership =
       await this.membershipService.createMembership(user);
-      user.membership = membership;
-      await this.usersRepository.save(user);
-      
-      return user;
+    user.membership = membership;
+    await this.usersRepository.save(user);
+
+    return user;
   }
 
   async findAll() {
@@ -166,6 +167,21 @@ export class UsersService {
     return updatedUser;
   }
 
+  async changeSubscription(userId: string, subscriptionId: string) {
+    const userToUpdate = await this.findOne(userId);
+    if (!userToUpdate) {
+      throw new BadRequestException('Usuario inexistente.');
+    }
+    const subscriptionToChange =
+      await this.subscriptionService.findOne(subscriptionId);
+    if (!subscriptionToChange) {
+      throw new BadRequestException('Subscripción inexistente.');
+    }
+    userToUpdate.subscription = subscriptionToChange;
+    await this.usersRepository.save(userToUpdate);
+    return userToUpdate
+  }
+
   async remove(id: string) {
     const user = await this.usersRepository.findOneBy({ id });
     if (!user) {
@@ -174,8 +190,8 @@ export class UsersService {
     user.isActive = false;
     await this.usersRepository.save(user);
     console.log(`El usuario ${user.email} ha sido eliminado con éxito.`);
-    
-    return {message: `Usuario ${user.email} eliminado con éxito`, user}
+
+    return { message: `Usuario ${user.email} eliminado con éxito`, user };
   }
 
   async findEmail(email: string) {
