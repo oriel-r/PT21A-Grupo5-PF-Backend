@@ -17,7 +17,7 @@ export const subscriptionsMock = [
       'Acceso completo a materiales del curso',
       'Obtén tu certificado',
     ],
-    price: 9.99,
+    price: 16183.8,
   },
   {
     name: 'Pro',
@@ -29,6 +29,6 @@ export const subscriptionsMock = [
       'Acceso completo a materiales del curso',
       'Obtén tu certificado',
     ],
-    price: 12.99,
+    price: 21043.8,
   },
 ];
