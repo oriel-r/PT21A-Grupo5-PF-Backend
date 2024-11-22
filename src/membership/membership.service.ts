@@ -69,4 +69,8 @@ export class MembershipService {
     if (!result) throw new NotFoundException('No se encontraron membresias');
     return result;
   }
+
+  async saveMembership(membership:Membership):Promise<void> {
+    await this.membershipsRepository.save(membership)
+  }
 }

@@ -54,7 +54,7 @@ export class UsersSeed {
 
           // Assign subscription and membership for regular users
           if (user.role === 'user') {
-            user.subscription = standardSubscription;
+            
 
             user.membership = await this.membershipsRepository.save(
               this.membershipsRepository.create({

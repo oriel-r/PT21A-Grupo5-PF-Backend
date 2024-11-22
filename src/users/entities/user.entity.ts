@@ -128,10 +128,6 @@ export class User {
     description: 'Subscription associated with the user.',
     required: false,
   })
-  @ManyToOne(() => Subscription, (membership) => membership.users, {
-    nullable: true,
-  })
-  subscription: Subscription;
 
   @ApiProperty({
     type: () => [ReferralCode],

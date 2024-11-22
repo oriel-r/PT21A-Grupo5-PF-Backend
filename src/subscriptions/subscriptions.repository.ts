@@ -18,7 +18,7 @@ export class SubscriptionsRepository {
   ) {}
 
   async findAll() {
-    return await this.subscriptionsRepository.find();
+    return await this.subscriptionsRepository.find({relations:{memberships:true}});
   }
 
   async create(createSubscriptionDto: CreateSubscriptionDto) {
@@ -28,7 +28,7 @@ export class SubscriptionsRepository {
   }
 
   async findOne(id: string) {
-    const subscription = await this.subscriptionsRepository.findOneBy({ id });
+    const subscription = await this.subscriptionsRepository.findOne({ where:{id}, relations:{memberships:true} });
     if (!subscription) {
       throw new BadRequestException('Susbscription not found');
     }

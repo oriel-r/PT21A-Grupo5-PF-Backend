@@ -18,7 +18,7 @@ export class SubscriptionsGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    // Retrieve the required subscriptions names from metadata
+    //Retrieve the required subscriptions names from metadata
     const requiredSubscriptions = this.reflector.getAllAndOverride<
       SubscriptionTypes[]
     >('subscriptions', [context.getHandler(), context.getClass()]);
@@ -28,11 +28,11 @@ export class SubscriptionsGuard implements CanActivate {
     const user: User = (request as any).user;
 
     // Ensure the user exists and their subscription is valid
-    if (!user || !user.subscription || !user.subscription.name) {
+    if (!user || !user.membership.subscription || !user.membership.subscription.name) {
       throw new UnauthorizedException('Usuario o suscripción no válidos.');
     }
 
-    const userSubscription = user.subscription.name;
+    const userSubscription = user.membership.subscription.name;
 
     const hasValidSubscription = requiredSubscriptions.some(
       (sub) => sub === userSubscription,
