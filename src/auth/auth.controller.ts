@@ -56,7 +56,7 @@ export class AuthController {
 
     const token = await this.authService.generateJwt(user);
 
-    res.json({user})
+    res.json({token, user})
   }
 
   @ApiOperation({summary: 'Log out the user and redirect to Auth0 logout URL'})
