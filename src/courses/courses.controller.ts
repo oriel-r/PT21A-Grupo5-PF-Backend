@@ -67,6 +67,15 @@ export class CoursesController {
     return await this.coursesService.findAll(page, limit);
   }
 
+  @Post(':id/rate')
+  async rateCourse(
+    @Param('id') courseId: string,
+    @Body('userId') userId: string, 
+    @Body('stars') stars: number,
+  ) {
+    return this.coursesService.rateCourse(courseId,userId, stars);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.coursesService.findById(id);

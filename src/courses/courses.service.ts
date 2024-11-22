@@ -11,7 +11,9 @@ import { retry } from 'rxjs';
 
 @Injectable()
 export class CoursesService {
-  constructor(private readonly coursesRepository: CoursesRepository) {}
+  constructor(
+    private readonly coursesRepository: CoursesRepository,
+  ) {}
 
   async getPagination(page, limit) {
     page = Number(page) ? Number(page) : 1;
@@ -20,6 +22,31 @@ export class CoursesService {
     if (!courses) throw new NotFoundException('Courses not found');
     return courses;
   }
+
+  async rateCourse(courseId: string, userId: string, stars: number) {
+    if (stars < 1 || stars > 5) {
+      throw new BadRequestException('Las estrellas deben estar entre 1 y 5');
+    }
+  
+    const course = await this.coursesRepository.findByIdWithRatings(courseId);
+    if (!course) {
+      throw new NotFoundException('Curso no encontrado');
+    }
+  
+    const userAlreadyRated = course.ratedByUsers.some((user) => user.id === userId);
+    if (userAlreadyRated) {
+      throw new BadRequestException('El usuario ya ha calificado este curso');
+    }
+  
+    const updatedCourse = await this.coursesRepository.updateCourseRating(
+      course,
+      stars,
+      userId,
+    );
+  
+    return updatedCourse;
+  }
+  
 
   async create(data: CreateCourseDto, file) {
     const existCourse = await this.coursesRepository.findByTitle(data.title);

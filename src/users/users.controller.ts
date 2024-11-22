@@ -11,6 +11,7 @@ import {
   Put,
   HttpCode,
   HttpStatus,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -19,6 +20,7 @@ import { UserResponseDto } from './dto/response-user.dto';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { Role } from 'src/enums/roles.enum';
+import { ChangeSubscriptionDto } from './dto/change-subscription.dto';
 
 @ApiBearerAuth()
 @Controller('users')
@@ -34,7 +36,7 @@ export class UsersController {
   findWithPagination(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 1,
-    @Query('role') role: Role
+    @Query('role') role: Role,
   ) {
     return this.usersService.pagination(page, limit, role);
   }
@@ -71,6 +73,15 @@ export class UsersController {
       newPassword,
       repeatPassword,
     });
+  }
+
+  @Put('user-subscription/:id')
+  async changeSubscription(
+    @Param('id') userId: string,
+    @Body() changeSubscriptionDto:ChangeSubscriptionDto
+  ) {
+    const {subscriptionId} = changeSubscriptionDto
+    return await this.usersService.changeSubscription(userId, subscriptionId);
   }
 
   @Delete(':id')
