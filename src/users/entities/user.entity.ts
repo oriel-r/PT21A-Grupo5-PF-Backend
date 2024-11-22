@@ -12,7 +12,6 @@ import {
   JoinColumn,
   ManyToMany,
   ManyToOne,
-  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';

@@ -80,4 +80,16 @@ export class AuthService {
       },
     };
   }
+
+  generateJwt(user: any) {
+    const payload = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+      photo: user.photo,
+      subscription: user.subscription,
+      memebership: user.membership
+    };
+    return this.jwtService.sign(payload);
+  }
 }

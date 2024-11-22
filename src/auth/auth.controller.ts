@@ -14,7 +14,6 @@ import {
 import { AuthService } from './auth.service';
 import { SignupUserDto } from './dto/signup-auth.dto';
 import { SignInAuthDto } from './dto/signin-auth.dto';
-import { UsersService } from 'src/users/users.service';
 import { AuthGuard } from '@nestjs/passport';
 import { UserResponseAuthDto } from './dto/user-response-auth.dto';
 import * as jwt from 'jsonwebtoken';
@@ -24,8 +23,7 @@ import { Request } from 'express';
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly usersService: UsersService,
-  ) {}
+  ) { }
 
   @Post('signup')
   @HttpCode(201)
@@ -51,7 +49,7 @@ export class AuthController {
   async callback(@Req() req, @Res() res) {
     const user = req.user;
 
-    // const token = await this.authService.generateJwt(user);
+    const token = await this.authService.generateJwt(user);
 
     res.json({user})
   }
