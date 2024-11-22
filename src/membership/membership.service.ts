@@ -1,7 +1,9 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   ServiceUnavailableException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { MembershipRepostory } from './membership.repository';
 import { SubscriptionsService } from 'src/subscriptions/subscriptions.service';
@@ -12,6 +14,8 @@ import { Subscription } from 'src/subscriptions/entities/subscription.entity';
 import { Membership } from './entities/membership.entity';
 import { UpdateMembershipDto } from './dto/update-membership.dto';
 import { MercadopagoService } from 'src/services/mercadopago/mercadopago.service';
+import { PreApprovalRequest, PreApprovalResponse } from 'mercadopago/dist/clients/preApproval/commonTypes';
+import { MyPreApproval } from './dto/create-memebership.dto';
 
 @Injectable()
 export class MembershipService {
@@ -44,8 +48,9 @@ export class MembershipService {
       throw new NotFoundException(
         'No se encontraron subscripciones asignables',
       );
-    const mpresponse = await this.externalPayment.createSubscription(updateData.data)
-    console.log({memService: mpresponse})
+    if(membership.subscription.id === newSubs.id) throw new BadRequestException('El plan seleccionado coincide con tu plan actual')
+    const mpResponse: PreApprovalResponse = await this.externalPayment.createSubscription(new MyPreApproval(membership, newSubs))
+    console.log({memService: mpResponse})
     const firstPayment = await this.paymentsServicec.addPayment({
       membership: membership,
     });
@@ -53,9 +58,10 @@ export class MembershipService {
       throw new ServiceUnavailableException(
         'Hubo un error al procesar el pago',
       );
-    return await this.membershipsRepository.updateMembership(membership.id, {
+    await this.membershipsRepository.updateMembership(membership.id, {
       subscription: newSubs,
     });
+    if(mpResponse && mpResponse.init_point) return {link: mpResponse.init_point}
   }
 
   async getMemberships() {

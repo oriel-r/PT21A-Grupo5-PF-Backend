@@ -20,7 +20,7 @@ export const usersMock = [
   },
   {
     name: 'Juan Perez',
-    email: 'juan.perez@example.com',
+    email: 'test_user_313795967@testuser.com',
     idNumber: '87654728',
     password: 'Password123!',
     role: user,
