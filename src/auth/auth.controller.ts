@@ -1,17 +1,31 @@
-import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Post, Redirect, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpException,
+  HttpStatus,
+  Post,
+  Redirect,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignupUserDto } from './dto/signup-auth.dto';
 import { SignInAuthDto } from './dto/signin-auth.dto';
 import { UsersService } from 'src/users/users.service';
 import { AuthGuard } from '@nestjs/passport';
 import { UserResponseAuthDto } from './dto/user-response-auth.dto';
+import * as jwt from 'jsonwebtoken';
+import { Request } from 'express';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly usersService: UsersService
-  ) { }
+    private readonly usersService: UsersService,
+  ) {}
 
   @Post('signup')
   @HttpCode(201)
@@ -37,20 +51,24 @@ export class AuthController {
   async callback(@Req() req, @Res() res) {
     const user = req.user;
 
-    const token = await this.authService.generateJwt(user);
+    // const token = await this.authService.generateJwt(user);
 
-    res.json({token, user})
+    res.json({user})
   }
 
   @Get('logout')
   async logout(@Req() req, @Res() res): Promise<void> {
-    
     try {
       await new Promise<void>((resolve, reject) => {
         req.logout((err) => {
           if (err) {
             console.error('Error al cerrar sesión local:', err);
-            return reject(new HttpException('Error al cerrar sesión local', HttpStatus.INTERNAL_SERVER_ERROR));
+            return reject(
+              new HttpException(
+                'Error al cerrar sesión local',
+                HttpStatus.INTERNAL_SERVER_ERROR,
+              ),
+            );
           }
           resolve();
         });
@@ -58,12 +76,12 @@ export class AuthController {
 
       const logoutURL = `${process.env.AUTH0_DOMAIN}/v2/logout?returnTo=${encodeURIComponent(process.env.AUTH0_BASE_URL)}&client_id=${process.env.AUTH0_CLIENT_ID}`;
 
-
       res.redirect(logoutURL);
-
     } catch (error) {
       console.error('Error al cerrar sesión', error);
-      res.status(error.status || 500).json({ messaje: error.message || 'Error desconocido al cerrar sesión' })
+      res.status(error.status || 500).json({
+        messaje: error.message || 'Error desconocido al cerrar sesión',
+      });
     }
   }
 }

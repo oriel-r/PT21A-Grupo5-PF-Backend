@@ -117,20 +117,21 @@ export class UsersService {
   async createUserFromAuth0(auth0Dto: Auth0SignupDto) {
     const { email, name, photo } = auth0Dto;
 
-      const user = new User();         
-        user.email = email, 
-        user.name = name, 
-        user.photo =  photo ||
-        'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg',
-        user.password = uuid(),
-        user.idNumber = uuid(),
+    const user = new User();
+    (user.email = email),
+      (user.name = name),
+      (user.photo =
+        photo ||
+        'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg'),
+      (user.password = uuid()),
+      (user.idNumber = uuid()),
       await this.usersRepository.save(user);
-      const membership: Membership =
+    const membership: Membership =
       await this.membershipService.createMembership(user);
-      user.membership = membership;
-      await this.usersRepository.save(user);
-      
-      return user;
+    user.membership = membership;
+    await this.usersRepository.save(user);
+
+    return user;
   }
 
   async findAll() {
@@ -190,8 +191,8 @@ export class UsersService {
     user.isActive = false;
     await this.usersRepository.save(user);
     console.log(`El usuario ${user.email} ha sido eliminado con éxito.`);
-    
-    return {message: `Usuario ${user.email} eliminado con éxito`, user}
+
+    return { message: `Usuario ${user.email} eliminado con éxito`, user };
   }
 
   async findEmail(email: string) {
