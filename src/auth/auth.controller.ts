@@ -4,6 +4,7 @@ import { SignupUserDto } from './dto/signup-auth.dto';
 import { SignInAuthDto } from './dto/signin-auth.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { UserResponseAuthDto } from './dto/user-response-auth.dto';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
@@ -11,6 +12,7 @@ export class AuthController {
     private readonly authService: AuthService,
   ) { }
 
+  @ApiOperation({ summary: 'Register a new user' })
   @Post('signup')
   @HttpCode(201)
   async signUp(@Body() signUpUser: SignupUserDto) {
@@ -18,18 +20,21 @@ export class AuthController {
     return new UserResponseAuthDto(newUser);
   }
 
+  @ApiOperation({ summary: 'Authenticate user and generate token' })
   @Post('signin')
   @HttpCode(200)
   async signIn(@Body() credentials: SignInAuthDto) {
     return await this.authService.signIn(credentials);
   }
 
+  @ApiOperation({ summary: 'Authenticate user and generate token' })
   @Get('login')
   @UseGuards(AuthGuard('auth0'))
   login() {
     return { message: 'Login exitoso' };
   }
 
+  @ApiOperation({summary: 'Handle Auth0 callback and issue JWT'})
   @Get('callback')
   @UseGuards(AuthGuard('auth0'))
   async callback(@Req() req, @Res() res) {
@@ -40,6 +45,7 @@ export class AuthController {
     res.json({token, user})
   }
 
+  @ApiOperation({summary: 'Log out the user and redirect to Auth0 logout URL'})
   @Get('logout')
   async logout(@Req() req, @Res() res): Promise<void> {
     
