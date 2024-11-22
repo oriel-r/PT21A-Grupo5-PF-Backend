@@ -82,6 +82,25 @@ export class Course {
   @Column()
   brief_description: string;
 
+  @ApiProperty({
+    description: 'Total stars accumulated from all ratings',
+  })
+  @Column({ default: 0 })
+  totalStars: number;
+
+  @ApiProperty({
+    description: 'Total number of ratings received',
+  })
+  @Column({ default: 0 })
+  totalRatings: number;
+
+  @ApiProperty({
+    description: 'Average rating calculated from total stars and total ratings',
+    example: 4.0,
+  })
+  @Column({ type: 'float', default: 0 })
+  averageRating: number;
+
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
@@ -102,6 +121,13 @@ export class Course {
   @ManyToOne(() => Language, (language) => language.courses)
   @JoinColumn()
   language: Language;
+
+  @ApiProperty({
+    description: "List of users who have already rated the course"
+  })
+  @ManyToMany(() => User, { nullable: true })
+  @JoinTable()
+  ratedByUsers: User[]; 
 
   @ManyToMany(() => User, (user) => user.courses, { nullable: true })
   @JoinTable()
