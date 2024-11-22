@@ -13,8 +13,11 @@ export class SubscriptionsSeeds {
 
   async seed() {
     try {
+
+      const subscriptionNames = subscriptionsMock.map((sub) => sub.name)
+
       const existingSubscription = await this.subscriptionsRepository.find({
-        where: { name: In(subscriptionsMock) },
+        where: { name: In(subscriptionNames) },
       });
 
       for (const subscriptionData of subscriptionsMock) {

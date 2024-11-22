@@ -39,7 +39,7 @@ export class UsersService {
 
     return await this.usersRepository.find({
       where: { role: role },
-      relations: { courses: true, membership: true },
+      relations: { courses: true, membership: { subscription: true } },
       select: [
         'id',
         'idNumber',
@@ -175,9 +175,12 @@ export class UsersService {
     if (!subscriptionToChange) {
       throw new BadRequestException('Subscripción inexistente.');
     }
-    userToUpdate.membership.subscription = subscriptionToChange;
-    await this.usersRepository.save(userToUpdate);
-    return userToUpdate
+    const membership = userToUpdate.membership
+    membership.subscription = subscriptionToChange
+    await this.membershipService.saveMembership(membership)
+
+   
+    return userToUpdate;
   }
 
   async remove(id: string) {
