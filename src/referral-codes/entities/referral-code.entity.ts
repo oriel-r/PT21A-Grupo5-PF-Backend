@@ -39,14 +39,14 @@ export class ReferralCode {
     description: 'Date the referral code was issued.',
   })
   @Column()
-  issuedAt: Date;
+  issuedAt: Date
 
   @ApiProperty({
     type: Date,
     description: 'Expiration date for the referral code.',
   })
   @Column()
-  expirationDate: Date;
+  expirationDate: Date
 
   @ApiProperty({
     type: Date,

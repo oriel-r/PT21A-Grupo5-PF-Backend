@@ -32,8 +32,8 @@ export class User {
     description: 'Unique authentication identifier for the user.',
   })
   @IsString()
-  @Column()
-  authId: string;
+  @Column({nullable:true})
+  authId?: string;
 
   @ApiProperty({
     type: String,
@@ -76,7 +76,7 @@ export class User {
     default:
       'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg',
   })
-  @Column()
+  @Column({default: 'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg',})
   photo: string;
 
   @ApiProperty({

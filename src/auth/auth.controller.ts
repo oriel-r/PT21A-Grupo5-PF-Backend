@@ -51,9 +51,9 @@ export class AuthController {
   async callback(@Req() req, @Res() res) {
     const user = req.user;
 
-    const token = await this.authService.generateJwt(user);
+    // const token = await this.authService.generateJwt(user);
 
-    res.json({token, user})
+    res.json({user})
   }
 
   @Get('logout')

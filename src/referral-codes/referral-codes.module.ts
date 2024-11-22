@@ -4,9 +4,10 @@ import { ReferralCodesController } from './referral-codes.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ReferralCode } from './entities/referral-code.entity';
 import { ReferralCodesRepository } from './referral-codes.repository';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ReferralCode])],
+  imports: [TypeOrmModule.forFeature([ReferralCode]), UsersModule],
   controllers: [ReferralCodesController],
   providers: [ReferralCodesService, ReferralCodesRepository],
   exports: [ReferralCodesService],

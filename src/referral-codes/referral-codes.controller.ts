@@ -8,8 +8,9 @@ export class ReferralCodesController {
   constructor(private readonly referralCodesService: ReferralCodesService) {}
 
   @Post()
-  create(@Body() createReferralCodeDto: CreateReferralCodeDto) {
-    return this.referralCodesService.create(createReferralCodeDto);
+  async create(@Body() createReferralCodeDto: CreateReferralCodeDto) {
+    const { quantity, issuer, discount, expiration } = createReferralCodeDto;
+    return await this.referralCodesService.create({ quantity, issuer, discount, expiration });
   }
 
   @Get()
