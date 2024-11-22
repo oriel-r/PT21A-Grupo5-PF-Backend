@@ -1,52 +1,58 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
+import { IsEmail, IsOptional, IsString, IsBoolean, IsEnum, Matches, IsNotEmpty } from 'class-validator';
+import { Role } from 'src/enums/roles.enum';
 
 export class CreateUserDto {
-  @ApiProperty({
-    type: String,
-    required: true,
-    example: 'John Doe',
-    description: 'The name of the user',
-  })
+  @ApiProperty({ description: 'Name of the user.' })
   @IsString()
-  @IsNotEmpty()
   name: string;
-  @ApiProperty({
-    type: String,
-    required: true,
-    example: 'john@example.com',
-    description: 'The email of the user',
-  })
+
+  @ApiProperty({ description: 'The email of the user.' })
   @IsEmail()
-  @IsNotEmpty()
-  @IsString()
   email: string;
+
+  @ApiProperty({ description: 'Personal identification number.' })
+  @IsString()
+  idNumber: string;
+
   @ApiProperty({
     type: String,
     required: true,
     description: 'The password of the user',
     example: 'Password123!',
   })
-  @IsString()
-  password: string;
-
-  @ApiProperty({
-    type: String,
-    required: true,
-    description: 'Personal identification number',
-    example: '12345678',
-  })
+  @Matches(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[=!@#$%^&*])[A-Za-z\d=!@#$%^&*]{8,15}$/,
+    {
+      message:
+        'La contraseña debe contener al menos una minúscula, una mayúscula, un número, un caracter especial (= !@#$%^&*) y tener entre 8 y 15 caracteres',
+    },
+  )
   @IsString()
   @IsNotEmpty()
-  idNumber: string;
+  password: string;
+
+  @ApiProperty({ enum: Role, description: 'Enum indicating the user role.' })
+  @IsEnum(Role)
+  @IsOptional()
+  role?: Role;
 
   @ApiProperty({
-    required: false,
+    description: 'URL for the user profile image.',
     default:
       'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg',
-    description: 'User profile image',
   })
   @IsString()
   @IsOptional()
   photo?: string;
+
+  @ApiProperty({ description: 'Indicates newsletter subscription.' })
+  @IsBoolean()
+  @IsOptional()
+  newsletter?: boolean;
+
+  @ApiProperty({ description: 'Indicates whether the user account is active.' })
+  @IsBoolean()
+  @IsOptional()
+  isActive?: boolean;
 }

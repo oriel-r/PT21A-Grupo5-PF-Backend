@@ -39,7 +39,7 @@ export class UsersService {
 
     return await this.usersRepository.find({
       where: { role: role },
-      relations: { courses: true, subscription: true , membership: true},
+      relations: { courses: true, subscription: true, membership: true },
       select: [
         'id',
         'idNumber',
@@ -165,6 +165,21 @@ export class UsersService {
     await this.usersRepository.save(updatedUser);
 
     return updatedUser;
+  }
+
+  async changeSubscription(userId: string, subscriptionId: string) {
+    const userToUpdate = await this.findOne(userId);
+    if (!userToUpdate) {
+      throw new BadRequestException('Usuario inexistente.');
+    }
+    const subscriptionToChange =
+      await this.subscriptionService.findOne(subscriptionId);
+    if (!subscriptionToChange) {
+      throw new BadRequestException('Subscripción inexistente.');
+    }
+    userToUpdate.subscription = subscriptionToChange;
+    await this.usersRepository.save(userToUpdate);
+    return userToUpdate
   }
 
   // async updateUserAuth0(id: string, updateUserAuthDto: UpdateUserAuthDto) {
