@@ -67,6 +67,10 @@ export class CoursesController {
     return await this.coursesService.findAll(page, limit);
   }
 
+  @ApiOperation({
+    summary: 'Rate a course',
+    description: 'Allows a user to rate a course by providing the course ID, user ID, and the number of stars.',
+  })
   @Post(':id/rate')
   async rateCourse(
     @Param('id') courseId: string,
