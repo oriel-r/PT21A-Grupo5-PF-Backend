@@ -129,13 +129,13 @@ export class User {
     required: false,
   })
 
- /*  @ApiProperty({
+ @ApiProperty({
     type: () => [ReferralCode],
     description: 'Referral codes issued by the user.',
   })
   @OneToMany(() => ReferralCode, (referral) => referral.issuer)
   @JoinColumn()
-  issuedReferralCodes: ReferralCode[]; */
+  issuedReferralCodes: ReferralCode[];
 
   @ApiProperty({
     type: () => ReferralCode,
@@ -145,5 +145,6 @@ export class User {
   @OneToOne(() => ReferralCode, (referral) => referral.redeemer, {
     nullable: true,
   })
+  @JoinColumn()
   redeemedReferralCode?: ReferralCode;
 }
