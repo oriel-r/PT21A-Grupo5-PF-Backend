@@ -51,10 +51,17 @@ export class CoursesRepository {
     queryBuilder
       .leftJoinAndSelect('course.lessons', 'lessons')
       .leftJoinAndSelect('course.users', 'users')
-      .leftJoinAndSelect('course.language', 'language');
+      .leftJoinAndSelect('course.language', 'language')
+      .leftJoinAndSelect('course.category', 'category');
 
     Object.keys(filters).forEach((key) => {
-      queryBuilder.andWhere(`course.${key} = :${key}`, { [key]: filters[key] });
+      if(key === "language") {
+        queryBuilder.andWhere(`language.path = :language`, { language: filters[key] })
+      } else if(key === "category") {
+        queryBuilder.andWhere(`category.name = :category`, { category: filters[key] })
+      } else {
+        queryBuilder.andWhere(`course.${key} = :${key}`, { [key]: filters[key] });
+      }
     });
 
     queryBuilder.orderBy('course.createdAt', 'ASC').skip((page - 1) * limit).take(limit);

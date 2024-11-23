@@ -55,11 +55,9 @@ export class CoursesService {
   }
 
   async findAll(queries) {
-    console.log(queries)
     const {page, limit, ...filters} = queries
     const skip = Number(page) ? Number(page) : 1;
     const take = Number(limit) ? Number(limit) : 5;
-    console.log(skip, take, filters)
     const courses = await this.coursesRepository.getAllCourses(skip, take, filters);
     if (!courses) throw new NotFoundException();
     return courses;
