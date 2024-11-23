@@ -64,12 +64,12 @@ export class ReferralCode {
   @Column({ default: false })
   redeemed: boolean;
 
-  @ApiProperty({
+  /* @ApiProperty({
     type: () => User,
     description: 'User who issued the referral code.',
   })
   @ManyToOne(() => User, (user) => user.issuedReferralCodes)
-  issuer: User;
+  issuer: User; */
 
   @ApiProperty({
     type: () => User,

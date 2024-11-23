@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+/* import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateReferralCodeDto } from './dto/create-referral-code.dto';
 import { UpdateReferralCodeDto } from './dto/update-referral-code.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -71,4 +71,4 @@ export class ReferralCodesService {
       randomstring.generate({ length, charset: 'alphanumeric' }),
     );
   }
-}
+} */
