@@ -27,10 +27,10 @@ export class AuthService {
 
     const newUser = await this.usersService.createUser(signUpUser);
     const message = emailHtml.replace('{{userName}}', signUpUser.name);
-    const from = 'Uniendo Culturas <no-reply@uniendoculturas.edu.ar>'
-    const to = [signUpUser.email]
-    const subject = 'Bienvenido a Uniendo Culturas'
-    await this.emailService.sendWelcomeEmail({from, to, subject, message});
+    const from = 'Uniendo Culturas <no-reply@uniendoculturas.edu.ar>';
+    const to = [signUpUser.email];
+    const subject = 'Bienvenido a Uniendo Culturas';
+    await this.emailService.sendWelcomeEmail({ from, to, subject, message });
     return newUser;
   }
 
@@ -63,7 +63,7 @@ export class AuthService {
     };
 
     const token = this.jwtService.sign(userPayload);
-    
+
     console.log('This is the payload: ', userPayload);
 
     return {
@@ -87,8 +87,8 @@ export class AuthService {
       email: user.email,
       role: user.role,
       photo: user.photo,
+      subscription: user.membership.subscription,
       memebership: user.membership,
-      subscription: user.membership.subscription
     };
     return this.jwtService.sign(payload);
   }
