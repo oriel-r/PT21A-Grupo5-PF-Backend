@@ -2,6 +2,9 @@ import { Role } from 'src/enums/roles.enum';
 const teacher = Role.TEACHER;
 const admin = Role.ADMIN;
 const user = Role.USER;
+const standard = 'Standard'
+const premium = 'Premium'
+const pro = 'Pro'
 
 export const usersMock = [
   {
@@ -23,6 +26,7 @@ export const usersMock = [
     email: 'test_user_313795967@testuser.com',
     idNumber: '87654728',
     password: 'Password123!',
+    subscription: standard,
     role: user,
   },
   {
@@ -30,6 +34,7 @@ export const usersMock = [
     email: 'maria.lopez@example.com',
     idNumber: '87654321',
     password: 'Password123!',
+    subscription: standard,
     role: user,
   },
   {
@@ -37,6 +42,7 @@ export const usersMock = [
     email: 'carlos.ruiz@example.com',
     idNumber: '23456789',
     password: 'Password123!',
+    subscription: standard,
     role: user,
   },
   {
@@ -44,6 +50,7 @@ export const usersMock = [
     email: 'ana.martinez@example.com',
     idNumber: '34567890',
     password: 'Password123!',
+    subscription: standard,
     role: user,
   },
   {
@@ -51,6 +58,7 @@ export const usersMock = [
     email: 'luis.hernandez@example.com',
     idNumber: '45678901',
     password: 'Password123!',
+    subscription: standard,
     role: user,
   },
   {
@@ -58,6 +66,7 @@ export const usersMock = [
     email: 'sofia.ramirez@example.com',
     idNumber: '56789012',
     password: 'Password123!',
+    subscription: premium,
     role: user,
   },
   {
@@ -65,6 +74,7 @@ export const usersMock = [
     email: 'javier.fernandez@example.com',
     idNumber: '67890123',
     password: 'Password123!',
+    subscription: premium,
     role: user,
   },
   {
@@ -72,6 +82,7 @@ export const usersMock = [
     email: 'isabella.torres@example.com',
     idNumber: '78901234',
     password: 'Password123!',
+    subscription: premium,
     role: user,
   },
   {
@@ -79,6 +90,7 @@ export const usersMock = [
     email: 'diego.gomez@example.com',
     idNumber: '89012345',
     password: 'Password123!',
+    subscription: premium,
     role: user,
   },
   {
@@ -86,6 +98,7 @@ export const usersMock = [
     email: 'valeria.morales@example.com',
     idNumber: '90123456',
     password: 'Password123!',
+    subscription: premium,
     role: user,
   },
   {
@@ -93,6 +106,7 @@ export const usersMock = [
     email: 'miguel.vargas@example.com',
     idNumber: '12345067',
     password: 'Password123!',
+    subscription: pro,
     role: user,
   },
   {
@@ -100,6 +114,7 @@ export const usersMock = [
     email: 'camila.rojas@example.com',
     idNumber: '23456178',
     password: 'Password123!',
+    subscription: pro,
     role: user,
   },
   {
@@ -107,6 +122,7 @@ export const usersMock = [
     email: 'alejandro.castillo@example.com',
     idNumber: '34567289',
     password: 'Password123!',
+    subscription: pro,
     role: user,
   },
   {
@@ -114,6 +130,7 @@ export const usersMock = [
     email: 'emilia.vega@example.com',
     idNumber: '45678390',
     password: 'Password123!',
+    subscription: pro,
     role: user,
   },
   {
@@ -121,6 +138,7 @@ export const usersMock = [
     email: 'daniel.herrera@example.com',
     idNumber: '56789401',
     password: 'Password123!',
+    subscription: pro,
     role: user,
   },
   {
@@ -128,6 +146,7 @@ export const usersMock = [
     email: 'lucia.perez@example.com',
     idNumber: '67890512',
     password: 'Password123!',
+    subscription: pro,
     role: user,
   },
   {
@@ -135,6 +154,7 @@ export const usersMock = [
     email: 'mateo.diaz@example.com',
     idNumber: '78901623',
     password: 'Password123!',
+    subscription: premium,
     role: user,
   },
   {
@@ -142,6 +162,7 @@ export const usersMock = [
     email: 'victoria.garcia@example.com',
     idNumber: '89012734',
     password: 'Password123!',
+    subscription: standard,
     role: user,
   },
   {
@@ -149,6 +170,7 @@ export const usersMock = [
     email: 'sebastian.lopez@example.com',
     idNumber: '90123845',
     password: 'Password123!',
+    subscription: standard,
     role: user,
   },
   {
@@ -156,6 +178,7 @@ export const usersMock = [
     email: 'martina.chavez@example.com',
     idNumber: '01234956',
     password: 'Password123!',
+    subscription: premium,
     role: user,
   },
 ];
