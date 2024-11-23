@@ -16,9 +16,7 @@ const PostgresDataSourceOptions: DataSourceOptions = {
   synchronize: true,
   dropSchema: true,
   logging: ['error'],
-  ssl: {
-  rejectUnauthorized: false, // This is necessary for self-signed certificates
-  },
+  ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
   entities: ['dist/**/*.entity{.ts,.js}'],
   migrations: ['dist/migrations/*{.js,.ts}'],
 };
