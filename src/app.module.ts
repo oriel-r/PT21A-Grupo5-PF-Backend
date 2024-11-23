@@ -22,7 +22,7 @@ import { MercadopagoService } from './services/mercadopago/mercadopago.service';
 import { MembershipModule } from './membership/membership.module';
 import { ProtectedModule } from './protected/protected.module';
 import { WebhooksModule } from './webhooks/webhooks.module';
-import { ReferralCodesModule } from './referral-codes/referral-codes.module';
+/* import { ReferralCodesModule } from './referral-codes/referral-codes.module'; */
 
 @Module({
   imports: [
@@ -57,7 +57,7 @@ import { ReferralCodesModule } from './referral-codes/referral-codes.module';
     PaymentsModule,
     MembershipModule,
     WebhooksModule,
-    ReferralCodesModule,
+   /*  ReferralCodesModule, */
   ],
   controllers: [AppController],
   providers: [AppService, CloudinaryService, MercadopagoService],

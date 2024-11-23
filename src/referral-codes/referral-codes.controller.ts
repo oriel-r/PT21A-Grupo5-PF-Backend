@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+/* import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ReferralCodesService } from './referral-codes.service';
 import { CreateReferralCodeDto } from './dto/create-referral-code.dto';
 import { UpdateReferralCodeDto } from './dto/update-referral-code.dto';
@@ -32,4 +32,4 @@ export class ReferralCodesController {
   remove(@Param('id') id: string) {
     return this.referralCodesService.remove(+id);
   }
-}
+} */

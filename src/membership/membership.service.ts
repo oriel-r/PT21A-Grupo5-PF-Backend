@@ -30,7 +30,7 @@ export class MembershipService {
     const subscription = await this.subscriptionsService.findByName('Standard');
     if (!subscription)
       throw new NotFoundException(
-        'No se encontraron s  ubscripciones asignables',
+        'No se encontraron subscripciones asignables',
       );
     const membership = await this.membershipsRepository.create({
       user,
