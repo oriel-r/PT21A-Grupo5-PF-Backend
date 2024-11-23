@@ -76,7 +76,7 @@ export const languagesMock: DeepPartial<Language[]> = [
     path: 'chinese',
     name: 'Chino Mandarín',
     image_url:
-      'https://imagizer.imageshack.com/img923/3880/owsnOF.jpg',
+      'https://i.pinimg.com/736x/f2/8d/c9/f28dc91ed4a102cf221968356aeba9cd.jpg',
     flag_url:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQequvUVjcEv1hl7r1Q3_XkwJ90XOOi76RvfQ&s',
     general_description:
@@ -84,6 +84,6 @@ export const languagesMock: DeepPartial<Language[]> = [
     brief_description:
       'Conviértete en parte del futuro global. Aprende chino mandarín y abre las puertas al comercio, la tecnología y una cultura milenaria con un idioma hablado por miles de millones.',
     country_photo_url:
-      'https://i.pinimg.com/564x/af/6a/ed/af6aed7a7b967ab9a22d32f815ab2b0b.jpg',
+      'https://imagizer.imageshack.com/img923/3880/owsnOF.jpg',
   },
 ];
