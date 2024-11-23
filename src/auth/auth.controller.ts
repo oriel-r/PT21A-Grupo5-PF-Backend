@@ -56,7 +56,7 @@ export class AuthController {
 
     const token = await this.authService.generateJwt(user);
 
-    const redirectUrl = `http://localhost:3000/callback/?token=${encodeURIComponent(
+    const redirectUrl = `http://localhost:3000/auth/callback/?token=${encodeURIComponent(
       token,
     )}&user=${encodeURIComponent(JSON.stringify(user))}`;
   
