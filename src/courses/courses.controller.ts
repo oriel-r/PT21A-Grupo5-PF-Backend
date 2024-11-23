@@ -17,6 +17,7 @@ import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { ApiBody, ApiConsumes, ApiOperation } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express/multer/interceptors/file.interceptor';
+import { FilterCourses } from 'src/helpers/Filter';
 
 @Controller('courses')
 export class CoursesController {
@@ -59,12 +60,11 @@ export class CoursesController {
     return await this.coursesService.create(data, file);
   }
 
-  @Get('byDate')
+  @Get('filter')
   async findAllByDate(
-    @Query('page') page: number,
-    @Query('limit') limit: number,
+    @Query() filters: FilterCourses,
   ) {
-    return await this.coursesService.findAll(page, limit);
+    return await this.coursesService.findAll(filters);
   }
 
   @ApiOperation({

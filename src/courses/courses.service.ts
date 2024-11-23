@@ -54,10 +54,13 @@ export class CoursesService {
     return await this.coursesRepository.createCourse(data);
   }
 
-  async findAll(page, limit) {
-    page = Number(page) ? Number(page) : 1;
-    limit = Number(limit) ? Number(limit) : 5;
-    const courses = await this.coursesRepository.getAllCourses(page, limit);
+  async findAll(queries) {
+    console.log(queries)
+    const {page, limit, ...filters} = queries
+    const skip = Number(page) ? Number(page) : 1;
+    const take = Number(limit) ? Number(limit) : 5;
+    console.log(skip, take, filters)
+    const courses = await this.coursesRepository.getAllCourses(skip, take, filters);
     if (!courses) throw new NotFoundException();
     return courses;
   }
