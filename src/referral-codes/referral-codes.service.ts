@@ -68,6 +68,7 @@ export class ReferralCodesService {
 
     referralCode.redeemed = true
     referralCode.redeemer = redeemer
+    referralCode.redeemedAt = new Date()
     await this.referralCodesRepository.save(referralCode)
     return referralCode
 
