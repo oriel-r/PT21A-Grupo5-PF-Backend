@@ -56,7 +56,7 @@ export class AuthController {
 
     const token = await this.authService.generateJwt(user);
 
-    const redirectUrl = `https://rompiendo-barreras-pf.vercel.app/?token=${encodeURIComponent(
+    const redirectUrl = `https://rompiendo-barreras-pf.vercel.app/callback/?token=${encodeURIComponent(
       token,
     )}&user=${encodeURIComponent(JSON.stringify(user))}`;
   
