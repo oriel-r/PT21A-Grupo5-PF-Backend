@@ -89,7 +89,7 @@ export class AuthService {
       photo: user.photo,
       subscription: user.membership.subscription,
       memebership: user.membership,
-    };
+    }
     return this.jwtService.sign(payload);
   }
 }

@@ -42,15 +42,35 @@ export class CoursesRepository {
   }
   
 
-  async getAllCourses(page, limit): Promise<Course[]> {
-    return await this.coursesRepository.find({
-      relations: { lessons: true, users: true, language: true },
-      order: { createdAt: 'ASC' },
-      skip: (page - 1) * limit,
-      take: limit
-    });
-  }
+  async getAllCourses(
+    page: number,
+    limit: number,
+    filters: Record<string, any>,
+  ): Promise<{ data: Course[]; total: number }> {
+    const queryBuilder = this.coursesRepository.createQueryBuilder('course');
+    queryBuilder
+      .leftJoinAndSelect('course.lessons', 'lessons')
+      .leftJoinAndSelect('course.users', 'users')
+      .leftJoinAndSelect('course.language', 'language')
+      .leftJoinAndSelect('course.category', 'category');
 
+    Object.keys(filters).forEach((key) => {
+      if(key === "language") {
+        queryBuilder.andWhere(`language.path = :language`, { language: filters[key] })
+      } else if(key === "category") {
+        queryBuilder.andWhere(`category.name = :category`, { category: filters[key] })
+      } else {
+        queryBuilder.andWhere(`course.${key} = :${key}`, { [key]: filters[key] });
+      }
+    });
+
+    queryBuilder.orderBy('course.createdAt', 'ASC').skip((page - 1) * limit).take(limit);
+
+    const [data, total] = await queryBuilder.getManyAndCount();
+
+    return { data, total };
+  }
+  
   async findAll() {
     return await this.coursesRepository.find({relations: { lessons: true, users: true, language: true },})
   }
