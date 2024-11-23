@@ -29,9 +29,6 @@ export class UsersSeed {
 
   async seed() {
     try {
-      const standardSubscription =
-        await this.findSubscriptionByName('Standard');
-
       for (const userData of usersMock) {
         const existingUser = await this.usersRepository.findOne({
           where: { email: userData.email },
@@ -49,17 +46,14 @@ export class UsersSeed {
           user.idNumber = userData.idNumber;
           user.role = userData.role;
           user.createdAt = new Date();
-          user.isActive = true
-
+          user.isActive = true;
 
           // Assign subscription and membership for regular users
           if (user.role === 'user') {
-            
-
             user.membership = await this.membershipsRepository.save(
               this.membershipsRepository.create({
                 user,
-                subscription: standardSubscription,
+                subscription: await this.findSubscriptionByName(userData.subscription),
               }),
             );
           }
