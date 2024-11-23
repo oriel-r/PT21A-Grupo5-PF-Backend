@@ -70,7 +70,8 @@ export class CoursesController {
 
   @ApiOperation({
     summary: 'Rate a course',
-    description: 'Allows a user to rate a course by providing the course ID, user ID, and the number of stars.',
+    description:
+      'Allows a user to rate a course by providing the course ID, user ID, and the number of stars.',
   })
   @Post(':id/rate')
   async rateCourse(
@@ -78,7 +79,7 @@ export class CoursesController {
     @Body() rateCourseDto: RateCourseDto,
   ) {
     const { userId, stars } = rateCourseDto;
-    return this.coursesService.rateCourse(courseId,userId, stars);
+    return this.coursesService.rateCourse(courseId, userId, stars);
   }
 
   @Get(':id')

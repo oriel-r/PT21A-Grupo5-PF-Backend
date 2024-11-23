@@ -10,5 +10,5 @@ export class RateCourseDto {
   @IsNumber()
   @Min(1)
   @Max(5)
-  stars: number;
+  stars: number;
 }

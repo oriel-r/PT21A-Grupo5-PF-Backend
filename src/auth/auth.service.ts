@@ -60,6 +60,7 @@ export class AuthService {
       photo: user.photo,
       memebership: user.membership,
       subscription: user.membership.subscription
+      subscription: user.membership.subscription
     };
 
     const token = this.jwtService.sign(userPayload);
@@ -77,6 +78,7 @@ export class AuthService {
         photo: user.photo,
         memebership: user.membership,
         subscription: user.membership.subscription
+        subscription: user.membership.subscription
       },
     };
   }
@@ -87,6 +89,7 @@ export class AuthService {
       email: user.email,
       role: user.role,
       photo: user.photo,
+      subscription: user.membership.subscription,
       memebership: user.membership,
       subscription: user.membership.subscription
     };
