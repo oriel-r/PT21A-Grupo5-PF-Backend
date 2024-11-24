@@ -53,7 +53,9 @@ export class UsersSeed {
             user.membership = await this.membershipsRepository.save(
               this.membershipsRepository.create({
                 user,
-                subscription: await this.findSubscriptionByName(userData.subscription),
+                subscription: await this.findSubscriptionByName(
+                  userData.subscription,
+                ),
               }),
             );
           }

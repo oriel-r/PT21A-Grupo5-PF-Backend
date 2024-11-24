@@ -19,7 +19,7 @@ export class UsersRepository {
   async getUserByEmail(email: string) {
     const user = await this.usersRepository.findOne({
       where: { email },
-      relations: {  membership:true },
+      relations: {  membership:true, courses:true },
     });
     if (!user) throw new BadRequestException('User not found');
     return user;
