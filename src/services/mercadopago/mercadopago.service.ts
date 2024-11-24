@@ -4,6 +4,7 @@ import { PreApprovalRequest, PreApprovalResponse } from 'mercadopago/dist/client
 import * as dotenv from 'dotenv'
 
 dotenv.config({path: '.env.development.local'})
+const mpToken = process.env.MP_ACCESS_TOKEN
 
 @Injectable()
 export class MercadopagoService {
@@ -13,7 +14,7 @@ export class MercadopagoService {
     async createSubscription(data: PreApprovalRequest): Promise<PreApprovalResponse> {
          
         
-        const preaproval: PreApprovalResponse = await new PreApproval(new MercadoPagoConfig({accessToken: process.env.MP_ACCESS_TOKEN})).create({body:data})
+        const preaproval: PreApprovalResponse = await new PreApproval(new MercadoPagoConfig({accessToken: mpToken})).create({body:data})
         .then((response) => {
             return response
         }).catch((err) => {
