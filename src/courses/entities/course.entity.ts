@@ -123,13 +123,13 @@ export class Course {
   language: Language;
 
   @ApiProperty({
-    description: "List of users who have already rated the course"
+    description: 'List of users who have already rated the course',
   })
   @ManyToMany(() => User, { nullable: true })
   @JoinTable()
-  ratedByUsers: User[]; 
+  ratedByUsers: User[];
 
-  @ManyToMany(() => User, (user) => user.courses, { nullable: true })
+  @ManyToMany(() => User, (user) => user.courses)
   @JoinTable()
   users: User;
 
