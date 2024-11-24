@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -22,6 +23,7 @@ import {
 import { CreateLessonDto } from './dto/create-lesson.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FilePipe } from 'src/pipes/file/file.pipe';
+import { UpdateLessonDto } from './dto/update-lesson.dto';
 
 @ApiTags('lessons')
 @Controller('lessons')
@@ -35,6 +37,25 @@ export class LessonsController {
   @Get()
   async getall(@Query('page') page: number, @Query('limit') limit: number) {
     return await this.lessonsService.getAllLessons(page, limit);
+  }
+
+  @ApiOperation({
+    summary: 'Get lessons by courseId',
+  })
+  @Get('by-course/:id')
+  async getLessonsByCourse(
+    @Param('id') courseId: string,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 5,
+  ) {
+    const pageNum = Number(page) || 1;
+    const limitNum = Number(limit) || 5;
+
+    return await this.lessonsService.getAllLessonsByCourse(
+      courseId,
+      pageNum,
+      limitNum,
+    );
   }
 
   @ApiOperation({
@@ -77,5 +98,23 @@ export class LessonsController {
     file: Express.Multer.File,
   ) {
     return this.lessonsService.uploadVideo(id, file);
+  }
+
+  @ApiOperation({
+    summary: 'Create a lesson',
+    description: "Send course's title",
+  })
+  @Put(':id')
+  async updateLesson(
+    @Param('id') id: string,
+    @Body() updateLessonDto: UpdateLessonDto,
+  ) {}
+
+  @ApiOperation({
+    summary: 'Delete a lesson',
+  })
+  @Delete(':id')
+  async delete(@Param('id') id: string): Promise<string> {
+    return await this.lessonsService.delete(id);
   }
 }
