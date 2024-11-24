@@ -1,13 +1,14 @@
-/* import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateReferralCodeDto } from './dto/create-referral-code.dto';
 import { UpdateReferralCodeDto } from './dto/update-referral-code.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ReferralCode } from './entities/referral-code.entity';
 import { ReferralCodesRepository } from './referral-codes.repository';
 import { UsersService } from 'src/users/users.service';
-import { addDays } from 'date-fns';
+import { addDays, compareAsc } from 'date-fns';
 import { Repository } from 'typeorm';
 import * as randomstring from 'randomstring';
+import { RedeemCodeDto } from './dto/redeem-code.dto';
 
 
 @Injectable()
@@ -32,9 +33,9 @@ export class ReferralCodesService {
     const expirationDate = addDays(createdAt, expiration);
 
     const referralCodeEntitites = codes.map(
-      (codeNumer) =>
+      (codeNumber) =>
         new ReferralCode({
-          code: codeNumer,
+          code: codeNumber,
           issuer: user,
           discount: discount,
           issuedAt: createdAt,
@@ -45,23 +46,47 @@ export class ReferralCodesService {
     await this.referralCodesRepository.save(referralCodeEntitites);
 
     return referralCodeEntitites;
- 
-    
   }
 
-  findAll() {
-    return `This action returns all referralCodes`;
+  async redeemCode(userId:string, codeDto:RedeemCodeDto):Promise<ReferralCode> {
+    const {code} = codeDto
+    const referralCode = await this.referralCodesRepository.findOne({where:{code}})
+    const redeemer = await this.usersService.findOne(userId)
+    const isExpired =  (compareAsc(referralCode.expirationDate, new Date())) === -1
+    if (!referralCode) {
+      throw new BadRequestException('Código inválido');
+    }
+    if (isExpired) {
+      throw new BadRequestException('El código ha expirado.');
+    }
+    if (referralCode.redeemed) {
+      throw new BadRequestException('El código ya fue redimido.');
+    }
+    if (redeemer.redeemedReferralCode) {
+      throw new UnauthorizedException('No se puede usar más de un código de descuento.');
+    }
+
+    referralCode.redeemed = true
+    referralCode.redeemer = redeemer
+    referralCode.redeemedAt = new Date()
+    await this.referralCodesRepository.save(referralCode)
+    return referralCode
+
   }
 
-  findOne(id: number) {
+  async findAll() {
+    return await this.referralCodesRepository.find()
+  }
+
+  findOne(id: string) {
     return `This action returns a #${id} referralCode`;
   }
 
-  update(id: number, updateReferralCodeDto: UpdateReferralCodeDto) {
+  update(id: string, updateReferralCodeDto: UpdateReferralCodeDto) {
     return `This action updates a #${id} referralCode`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} referralCode`;
   }
 
@@ -71,4 +96,4 @@ export class ReferralCodesService {
       randomstring.generate({ length, charset: 'alphanumeric' }),
     );
   }
-} */
+}

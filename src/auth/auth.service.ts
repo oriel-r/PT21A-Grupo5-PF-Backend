@@ -8,6 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { EmailerService } from 'src/emailer/emailer.service';
 import { SendEmailDto } from 'src/emailer/dto/send-email.dto';
 import { emailHtml } from 'src/utils/email-template';
+import { coursesMock } from 'src/seeds/courses/courses-mock';
 
 @Injectable()
 export class AuthService {
@@ -58,6 +59,9 @@ export class AuthService {
       email: user.email,
       role: user.role,
       photo: user.photo,
+      ...(user.membership && { membership: user.membership }),
+      ...(user.membership?.subscription && { subscription: user.membership.subscription }),
+      ...(user.courses && { coursesMock: user.courses })
     };
 
     const token = this.jwtService.sign(userPayload);
@@ -73,6 +77,9 @@ export class AuthService {
         idNumber: user.idNumber,
         role: user.role,
         photo: user.photo,
+        ...(user.membership && { membership: user.membership }),
+        ...(user.membership?.subscription && { subscription: user.membership.subscription }),
+        ...(user.courses && { coursesMock: user.courses })
       },
     };
   }
@@ -83,10 +90,9 @@ export class AuthService {
       email: user.email,
       role: user.role,
       photo: user.photo,
-    };
-
-    console.log(payload);
-    
+      subscription: user.membership.subscription,
+      memebership: user.membership,
+    }
     return this.jwtService.sign(payload);
   }
 }

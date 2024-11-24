@@ -5,6 +5,8 @@ import { Language } from 'src/language/entities/language.entity';
 import { DeepPartial } from 'typeorm';
 
 export interface FilterCourses {
+  page?: number;
+  limit?: number;
   title?: string;
   specialization?: Specialization;
   level?: Level;
