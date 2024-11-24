@@ -64,7 +64,6 @@ export class AuthService {
     const token = this.jwtService.sign(userPayload);
 
     console.log('This is the payload: ', userPayload);
-    console.log('These are my courses: ', user.courses)
 
     return {
       token,
@@ -78,7 +77,6 @@ export class AuthService {
         courses: user.courses,
         ...(user.membership && { membership: user.membership }),
         ...(user.membership?.subscription && { subscription: user.membership.subscription }),
-        ...(user.courses && { curses: user.courses })
       },
     };
   }
