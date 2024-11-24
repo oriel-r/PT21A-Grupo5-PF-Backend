@@ -46,7 +46,7 @@ export class CoursesRepository {
     page: number,
     limit: number,
     filters: Record<string, any>,
-  ): Promise<{ data: Course[]; total: number }> {
+  ): Promise<{ data: Course[], page: number, limit: number, total: number, totalPages: number }> {
     const queryBuilder = this.coursesRepository.createQueryBuilder('course');
     queryBuilder
       .leftJoinAndSelect('course.lessons', 'lessons')
@@ -68,11 +68,11 @@ export class CoursesRepository {
 
     const [data, total] = await queryBuilder.getManyAndCount();
 
-    return { data, total };
+    return { data, page, limit, total, totalPages: Math.ceil(total/limit) };
   }
   
   async findAll() {
-    return await this.coursesRepository.find({relations: { lessons: true, users: true, language: true },})
+    return await this.coursesRepository.find({relations: { lessons: true, users: true, language: true }})
   }
   
 
