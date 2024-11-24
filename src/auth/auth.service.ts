@@ -8,7 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { EmailerService } from 'src/emailer/emailer.service';
 import { SendEmailDto } from 'src/emailer/dto/send-email.dto';
 import { emailHtml } from 'src/utils/email-template';
-import { coursesMock } from 'src/seeds/courses/courses-mock';
+
 
 @Injectable()
 export class AuthService {
@@ -58,11 +58,13 @@ export class AuthService {
       id: user.id,
       email: user.email,
       role: user.role,
+      
     };
 
     const token = this.jwtService.sign(userPayload);
 
     console.log('This is the payload: ', userPayload);
+    console.log('These are my courses: ', user.courses)
 
     return {
       token,
@@ -73,9 +75,10 @@ export class AuthService {
         idNumber: user.idNumber,
         role: user.role,
         photo: user.photo,
+        courses: user.courses,
         ...(user.membership && { membership: user.membership }),
         ...(user.membership?.subscription && { subscription: user.membership.subscription }),
-        ...(user.courses && { coursesMock: user.courses })
+        ...(user.courses && { curses: user.courses })
       },
     };
   }

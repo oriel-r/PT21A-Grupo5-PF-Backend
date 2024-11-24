@@ -10,6 +10,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
@@ -110,7 +111,7 @@ export class User {
     required: false,
   })
   @ManyToMany(() => Course, (courses) => courses.users)
-  courses?: Course[];
+  courses: Course[];
 
   @ApiProperty({
     type: () => Membership,
