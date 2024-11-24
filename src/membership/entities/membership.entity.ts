@@ -25,7 +25,7 @@ export class Membership {
         name: 'subscription',
         description: "associate membership plan"
     })
-    @ManyToOne(() => Subscription, (subscription) => subscription.memberships)
+    @ManyToOne(() => Subscription, (subscription) => subscription.memberships, {eager: true})
     subscription: Subscription
 
     @ApiProperty({
