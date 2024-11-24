@@ -19,7 +19,6 @@ import { ChangePasswordDto } from './dto/change-password.dto';
 import { Auth0SignupDto } from 'src/auth/dto/auth0.dto';
 import { MembershipService } from 'src/membership/membership.service';
 import { Membership } from 'src/membership/entities/membership.entity';
-import { allowedNodeEnvironmentFlags } from 'process';
 import { v4 as uuid } from 'uuid';
 
 @Injectable()
@@ -114,9 +113,10 @@ export class UsersService {
   }
 
   async createUserFromAuth0(auth0Dto: Auth0SignupDto) {
-    const { email, name, photo } = auth0Dto;
+    const { authId, email, name, photo } = auth0Dto;
 
     const user = new User();
+    user.authId = authId,
     (user.email = email),
       (user.name = name),
       (user.photo =
@@ -128,8 +128,11 @@ export class UsersService {
     const membership: Membership =
       await this.membershipService.createMembership(user);
     user.membership = membership;
+    
     await this.usersRepository.save(user);
 
+    console.log("usuario de lau" , user);
+    
     return user;
   }
 

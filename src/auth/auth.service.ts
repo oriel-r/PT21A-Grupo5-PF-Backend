@@ -58,10 +58,6 @@ export class AuthService {
       id: user.id,
       email: user.email,
       role: user.role,
-      photo: user.photo,
-      ...(user.membership && { membership: user.membership }),
-      ...(user.membership?.subscription && { subscription: user.membership.subscription }),
-      ...(user.courses && { coursesMock: user.courses })
     };
 
     const token = this.jwtService.sign(userPayload);
@@ -89,9 +85,6 @@ export class AuthService {
       id: user.id,
       email: user.email,
       role: user.role,
-      photo: user.photo,
-      subscription: user.membership.subscription,
-      memebership: user.membership,
     }
     return this.jwtService.sign(payload);
   }
