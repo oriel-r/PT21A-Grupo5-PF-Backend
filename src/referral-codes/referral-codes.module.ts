@@ -1,4 +1,4 @@
-/* import { Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ReferralCodesService } from './referral-codes.service';
 import { ReferralCodesController } from './referral-codes.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -12,4 +12,4 @@ import { UsersModule } from 'src/users/users.module';
   providers: [ReferralCodesService, ReferralCodesRepository],
   exports: [ReferralCodesService],
 })
-export class ReferralCodesModule {} */
+export class ReferralCodesModule {}
