@@ -44,6 +44,7 @@ export class AuthStrategy extends PassportStrategy(Strategy, 'auth0') {
     }
 
     const jwt = await this.jwtService.signAsync({
+      authId: userExisting.authId,
       email: userExisting.email,
       name: userExisting.name,
       role: userExisting.role,
