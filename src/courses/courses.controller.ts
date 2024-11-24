@@ -62,9 +62,7 @@ export class CoursesController {
   }
 
   @Get('filter')
-  async findAllByDate(
-    @Query() filters: FilterCourses,
-  ) {
+  async findAllByDate(@Query() filters: FilterCourses) {
     return await this.coursesService.findAll(filters);
   }
 

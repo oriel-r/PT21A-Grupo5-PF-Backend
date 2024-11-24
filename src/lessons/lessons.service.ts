@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   ServiceUnavailableException,
@@ -8,6 +9,7 @@ import { CloudinaryService } from 'src/services/cloudinary/cloudinary.service';
 import { CreateLessonDto } from './dto/create-lesson.dto';
 import { CoursesService } from 'src/courses/courses.service';
 import { Lesson } from './entities/lesson.entity';
+import { UpdateLessonDto } from './dto/update-lesson.dto';
 
 @Injectable()
 export class LessonsService {
@@ -48,5 +50,37 @@ export class LessonsService {
         'Hubo problemas ocn el servidor externo',
       );
     return await this.lessonsRepositoy.updateVideo(id, url);
+  }
+
+  async delete(id: string): Promise<string> {
+    const lessonToDelete = await this.getById(id);
+    if (!lessonToDelete)
+      throw new NotFoundException('No se encontra la leccion');
+    try {
+      await this.lessonsRepositoy.deleteLesson(id);
+      return 'Lección eliminada correctamente.';
+    } catch (e) {
+      return 'La lección no se pudo eliminar.';
+    }
+  }
+
+  async updateLesson(id: string, updateLessonDto: UpdateLessonDto) {
+    const lessonToUpdate = await this.getById(id);
+    if (!lessonToUpdate)
+      throw new NotFoundException('No se encontra la leccion');
+
+    const updatedLesson = Object.assign(lessonToUpdate, updateLessonDto);
+
+    await this.lessonsRepositoy.save(updatedLesson);
+    return updatedLesson;
+  }
+
+  async getAllLessonsByCourse(courseId: string, page: number, limit: number) {
+    const course = await this.coursesService.findById(courseId);
+    if (!course) {
+      throw new BadRequestException('Curso inexistente');
+    }
+
+    return await this.lessonsRepositoy.getAllLessons(course, page, limit);
   }
 }

@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Lesson } from './entities/lesson.entity';
 import { Repository } from 'typeorm';
 import { CreateLessonDto } from './dto/create-lesson.dto';
+import { Course } from 'src/courses/entities/course.entity';
 
 @Injectable()
 export class LessonsRepository {
@@ -30,5 +31,27 @@ export class LessonsRepository {
 
   async updateVideo(id, url) {
     return await this.lessonsRepository.update(id, { video_url: url });
+  }
+
+  async deleteLesson(id: string): Promise<void> {
+    await this.lessonsRepository.delete(id);
+  }
+
+  async save(lesson: Lesson) {
+    await this.lessonsRepository.save(lesson);
+  }
+
+  async getAllLessons(
+    course:Course,
+    page: number,
+    limit: number,
+  ): Promise<{ data: Lesson[]; total: number }> {
+    const queryBuilder = this.lessonsRepository.createQueryBuilder('lesson');
+    queryBuilder
+    .where('lesson.courseId = :courseId', { courseId: course.id })
+    .skip((page - 1) * limit)
+    .take(limit);
+    const [data, total] = await queryBuilder.getManyAndCount();
+    return { data, total };
   }
 }
