@@ -33,7 +33,7 @@ export class User {
     description: 'Unique authentication identifier for the user.',
   })
   @IsString()
-  @Column({nullable:true})
+  @Column({ nullable: true })
   authId?: string;
 
   @ApiProperty({
@@ -77,7 +77,10 @@ export class User {
     default:
       'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg',
   })
-  @Column({default: 'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg',})
+  @Column({
+    default:
+      'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg',
+  })
   photo: string;
 
   @ApiProperty({
@@ -107,11 +110,19 @@ export class User {
 
   @ApiProperty({
     type: () => [Course],
-    description: 'Courses associated with the user.',
+    description: 'Courses assigned to teach.',
     required: false,
   })
-  @ManyToMany(() => Course, (courses) => courses.users)
-  courses: Course[];
+  @ManyToMany(() => Course, (courses) => courses.teachers)
+  coursesToTeach: Course[];
+
+  @ApiProperty({
+    type: () => [Course],
+    description: 'Courses to take.',
+    required: false,
+  })
+  @ManyToMany(() => Course, (courses) => courses.students)
+  coursesToTake: Course[];
 
   @ApiProperty({
     type: () => Membership,
@@ -129,8 +140,7 @@ export class User {
     description: 'Subscription associated with the user.',
     required: false,
   })
-
- @ApiProperty({
+  @ApiProperty({
     type: () => [ReferralCode],
     description: 'Referral codes issued by the user.',
   })
