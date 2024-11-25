@@ -129,9 +129,13 @@ export class Course {
   @JoinTable()
   ratedByUsers: User[];
 
-  @ManyToMany(() => User, (user) => user.courses)
+  @ManyToMany(() => User, (user) => user.coursesToTeach)
   @JoinTable()
-  users: User;
+  teachers: User[];
+
+  @ManyToMany(() => User, (user) => user.coursesToTake)
+  @JoinTable()
+  students: User[];
 
   @ManyToOne(() => Category, (category) => category.courses)
   @JoinColumn()

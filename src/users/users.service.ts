@@ -38,19 +38,25 @@ export class UsersService {
 
     return await this.usersRepository.find({
       where: { role: role },
-      relations: { courses: true, membership: { subscription: true }, redeemedReferralCode:true },
+      relations: {
+        coursesToTake: true,
+        coursesToTeach: true,
+        membership: { subscription: true },
+        redeemedReferralCode: true,
+      },
       select: [
         'id',
         'idNumber',
         'email',
-        'courses',
+        'coursesToTake',
+        'coursesToTeach',
         'createdAt',
         'name',
         'role',
         'membership',
         'isActive',
         'photo',
-        'redeemedReferralCode'
+        'redeemedReferralCode',
       ],
       skip: offset,
       take: limit,
@@ -116,8 +122,8 @@ export class UsersService {
     const { authId, email, name, photo } = auth0Dto;
 
     const user = new User();
-    user.authId = authId,
-    (user.email = email),
+    (user.authId = authId),
+      (user.email = email),
       (user.name = name),
       (user.photo =
         photo ||
@@ -128,18 +134,19 @@ export class UsersService {
     const membership: Membership =
       await this.membershipService.createMembership(user);
     user.membership = membership;
-    
+
     await this.usersRepository.save(user);
 
-    console.log("usuario de lau" , user);
-    
+    console.log('usuario de lau', user);
+
     return user;
   }
 
   async findAll() {
     return await this.usersRepository.find({
       relations: {
-        courses: true,
+        coursesToTake: true,
+        coursesToTeach:true,
         membership: { subscription: true, payments: true },
       },
     });
@@ -179,11 +186,10 @@ export class UsersService {
     if (!subscriptionToChange) {
       throw new BadRequestException('Subscripción inexistente.');
     }
-    const membership = userToUpdate.membership
-    membership.subscription = subscriptionToChange
-    await this.membershipService.saveMembership(membership)
+    const membership = userToUpdate.membership;
+    membership.subscription = subscriptionToChange;
+    await this.membershipService.saveMembership(membership);
 
-   
     return userToUpdate;
   }
 

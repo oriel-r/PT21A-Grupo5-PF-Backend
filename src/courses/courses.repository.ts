@@ -16,7 +16,7 @@ export class CoursesRepository {
     return await this.coursesRepository.find({
       skip: (page - 1) * limit,
       take: limit,
-      relations: { lessons: true, users:true, language:true },
+      relations: { lessons: true, teachers:true, language:true, students:true },
       order: {title:'ASC'}
     });
   }
@@ -72,21 +72,21 @@ export class CoursesRepository {
   }
   
   async findAll() {
-    return await this.coursesRepository.find({relations: { lessons: true, users: true, language: true }})
+    return await this.coursesRepository.find({relations: { lessons: true, teachers: true, language: true, students:true }})
   }
   
 
   async findByTitle(title: string): Promise<Course | null> {
     return await this.coursesRepository.findOne({
       where: { title },
-      relations: { lessons: true, users: true, language: true },
+      relations: { lessons: true, teachers: true, language: true, students:true },
     });
   }
 
   async findById(id: string): Promise<Course> {
     const result = await this.coursesRepository.findOne({
       where: { id },
-      relations: { users: true, lessons: true, language: true },
+      relations: { teachers: true, lessons: true, language: true, students:true },
     });
     if (!result) throw new NotFoundException('Curso no encontrado');
     return result;
