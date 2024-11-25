@@ -20,6 +20,8 @@ import { Auth0SignupDto } from 'src/auth/dto/auth0.dto';
 import { MembershipService } from 'src/membership/membership.service';
 import { Membership } from 'src/membership/entities/membership.entity';
 import { v4 as uuid } from 'uuid';
+import { CoursesService } from 'src/courses/courses.service';
+import { Course } from 'src/courses/entities/course.entity';
 
 @Injectable()
 export class UsersService {
@@ -28,6 +30,7 @@ export class UsersService {
     private readonly usersRepo: UsersRepository,
     private readonly subscriptionService: SubscriptionsService,
     private readonly membershipService: MembershipService,
+    private readonly coursesService: CoursesService,
   ) {}
 
   async pagination(page: number, limit: number, role) {
@@ -146,7 +149,7 @@ export class UsersService {
     return await this.usersRepository.find({
       relations: {
         coursesToTake: true,
-        coursesToTeach:true,
+        coursesToTeach: true,
         membership: { subscription: true, payments: true },
       },
     });
@@ -241,5 +244,57 @@ export class UsersService {
     await this.usersRepository.save(userToUpdate);
 
     return userToUpdate;
+  }
+
+  async enrollStudent(userId: string, courseId: string): Promise<Course> {
+    const course = await this.coursesService.findById(courseId);
+    if (!course) {
+      throw new BadRequestException('Course not found.');
+    }
+
+    const isAlreadyEnrolled = await this.usersRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.coursesToTake', 'course')
+      .where('user.id = :userId', { userId })
+      .andWhere('course.id = :courseId', { courseId })
+      .getOne();
+
+    if (isAlreadyEnrolled) {
+      throw new BadRequestException(
+        'El usuario ya está inscripto en el curso.',
+      );
+    }
+
+    await this.usersRepository
+      .createQueryBuilder()
+      .relation(User, 'coursesToTake')
+      .of(userId)
+      .add(courseId);
+
+    return await this.coursesService.findById(courseId);
+  }
+
+  async assignTeacher(teacherId: string, courseId: string) {
+    const teacher = await this.findOne(teacherId);
+
+    if (teacher.role === Role.USER) {
+      throw new BadRequestException('No se puede asignar users como docentes.');
+    }
+
+    const isAlreadyATeacher = teacher.coursesToTeach.some(
+      (existingCourse) => existingCourse.id === courseId,
+    );
+
+    if (isAlreadyATeacher) {
+      throw new BadRequestException('El docente ya está asignado al curso.');
+    }
+
+    await this.usersRepository
+      .createQueryBuilder()
+      .relation(User, 'coursesToTeach')
+      .of(teacherId)
+      .add(courseId);
+
+    return await this.coursesService.findById(courseId);
   }
 }
