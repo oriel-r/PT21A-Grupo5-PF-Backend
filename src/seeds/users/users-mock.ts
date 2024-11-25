@@ -10,7 +10,7 @@ export const usersMock = [
   {
     name: 'John Doe',
     email: 'john.doe@example.com',
-    password: '45679654',
+    password: 'Jd45679654!',
     idNumber: '45679654',
     role: teacher,
   },

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -8,9 +8,10 @@ import { UsersRepository } from './users.repository';
 import { SubscriptionsModule } from 'src/subscriptions/subscriptions.module';
 import { SubscriptionsService } from 'src/subscriptions/subscriptions.service';
 import { MembershipModule } from 'src/membership/membership.module';
+import { CoursesModule } from 'src/courses/courses.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), JwtModule, MembershipModule, SubscriptionsModule],
+  imports: [TypeOrmModule.forFeature([User]), JwtModule, MembershipModule, SubscriptionsModule, forwardRef(() => CoursesModule)],
   controllers: [UsersController],
   providers: [UsersService, UsersRepository],
   exports: [UsersRepository, UsersService],

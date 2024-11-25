@@ -21,6 +21,8 @@ import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { Role } from 'src/enums/roles.enum';
 import { ChangeSubscriptionDto } from './dto/change-subscription.dto';
+import { EnrollStudentDto } from './dto/enroll-student.dto';
+import { AssignTeacherDto } from './dto/assign-teacher.dto';
 
 @ApiBearerAuth()
 @Controller('users')
@@ -78,10 +80,29 @@ export class UsersController {
   @Put('user-subscription/:id')
   async changeSubscription(
     @Param('id') userId: string,
-    @Body() changeSubscriptionDto:ChangeSubscriptionDto
+    @Body() changeSubscriptionDto: ChangeSubscriptionDto,
   ) {
-    const {subscriptionId} = changeSubscriptionDto
+    const { subscriptionId } = changeSubscriptionDto;
     return await this.usersService.changeSubscription(userId, subscriptionId);
+  }
+
+  @Put('enroll/:id')
+  @HttpCode(HttpStatus.OK)
+  async enrollStudent(
+    @Param('id') userId: string,
+    @Body() enrollStudentDto: EnrollStudentDto,
+  ) {
+    const { courseId } = enrollStudentDto;
+    await this.usersService.enrollStudent(userId, courseId);
+  }
+
+  @Put('assign-teacher/:id')
+  async assignCourseToTeacher(
+    @Param('id') courseId: string,
+    @Body() assignTeacherDto: AssignTeacherDto,
+  ) {
+    const { teacherId } = assignTeacherDto;
+    return this.usersService.assignTeacher(teacherId, courseId);
   }
 
   @Delete(':id')
