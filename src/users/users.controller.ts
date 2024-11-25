@@ -98,10 +98,10 @@ export class UsersController {
 
   @Put('assign-teacher/:id')
   async assignCourseToTeacher(
-    @Param('id') teacherId: string,
+    @Param('id') courseId: string,
     @Body() assignTeacherDto: AssignTeacherDto,
   ) {
-    const { courseId } = assignTeacherDto;
+    const { teacherId } = assignTeacherDto;
     return this.usersService.assignTeacher(teacherId, courseId);
   }
 
