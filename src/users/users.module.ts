@@ -11,7 +11,7 @@ import { MembershipModule } from 'src/membership/membership.module';
 import { CoursesModule } from 'src/courses/courses.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), JwtModule, MembershipModule, SubscriptionsModule, forwardRef(() => CoursesModule)],
+  imports: [TypeOrmModule.forFeature([User]), JwtModule, forwardRef(() => MembershipModule), SubscriptionsModule, forwardRef(() => CoursesModule)],
   controllers: [UsersController],
   providers: [UsersService, UsersRepository],
   exports: [UsersRepository, UsersService],

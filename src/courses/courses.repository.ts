@@ -59,10 +59,11 @@ export class CoursesRepository {
   }> {
     const queryBuilder = this.coursesRepository.createQueryBuilder('course');
     queryBuilder
+      .leftJoinAndSelect('course.ratedByUsers', 'users')
+      .leftJoinAndSelect('course.teachers', 'teachers')
       .leftJoinAndSelect('course.lessons', 'lessons')
-      .leftJoinAndSelect('course.users', 'users')
       .leftJoinAndSelect('course.language', 'language')
-      .leftJoinAndSelect('course.category', 'category');
+      .leftJoinAndSelect('course.category', 'category')
 
     Object.keys(filters).forEach((key) => {
       if (key === 'language') {

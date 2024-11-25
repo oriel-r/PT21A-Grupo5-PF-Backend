@@ -9,13 +9,12 @@ import { MembershipRepostory } from './membership.repository';
 import { SubscriptionsService } from 'src/subscriptions/subscriptions.service';
 import { PaymentsService } from 'src/payments/payments.service';
 import { User } from 'src/users/entities/user.entity';
-import { DeepPartial } from 'typeorm';
-import { Subscription } from 'src/subscriptions/entities/subscription.entity';
 import { Membership } from './entities/membership.entity';
 import { UpdateMembershipDto } from './dto/update-membership.dto';
 import { MercadopagoService } from 'src/services/mercadopago/mercadopago.service';
-import { PreApprovalRequest, PreApprovalResponse } from 'mercadopago/dist/clients/preApproval/commonTypes';
+import { PreApprovalResponse } from 'mercadopago/dist/clients/preApproval/commonTypes';
 import { MyPreApproval } from './dto/create-memebership.dto';
+import { ReferralCodesService } from 'src/referral-codes/referral-codes.service';
 
 @Injectable()
 export class MembershipService {
@@ -24,6 +23,7 @@ export class MembershipService {
     private readonly subscriptionsService: SubscriptionsService,
     private readonly paymentsServicec: PaymentsService,
     private readonly externalPayment: MercadopagoService,
+    //private readonly referralCodesService: ReferralCodesService
   ) {}
 
   async createMembership(user: User): Promise<Membership> {
