@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { MembershipService } from './membership.service';
 import { MembershipController } from './membership.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -9,6 +9,10 @@ import { MembershipRepostory } from './membership.repository';
 import { SubscriptionsModule } from 'src/subscriptions/subscriptions.module';
 import { PaymentsModule } from 'src/payments/payments.module';
 import { MercadopagoService } from 'src/services/mercadopago/mercadopago.service';
+import { ReferralCodesModule } from 'src/referral-codes/referral-codes.module';
+import { ReferralCode } from 'src/referral-codes/entities/referral-code.entity';
+import { ReferralCodesService } from 'src/referral-codes/referral-codes.service';
+import { ReferralCodesRepository } from 'src/referral-codes/referral-codes.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Membership, Payment, Subscription]), SubscriptionsModule, PaymentsModule],
