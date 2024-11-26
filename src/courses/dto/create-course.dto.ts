@@ -19,7 +19,7 @@ export class CreateCourseDto {
       "Course's video introduction, This field is only for documenting the api, uploading is managed by the upload-file pipe and hosted on an external service",
   })
   @IsOptional()
-  video_url: Express.Multer.File;
+  video_url: string;
 
   @ApiProperty({
     name: 'lessons',
