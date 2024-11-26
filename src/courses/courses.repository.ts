@@ -1,8 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Course } from './entities/course.entity';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { UsersRepository } from 'src/users/users.repository';
+import { UpdateCourseDto } from './dto/update-course.dto';
 
 @Injectable()
 export class CoursesRepository {
@@ -132,5 +133,9 @@ export class CoursesRepository {
     return await this.coursesRepository.save(
       this.coursesRepository.create(data),
     );
+  }
+
+  async updateCourse(id, data): Promise<UpdateResult> {
+    return await this.coursesRepository.update(id, data)
   }
 }

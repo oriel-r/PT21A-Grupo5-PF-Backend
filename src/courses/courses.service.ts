@@ -7,12 +7,10 @@ import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { CoursesRepository } from './courses.repository';
 import { Course } from './entities/course.entity';
-import { retry } from 'rxjs';
-import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class CoursesService {
-  constructor(private readonly coursesRepository: CoursesRepository) {}
+  constructor(private readonly coursesRepository: CoursesRepository,) {}
 
   async getPagination(page, limit) {
     page = Number(page) ? Number(page) : 1;
@@ -79,8 +77,11 @@ export class CoursesService {
     return await this.coursesRepository.findById(id);
   }
 
-  async update(id: number, updateCourseDto: UpdateCourseDto) {
-    return `This action updates a #${id} course`;
+  async update(id: string, data: UpdateCourseDto) {
+    const course = await this.coursesRepository.findById(id)
+    if (!course) throw new NotFoundException('No se encontro el curso')
+    await this.coursesRepository.updateCourse(id, data)
+    return await this.coursesRepository.findById(id)
   }
 
   async remove(id: number) {
