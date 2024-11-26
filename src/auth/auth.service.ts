@@ -75,7 +75,7 @@ export class AuthService {
         idNumber: user.idNumber,
         role: user.role,
         photo: user.photo,
-        course: this.findCourseType(user),
+        courses: this.findCourseType(user),
         ...(user.membership && { membership: user.membership }),
         ...(user.membership?.subscription && {
           subscription: user.membership.subscription,
