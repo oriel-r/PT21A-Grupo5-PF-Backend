@@ -58,10 +58,8 @@ export class LanguageRepository {
     return await this.languageRepository.findOneBy({ name });
   }
 
-  async create(data): Promise<Language> {
-    return await this.languageRepository.save(
-      this.languageRepository.create(data),
-    )[0];
+  async create(language:Language) {
+    return await this.languageRepository.save(language);
   }
 
   async update(id, data): Promise<UpdateResult> {
