@@ -4,6 +4,16 @@ import { DeepPartial } from 'typeorm';
 
 export class CreateLanguageDto {
   @ApiProperty({
+    type: String,
+    title: 'path',
+    description: 'atribute for get a language',
+    example: 'russian',
+  })
+  @IsNotEmpty()
+  @IsString()
+  path: string;
+
+  @ApiProperty({
     name: 'name',
     description: 'language name',
     example: 'Guarani',
@@ -13,18 +23,21 @@ export class CreateLanguageDto {
   name: string;
 
   @ApiProperty({
-    name: 'A refence image of the language',
-    description: 'in jpg or png, webp is more optimized or web, Max size 2MB',
+    type: String,
+    title: 'General description',
+    description: 'General description of the language.',
   })
-  @IsOptional()
-  image_url: string;
+  @IsString()
+  @IsNotEmpty()
+  general_description: string;
 
   @ApiProperty({
-    name: 'courses',
-    description: 'an array of courses names',
+    name: 'brief_description',
+    description: 'A short description',
   })
-  @IsOptional()
-  course: string[];
+  @IsString()
+  @IsNotEmpty()
+  brief_description: string;
 
   constructor(partial: DeepPartial<CreateLanguageDto>) {
     Object.assign(this, partial);

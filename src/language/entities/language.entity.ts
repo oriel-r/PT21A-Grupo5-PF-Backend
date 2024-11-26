@@ -41,7 +41,7 @@ export class Language {
     description: 'A reference image of the flag',
     type: 'string',
   })
-  @Column()
+  @Column({nullable:true})
   flag_url: string;
 
   @ApiProperty({

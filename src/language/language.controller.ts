@@ -57,6 +57,14 @@ export class LanguageController {
   async getById(id: string) {
     return await this.languageService.getCoursesFromLanguage(id);
   }
+
+  @ApiOperation({ summary: 'Create language' })
+  @Post('create')
+  async createLanguage(@Body() createLanguageDto: CreateLanguageDto) {
+    const { path, name, general_description, brief_description } = createLanguageDto;
+    return await this.languageService.addLanguage({ path, name, general_description, brief_description });
+  }
+
   @Put('id:/flag_url')
   @ApiOperation({
     summary: 'Add a new language',
