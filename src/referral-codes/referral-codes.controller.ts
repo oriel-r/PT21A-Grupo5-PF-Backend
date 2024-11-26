@@ -51,8 +51,9 @@ export class ReferralCodesController {
     description: 'Referral codes successfully created.',
   })
   @Post('redeem/:id')
-  async redeem(@Param('id') userId: string, @Body() code: RedeemCodeDto) {
-    return await this.referralCodesService.redeemCode(userId, code);
+  async redeem(@Param('id') userId: string, @Body() code: string) {
+    const data = new RedeemCodeDto(userId, code)
+    return await this.referralCodesService.redeemCode(data);
   }
 
   @Get()
