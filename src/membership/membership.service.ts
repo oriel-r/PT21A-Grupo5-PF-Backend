@@ -3,7 +3,6 @@ import {
   Injectable,
   NotFoundException,
   ServiceUnavailableException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { MembershipRepostory } from './membership.repository';
 import { SubscriptionsService } from 'src/subscriptions/subscriptions.service';
@@ -14,7 +13,9 @@ import { UpdateMembershipDto } from './dto/update-membership.dto';
 import { MercadopagoService } from 'src/services/mercadopago/mercadopago.service';
 import { PreApprovalResponse } from 'mercadopago/dist/clients/preApproval/commonTypes';
 import { MyPreApproval } from './dto/create-memebership.dto';
-import { ReferralCodesService } from 'src/referral-codes/referral-codes.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { RedeemCodeDto } from 'src/referral-codes/dto/redeem-code.dto';
+import { ReferralCode } from 'src/referral-codes/entities/referral-code.entity';
 
 @Injectable()
 export class MembershipService {
@@ -23,7 +24,7 @@ export class MembershipService {
     private readonly subscriptionsService: SubscriptionsService,
     private readonly paymentsServicec: PaymentsService,
     private readonly externalPayment: MercadopagoService,
-    //private readonly referralCodesService: ReferralCodesService
+    private readonly eventEmiter: EventEmitter2
   ) {}
 
   async createMembership(user: User): Promise<Membership> {
@@ -40,28 +41,47 @@ export class MembershipService {
   }
 
   async updateMembership(id: string, updateData: UpdateMembershipDto) {
+    let checkedReferral: ReferralCode[] = [];
+    
     const membership = await this.membershipsRepository.getById(id);
-    if (!membership)
-      throw new NotFoundException('No se encontro la memebresia');
-    const newSubs = await this.subscriptionsService.findOne(updateData.subs_id);
-    if (!newSubs)
-      throw new NotFoundException(
-        'No se encontraron subscripciones asignables',
+    if (!membership) {
+      throw new NotFoundException('No se encontró la membresía');
+    }
+  
+    const newSubscription = await this.subscriptionsService.findOne(updateData.subs_id);
+    if (!newSubscription) {
+      throw new NotFoundException('No se encontraron suscripciones asignables');
+    }
+  
+    if (membership.subscription.id === newSubscription.id) {
+      throw new BadRequestException('El plan seleccionado coincide con tu plan actual');
+    }
+  
+    if (updateData.vaucher) {
+      checkedReferral = await this.eventEmiter.emitAsync(
+        'checkReferral',
+        new RedeemCodeDto(membership.user.id, updateData.vaucher)
       );
-    if(membership.subscription.id === newSubs.id) throw new BadRequestException('El plan seleccionado coincide con tu plan actual')
-    const mpResponse: PreApprovalResponse = await this.externalPayment.createSubscription(new MyPreApproval(membership, newSubs))
-    console.log({memService: mpResponse})
-    const firstPayment = await this.paymentsServicec.addPayment({
-      membership: membership,
-    });
-    if (!firstPayment)
-      throw new ServiceUnavailableException(
-        'Hubo un error al procesar el pago',
-      );
+    }
+  
+    const discount = checkedReferral.length > 0 ? checkedReferral[0].discount : 0;
+    
+    const mpResponse: PreApprovalResponse = await this.externalPayment.createSubscription(new MyPreApproval(membership, newSubscription, discount));
+  
+    if (!mpResponse || !mpResponse.init_point) {
+      throw new ServiceUnavailableException('Error al procesar la suscripción externa');
+    }
+  
+    const firstPayment = await this.paymentsServicec.addPayment({ membership });
+    if (!firstPayment) {
+      throw new ServiceUnavailableException('Hubo un error al procesar el pago');
+    }
+  
     await this.membershipsRepository.updateMembership(membership.id, {
-      subscription: newSubs,
+      subscription: newSubscription,
     });
-    if(mpResponse && mpResponse.init_point) return {link: mpResponse.init_point}
+  
+    return { link: mpResponse.init_point };
   }
 
   async getMemberships() {
