@@ -43,7 +43,7 @@ export class CreateCourseDto {
   @ApiProperty({
     description: 'The specialization of the course.',
     enum: Specialization,
-    example: Specialization.IT,
+    example: Specialization.CONVERSATIONAL,
   })
   @IsOptional()
   @IsEnum(Specialization)
