@@ -9,6 +9,7 @@ import { addDays, compareAsc } from 'date-fns';
 import { Repository } from 'typeorm';
 import * as randomstring from 'randomstring';
 import { RedeemCodeDto } from './dto/redeem-code.dto';
+import { OnEvent } from '@nestjs/event-emitter';
 
 
 @Injectable()
@@ -48,10 +49,11 @@ export class ReferralCodesService {
     return referralCodeEntitites;
   }
 
-  async redeemCode(userId:string, codeDto:RedeemCodeDto):Promise<ReferralCode> {
-    const {code} = codeDto
+  @OnEvent('checkReferral')
+  async redeemCode(data:RedeemCodeDto):Promise<ReferralCode> {
+    const {code} = data
     const referralCode = await this.referralCodesRepository.findOne({where:{code}})
-    const redeemer = await this.usersService.findOne(userId)
+    const redeemer = await this.usersService.findOne(data.userId)
     const isExpired =  (compareAsc(referralCode.expirationDate, new Date())) === -1
     if (!referralCode) {
       throw new BadRequestException('Código inválido');

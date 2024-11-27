@@ -32,7 +32,7 @@ export class MyPreApproval implements PreApprovalRequest {
     }
 
     private calculateFinalPrice(price: number, discount?: number): number {
-        if(discount && discount > 0) {
+        if(discount) {
             const discountDecimal = discount / 100
             return price * (1 - discountDecimal)
         }

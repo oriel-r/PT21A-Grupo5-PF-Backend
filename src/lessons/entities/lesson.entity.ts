@@ -45,7 +45,7 @@ export class Lesson {
       "Lesson's video. Only use for document this api. Validation by file-upload pipe and upload externaly",
   })
   @Column({
-    default: 'https://www.youtube.com/embed/qxOkaU6RVz4?si=uNX_bov4i-FLzcOy',
+    default: 'https://res.cloudinary.com/drhgd3e7s/video/upload/v1732670241/kitten_fbh01u.mp4',
   })
   video_url: string;
 

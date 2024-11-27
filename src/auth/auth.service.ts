@@ -8,6 +8,9 @@ import { JwtService } from '@nestjs/jwt';
 import { EmailerService } from 'src/emailer/emailer.service';
 import { SendEmailDto } from 'src/emailer/dto/send-email.dto';
 import { emailHtml } from 'src/utils/email-template';
+import { User } from 'src/users/entities/user.entity';
+import { Role } from 'src/enums/roles.enum';
+import { Course } from 'src/courses/entities/course.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -116,9 +119,11 @@ export class AuthService {
         idNumber: user.idNumber,
         role: user.role,
         photo: user.photo,
-        courses: user.courses,
+        courses: this.findCourseType(user),
         ...(user.membership && { membership: user.membership }),
-        ...(user.membership?.subscription && { subscription: user.membership.subscription }),
+        ...(user.membership?.subscription && {
+          subscription: user.membership.subscription,
+        }),
       },
     };
   }
@@ -128,7 +133,20 @@ export class AuthService {
       id: user.id,
       email: user.email,
       role: user.role,
-    }
+    };
     return this.jwtService.sign(payload);
+  }
+
+  findCourseType(user: User):Course[] | undefined {
+    switch (user.role) {
+      case Role.USER:
+        return user.coursesToTake;
+        break;
+      case Role.TEACHER:
+        return user.coursesToTeach;
+        break;
+      default:
+        return undefined;
+    }
   }
 }

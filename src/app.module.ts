@@ -23,6 +23,7 @@ import { MembershipModule } from './membership/membership.module';
 import { ProtectedModule } from './protected/protected.module';
 import { WebhooksModule } from './webhooks/webhooks.module';
 import { ReferralCodesModule } from './referral-codes/referral-codes.module'
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { ReferralCodesModule } from './referral-codes/referral-codes.module'
       useFactory: (configService: ConfigService) =>
         configService.get('postgres'),
     }),
+    EventEmitterModule.forRoot(),
     UsersModule,
     AuthModule,
     CoursesModule,
