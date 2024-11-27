@@ -25,7 +25,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { FilePipe } from 'src/pipes/file/file.pipe';
 import { UpdateLessonDto } from './dto/update-lesson.dto';
 
-@ApiTags('lessons')
+@ApiTags('Lessons')
 @Controller('lessons')
 export class LessonsController {
   constructor(private readonly lessonsService: LessonsService) {}
@@ -63,7 +63,7 @@ export class LessonsController {
     description: "Send course's titlte",
   })
   @Post()
-  async createCourse(@Body() data: CreateLessonDto) {
+  async createLesson(@Body() data: CreateLessonDto) {
     return await this.lessonsService.create(data);
   }
 
@@ -84,7 +84,7 @@ export class LessonsController {
       },
     },
   })
-  @Put(':id')
+  @Put(':id/upload')
   async create(
     @Param() id: string,
     @UploadedFile(
@@ -101,14 +101,16 @@ export class LessonsController {
   }
 
   @ApiOperation({
-    summary: 'Create a lesson',
-    description: "Send course's title",
+    summary: 'Edit lesson',
+    description: "Modify lesson data",
   })
   @Put(':id')
   async updateLesson(
     @Param('id') id: string,
-    @Body() updateLessonDto: UpdateLessonDto,
-  ) {}
+    @Body() data: UpdateLessonDto,
+  ) {
+    return await this.lessonsService.updateLesson(id, data)
+  }
 
   @ApiOperation({
     summary: 'Delete a lesson',
