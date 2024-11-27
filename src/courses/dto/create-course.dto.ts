@@ -15,13 +15,6 @@ export class CreateCourseDto {
   @IsString()
   title: string;
 
-  @ApiProperty({
-    name: 'video',
-    description:
-      "Course's video introduction, This field is only for documenting the api, uploading is managed by the upload-file pipe and hosted on an external service",
-  })
-  @IsOptional()
-  video_url: string;
 
   @ApiProperty({
     name: 'lessons',
