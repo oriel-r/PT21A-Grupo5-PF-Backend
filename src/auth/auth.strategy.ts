@@ -34,7 +34,7 @@ export class AuthStrategy extends PassportStrategy(Strategy, 'auth0') {
       authId: profile.id,
       email: profile.emails[0].value,
       name: profile.displayName,
-      photo: profile.picture
+      photo: profile.picture,
     };
     
     let userExisting = await this.usersService.findEmail(user.email);

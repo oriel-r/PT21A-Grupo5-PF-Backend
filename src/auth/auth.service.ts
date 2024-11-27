@@ -8,15 +8,22 @@ import { JwtService } from '@nestjs/jwt';
 import { EmailerService } from 'src/emailer/emailer.service';
 import { SendEmailDto } from 'src/emailer/dto/send-email.dto';
 import { emailHtml } from 'src/utils/email-template';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/users/entities/user.entity';
+import { Repository } from 'typeorm';
+import { randomBytes } from 'crypto';
+import { AuthRepository } from './auth.repository';
 
 
 @Injectable()
 export class AuthService {
   constructor(
+    @InjectRepository(User) private readonly usersRepository: Repository<User>,
     private readonly usersService: UsersService,
     private readonly userRepo: UsersRepository,
     private readonly jwtService: JwtService,
     private readonly emailService: EmailerService,
+    private readonly authRepository: AuthRepository,
   ) {}
 
   async signUp(signUpUser: SignupUserDto) {
@@ -27,12 +34,44 @@ export class AuthService {
     signUpUser.password = await hash(signUpUser.password, 10);
 
     const newUser = await this.usersService.createUser(signUpUser);
-    const message = emailHtml.replace('{{userName}}', signUpUser.name);
+    newUser.isVerified = false;
+    await this.usersRepository.save(newUser);
+
+    const verificationCode = randomBytes(4).toString('hex');
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
+
+    await this.authRepository.createVerificationCode(newUser.email, verificationCode, expiresAt);
+
+    const verificationLink = `http://localhost:3000/verify-email?code=${verificationCode}`;
+    const message = emailHtml
+    .replace('{{userName}}', signUpUser.name)
+    .replace('{{verificationLink}}', verificationLink);
+
     const from = 'Uniendo Culturas <no-reply@uniendoculturas.edu.ar>';
     const to = [signUpUser.email];
-    const subject = 'Bienvenido a Uniendo Culturas';
+    const subject = 'Verifica tu cuenta en Uniendo Culturas';
+    
     await this.emailService.sendWelcomeEmail({ from, to, subject, message });
+    
     return newUser;
+  }
+
+  async verifyEmail(email: string, code: string) {
+    const verification = await this.authRepository.findVerificationCode(email, code);
+
+    if (!verification) {
+      throw new HttpException('Código de verificación inválido.', HttpStatus.BAD_REQUEST);
+    }
+
+    if (new Date() > verification.expiresAt) {
+      throw new HttpException('El código de verificación ha expirado.', HttpStatus.BAD_REQUEST);
+    }
+
+    await this.authRepository.activateUser(email);
+
+    await this.authRepository.deleteVerificationCode(verification.id)
+
+    return { message: 'Cuenta verificada exitosamente.' };
   }
 
   async signIn(credentials: SignInAuthDto) {
@@ -40,6 +79,10 @@ export class AuthService {
 
     if (!user) {
       throw new HttpException('Usuario no encontrado', 404);
+    }
+
+    if (!user.isVerified) {
+      throw new HttpException('El usuario no ha verificado su correo.', HttpStatus.UNAUTHORIZED);
     }
 
     const isPasswordMatching = await compare(
@@ -58,7 +101,6 @@ export class AuthService {
       id: user.id,
       email: user.email,
       role: user.role,
-      
     };
 
     const token = this.jwtService.sign(userPayload);

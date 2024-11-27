@@ -130,8 +130,6 @@ export class UsersService {
     user.membership = membership;
     
     await this.usersRepository.save(user);
-
-    console.log("usuario de lau" , user);
     
     return user;
   }

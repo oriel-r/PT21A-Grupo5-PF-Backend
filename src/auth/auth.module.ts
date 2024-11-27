@@ -8,11 +8,15 @@ import { AuthStrategy } from './auth.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { EmailerModule } from 'src/emailer/emailer.module';
 import { JwtModule } from '@nestjs/jwt';
+import { UserVerification } from './entities/user-verification.entity';
+import { UsersRepository } from 'src/users/users.repository';
+import { UsersService } from 'src/users/users.service';
+import { AuthRepository } from './auth.repository';
 
 @Module({
   imports: [
     UsersModule,
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, UserVerification]),
     PassportModule.register({ session: true }),
     EmailerModule,
     JwtModule.register({
@@ -21,6 +25,6 @@ import { JwtModule } from '@nestjs/jwt';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, AuthStrategy],
+  providers: [AuthService, AuthStrategy, AuthRepository],
 })
 export class AuthModule {}
