@@ -46,7 +46,7 @@ export class Course {
     description: 'URL of the video introduction for the course.',
     example: 'https://example.com/intro-video.mp4',
   })
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: 'https://res.cloudinary.com/drhgd3e7s/video/upload/v1732670241/kitten_fbh01u.mp4' })
   video_url: string;
 
   @ApiProperty({
