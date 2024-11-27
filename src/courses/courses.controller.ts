@@ -12,6 +12,7 @@ import {
   HttpCode,
   HttpStatus,
   Put,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
@@ -42,24 +43,10 @@ export class CoursesController {
     summary: 'Create a new course',
   })
   @Post()
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        file: {
-          type: 'string',
-          format: 'binary',
-        },
-      },
-    },
-  })
   async create(
-    @UploadedFile() file: Express.Multer.File,
     @Body() data: CreateCourseDto,
   ) {
-    return await this.coursesService.create(data, file);
+    return await this.coursesService.create(data);
   }
 
   @Get('filter')
@@ -85,6 +72,31 @@ export class CoursesController {
   findOne(@Param('id') id: string) {
     return this.coursesService.findById(id);
   }
+
+  @ApiOperation({
+    summary: 'Create a new course',
+  })
+  @Put(':id/upload')
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  async uploadVideo(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return await this.coursesService.updateVideo(id, file);
+  }
+
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCourseDto: UpdateCourseDto) {

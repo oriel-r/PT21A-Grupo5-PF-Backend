@@ -7,10 +7,16 @@ import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { CoursesRepository } from './courses.repository';
 import { Course } from './entities/course.entity';
+import { LanguageService } from 'src/language/language.service';
+import { CloudinaryService } from 'src/services/cloudinary/cloudinary.service';
+import { DeepPartial } from 'typeorm';
 
 @Injectable()
 export class CoursesService {
-  constructor(private readonly coursesRepository: CoursesRepository,) {}
+  constructor(private readonly coursesRepository: CoursesRepository,
+    private readonly languageService: LanguageService,
+    private readonly uploadFileService: CloudinaryService
+  ) {}
 
   async getPagination(page, limit) {
     page = Number(page) ? Number(page) : 1;
@@ -46,10 +52,23 @@ export class CoursesService {
     return updatedCourse;
   }
 
-  async create(data: CreateCourseDto, file) {
-    const existCourse = await this.coursesRepository.findByTitle(data.title);
-    if (existCourse) throw new BadRequestException('The course already exist');
-    return await this.coursesRepository.createCourse(data);
+  async create(data: CreateCourseDto) {
+    const {language, title, ...othres} = data
+    const existCourse = await this.coursesRepository.findByTitle(title);
+    if (existCourse) throw new BadRequestException('El curso ya existe');
+
+    const existLanguage = await this.languageService.getById(language)
+    if(!existLanguage) throw new BadRequestException("No se encuentra el lenguaje seleccionado")
+    
+    const newCurse: DeepPartial<Course> = {...othres, title, language: existLanguage}
+    return await this.coursesRepository.createCourse(newCurse);
+  }
+
+  async updateVideo(id: string, data) {
+    const course = await this.coursesRepository.findById(id)
+    if(!course) throw new BadRequestException('No se encuentra el curso')
+    const video: DeepPartial<Course> = {video_url: await this.uploadFileService.uploadFile(data)}
+    await this.coursesRepository.updateCourse(id, video)
   }
 
   async findAll(queries) {
