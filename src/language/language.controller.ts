@@ -18,6 +18,7 @@ import { CreateLanguageDto } from './dto/create-language.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FilePipe } from 'src/pipes/file/file.pipe';
 import { FilterCourses } from 'src/helpers/Filter';
+import { UpdateLanguageDto } from './dto/update-language.dto';
 
 @ApiTags('Languages')
 @Controller('language')
@@ -61,8 +62,14 @@ export class LanguageController {
   @ApiOperation({ summary: 'Create language' })
   @Post('create')
   async createLanguage(@Body() createLanguageDto: CreateLanguageDto) {
-    const { path, name, general_description, brief_description } = createLanguageDto;
-    return await this.languageService.addLanguage({ path, name, general_description, brief_description });
+    const { path, name, general_description, brief_description } =
+      createLanguageDto;
+    return await this.languageService.addLanguage({
+      path,
+      name,
+      general_description,
+      brief_description,
+    });
   }
 
   @Put('id:/flag_url')
@@ -131,6 +138,14 @@ export class LanguageController {
     file?: Express.Multer.File | undefined,
   ) {
     return await this.languageService.addCountryPhoto(id, file);
+  }
+
+  @Put('update/:id')
+  async update(
+    @Param('id') id: string,
+    @Body() updateLanguageDto: UpdateLanguageDto,
+  ) {
+    return await this.languageService.updateLanguage(id, updateLanguageDto);
   }
 
   @Delete(':id')

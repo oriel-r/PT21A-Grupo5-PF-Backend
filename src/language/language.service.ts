@@ -15,6 +15,7 @@ import { Course } from 'src/courses/entities/course.entity';
 import { FilterCourses } from 'src/helpers/Filter';
 import { Level } from 'src/enums/level.enum';
 import { Specialization } from 'src/enums/specializations.enum';
+import { UpdateLanguageDto } from './dto/update-language.dto';
 
 @Injectable()
 export class LanguageService {
@@ -116,6 +117,22 @@ export class LanguageService {
     }
     const result = await this.languageRepository.update(id, newData);
     return { message: 'Successfully updated', result };
+  }
+
+  async updateLanguage(id: string, updateLanguageDto: UpdateLanguageDto):Promise<Language> {
+    const languageToUpdate = await this.languageRepository.findById(id);
+    if (!languageToUpdate) {
+      throw new BadRequestException('Idioma inexistente.');
+    }
+
+    const updatedLanguage:Language = {
+      ...languageToUpdate,
+      ...updateLanguageDto
+    }
+
+    await this.languageRepository.create(updatedLanguage)
+
+    return updatedLanguage;
   }
 
   async delete(id: string) {

@@ -68,7 +68,7 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto) {
     const { name, email, idNumber } = createUserDto;
-    const hashedPassword = await hash(idNumber, 10);
+    const hashedPassword = await hash('Teacher1234!', 10);
     const teacher = new User();
     teacher.name = name;
     teacher.email = email;
