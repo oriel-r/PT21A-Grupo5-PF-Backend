@@ -50,6 +50,13 @@ export class Lesson {
   video_url: string;
 
   @ApiProperty({
+    name: 'Estado',
+    description: 'Indicates if the lesson is active or not',
+  })
+  @Column({default:true})
+  isActive: boolean;
+
+  @ApiProperty({
     name: 'course',
     description: 'lesson from course',
   })

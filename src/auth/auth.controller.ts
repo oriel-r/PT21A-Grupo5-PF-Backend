@@ -6,6 +6,7 @@ import {
   HttpException,
   HttpStatus,
   Post,
+  Query,
   Redirect,
   Req,
   Res,
@@ -16,8 +17,6 @@ import { SignupUserDto } from './dto/signup-auth.dto';
 import { SignInAuthDto } from './dto/signin-auth.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { UserResponseAuthDto } from './dto/user-response-auth.dto';
-import * as jwt from 'jsonwebtoken';
-import { Request } from 'express';
 import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('auth')
@@ -31,7 +30,10 @@ export class AuthController {
   @HttpCode(201)
   async signUp(@Body() signUpUser: SignupUserDto) {
     const newUser = await this.authService.signUp(signUpUser);
-    return new UserResponseAuthDto(newUser);
+    return {
+      message: 'Usuario registrado exitosamente. Revisa tu correo para verificar tu cuenta.',
+      user: new UserResponseAuthDto(newUser),
+    };
   }
 
   @ApiOperation({ summary: 'Authenticate user and generate token' })
@@ -39,6 +41,14 @@ export class AuthController {
   @HttpCode(200)
   async signIn(@Body() credentials: SignInAuthDto) {
     return await this.authService.signIn(credentials);
+  }
+
+  @Post('verify-email')
+  async verifyEmail(
+    @Query('email') email: string,
+    @Query('code') code: string,
+  ) {
+    return this.authService.verifyEmail(email, code);
   }
 
   @ApiOperation({ summary: 'Authenticate user and generate token' })

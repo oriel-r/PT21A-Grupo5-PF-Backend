@@ -119,25 +119,30 @@ export class LanguageService {
     return { message: 'Successfully updated', result };
   }
 
-  async updateLanguage(id: string, updateLanguageDto: UpdateLanguageDto):Promise<Language> {
+  async updateLanguage(
+    id: string,
+    updateLanguageDto: UpdateLanguageDto,
+  ): Promise<Language> {
     const languageToUpdate = await this.languageRepository.findById(id);
     if (!languageToUpdate) {
       throw new BadRequestException('Idioma inexistente.');
     }
 
-    const updatedLanguage:Language = {
+    const updatedLanguage: Language = {
       ...languageToUpdate,
-      ...updateLanguageDto
-    }
+      ...updateLanguageDto,
+    };
 
-    await this.languageRepository.create(updatedLanguage)
+    await this.languageRepository.create(updatedLanguage);
 
     return updatedLanguage;
   }
 
   async delete(id: string) {
-    const product = await this.languageRepository.findById(id);
-    if (!product) throw new NotFoundException('Product not found');
-    return await this.languageRepository.delete(id);
+    const language = await this.languageRepository.findById(id);
+    if (!language) throw new NotFoundException('Product not found');
+    language.isActive = false;
+    await this.languageRepository.create(language);
+    return language;
   }
 }

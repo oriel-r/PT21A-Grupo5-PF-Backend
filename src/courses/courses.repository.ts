@@ -30,7 +30,7 @@ export class CoursesRepository {
   async findByIdWithRatings(courseId: string) {
     return this.coursesRepository.findOne({
       where: { id: courseId },
-      relations: { ratedByUsers: true },
+      relations: { ratedByUsers: true, students: true, teachers: true },
     });
   }
 
@@ -65,6 +65,7 @@ export class CoursesRepository {
       .leftJoinAndSelect('course.lessons', 'lessons')
       .leftJoinAndSelect('course.language', 'language')
       .leftJoinAndSelect('course.category', 'category')
+      .leftJoinAndSelect('course.students', 'students');
 
     Object.keys(filters).forEach((key) => {
       if (key === 'language') {
@@ -136,6 +137,6 @@ export class CoursesRepository {
   }
 
   async updateCourse(id, data): Promise<UpdateResult> {
-    return await this.coursesRepository.update(id, data)
+    return await this.coursesRepository.update(id, data);
   }
 }

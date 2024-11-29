@@ -66,6 +66,13 @@ export class Language {
   @Column()
   brief_description: string;
 
+  @ApiProperty({
+    name: 'Estado',
+    description: 'Indicates if the Language is active or not',
+  })
+  @Column({default:true})
+  isActive: boolean;
+
   @OneToMany(() => Course, (course) => course.language, { cascade: true })
   courses: Course[];
 }
