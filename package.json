@@ -26,6 +26,7 @@
     "migration:show": "npm run typeorm migration:show -- -d ./src/config/data-source.ts"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.21.0",
     "@nestjs-modules/mailer": "^2.0.2",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.3.0",
@@ -41,6 +42,7 @@
     "@nestjs/typeorm": "^10.0.2",
     "@nestjs/websockets": "^10.4.7",
     "@types/randomstring": "^1.3.0",
+    "axios": "^1.7.8",
     "bcrypt": "^5.1.1",
     "buffer-to-stream": "^1.0.0",
     "class-transformer": "^0.5.1",
