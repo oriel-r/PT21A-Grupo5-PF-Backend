@@ -57,7 +57,7 @@ export class CoursesService {
     const existCourse = await this.coursesRepository.findByTitle(title);
     if (existCourse) throw new BadRequestException('El curso ya existe');
 
-    const existLanguage = await this.languageService.getById(language)
+    const existLanguage = await this.languageService.getByName(data.language)
     if(!existLanguage) throw new BadRequestException("No se encuentra el lenguaje seleccionado")
     
     const newCurse: DeepPartial<Course> = {...othres, title, language: existLanguage}
