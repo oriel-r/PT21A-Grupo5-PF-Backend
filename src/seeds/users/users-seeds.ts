@@ -47,6 +47,7 @@ export class UsersSeed {
           user.role = userData.role;
           user.createdAt = new Date();
           user.isActive = true;
+          user.isVerified = true;
 
           // Assign subscription and membership for regular users
           if (user.role === 'user') {
