@@ -126,6 +126,13 @@ export class Course {
   language: Language;
 
   @ApiProperty({
+    name: 'Estado',
+    description: 'Indicates if the course is active or not',
+  })
+  @Column({default:true})
+  isActive: boolean;
+
+  @ApiProperty({
     description: 'List of users who have rated the course.',
     type: () => [User],
   })

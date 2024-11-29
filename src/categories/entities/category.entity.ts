@@ -27,6 +27,13 @@ export class Category {
   name: string;
 
   @ApiProperty({
+    name: 'Estado',
+    description: 'Indicates if the category is active or not',
+  })
+  @Column({default:true})
+  isActive: boolean;
+
+  @ApiProperty({
     type: Array<Course>,
     description: 'FK related to the courses belonging to the category.',
   })
