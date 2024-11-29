@@ -108,6 +108,9 @@ export class User {
   @Column({ default: true })
   isActive: boolean;
 
+  @Column({ default: false})
+  isVerified: boolean; 
+
   @ApiProperty({
     type: () => [Course],
     description: 'Courses assigned to teach.',
