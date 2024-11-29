@@ -13,6 +13,7 @@ export const usersMock = [
     password: 'Jd45679654!',
     idNumber: '45679654',
     role: teacher,
+    isVerified: true,
   },
   {
     name: 'Alice Smith',
@@ -20,6 +21,7 @@ export const usersMock = [
     password: 'Alice1234$',
     idNumber: '37659083',
     role: admin,
+    isVerified: true,
   },
   {
     name: 'Juan Perez',
@@ -28,6 +30,7 @@ export const usersMock = [
     password: 'Password123!',
     subscription: standard,
     role: user,
+    isVerified: true,
   },
   {
     name: 'Maria Lopez',
@@ -36,6 +39,7 @@ export const usersMock = [
     password: 'Password123!',
     subscription: standard,
     role: user,
+    isVerified: true,
   },
   {
     name: 'Carlos Ruiz',
@@ -44,6 +48,7 @@ export const usersMock = [
     password: 'Password123!',
     subscription: standard,
     role: user,
+    isVerified: true,
   },
   {
     name: 'Ana Martinez',
@@ -52,6 +57,7 @@ export const usersMock = [
     password: 'Password123!',
     subscription: standard,
     role: user,
+    isVerified: true,
   },
   {
     name: 'Luis Hernandez',
@@ -60,6 +66,7 @@ export const usersMock = [
     password: 'Password123!',
     subscription: standard,
     role: user,
+    isVerified: true,
   },
   {
     name: 'Sofia Ramirez',
@@ -68,6 +75,7 @@ export const usersMock = [
     password: 'Password123!',
     subscription: premium,
     role: user,
+    isVerified: true,
   },
   {
     name: 'Javier Fernandez',
@@ -76,6 +84,7 @@ export const usersMock = [
     password: 'Password123!',
     subscription: premium,
     role: user,
+    isVerified: true,
   },
   {
     name: 'Isabella Torres',
@@ -84,6 +93,7 @@ export const usersMock = [
     password: 'Password123!',
     subscription: premium,
     role: user,
+    isVerified: true,
   },
   {
     name: 'Diego Gomez',
@@ -92,6 +102,7 @@ export const usersMock = [
     password: 'Password123!',
     subscription: premium,
     role: user,
+    isVerified: true,
   },
   {
     name: 'Valeria Morales',
@@ -100,6 +111,7 @@ export const usersMock = [
     password: 'Password123!',
     subscription: premium,
     role: user,
+    isVerified: true,
   },
   {
     name: 'Miguel Vargas',
@@ -108,6 +120,7 @@ export const usersMock = [
     password: 'Password123!',
     subscription: pro,
     role: user,
+    isVerified: true,
   },
   {
     name: 'Camila Rojas',
@@ -116,6 +129,7 @@ export const usersMock = [
     password: 'Password123!',
     subscription: pro,
     role: user,
+    isVerified: true,
   },
   {
     name: 'Alejandro Castillo',
@@ -124,6 +138,7 @@ export const usersMock = [
     password: 'Password123!',
     subscription: pro,
     role: user,
+    isVerified: true,
   },
   {
     name: 'Emilia Vega',
@@ -132,6 +147,7 @@ export const usersMock = [
     password: 'Password123!',
     subscription: pro,
     role: user,
+    isVerified: true,
   },
   {
     name: 'Daniel Herrera',
@@ -140,6 +156,7 @@ export const usersMock = [
     password: 'Password123!',
     subscription: pro,
     role: user,
+    isVerified: true,
   },
   {
     name: 'Lucia Perez',
@@ -148,6 +165,7 @@ export const usersMock = [
     password: 'Password123!',
     subscription: pro,
     role: user,
+    isVerified: true,
   },
   {
     name: 'Mateo Diaz',
@@ -156,6 +174,7 @@ export const usersMock = [
     password: 'Password123!',
     subscription: premium,
     role: user,
+    isVerified: true,
   },
   {
     name: 'Victoria Garcia',
@@ -164,6 +183,7 @@ export const usersMock = [
     password: 'Password123!',
     subscription: standard,
     role: user,
+    isVerified: true,
   },
   {
     name: 'Sebastian Lopez',
@@ -172,6 +192,7 @@ export const usersMock = [
     password: 'Password123!',
     subscription: standard,
     role: user,
+    isVerified: true,
   },
   {
     name: 'Martina Chavez',
@@ -180,5 +201,6 @@ export const usersMock = [
     password: 'Password123!',
     subscription: premium,
     role: user,
+    isVerified: true,
   },
 ];
