@@ -12,7 +12,6 @@ import { User } from 'src/users/entities/user.entity';
 import { Role } from 'src/enums/roles.enum';
 import { Course } from 'src/courses/entities/course.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { randomBytes } from 'crypto';
 import { AuthRepository } from './auth.repository';
