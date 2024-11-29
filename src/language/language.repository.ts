@@ -17,6 +17,8 @@ export class LanguageRepository {
       .createQueryBuilder('language')
       .leftJoinAndSelect('language.courses', 'course')
       .leftJoinAndSelect('course.category', 'category')
+      .leftJoinAndSelect('course.students', 'students')
+      .leftJoinAndSelect('course.teachers', 'teachers')
       .where('language.path = :path', { path });
 
     if (filters.specialization) {
@@ -42,12 +44,14 @@ export class LanguageRepository {
     return await this.languageRepository.find({
       skip: (page - 1) * limit,
       take: limit,
-      relations: { courses: true },
+      relations: { courses: { students: true, teachers: true } },
     });
   }
 
   async getAll(): Promise<Language[]> {
-    return await this.languageRepository.find({ relations: { courses: true } });
+    return await this.languageRepository.find({
+      relations: { courses: { students: true, teachers: true } },
+    });
   }
 
   async findById(id: string): Promise<Language | null> {
@@ -58,15 +62,11 @@ export class LanguageRepository {
     return await this.languageRepository.findOneBy({ name });
   }
 
-  async create(language:Language) {
+  async create(language: Language) {
     return await this.languageRepository.save(language);
   }
 
   async update(id, data): Promise<UpdateResult> {
     return await this.languageRepository.update(id, data);
-  }
-
-  async delete(id: string): Promise<DeleteResult> {
-    return await this.languageRepository.delete(id);
   }
 }
