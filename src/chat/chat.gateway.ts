@@ -3,6 +3,9 @@ import {
   SubscribeMessage,
   MessageBody,
   WebSocketServer,
+  OnGatewayConnection,
+  OnGatewayDisconnect,
+  ConnectedSocket,
 } from '@nestjs/websockets';
 import { ChatService } from './chat.service';
 import { CreateChatDto } from './dto/create-chat.dto';
@@ -21,16 +24,26 @@ export class ChatGateway implements OnModuleInit {
   onModuleInit() {
     this.server.on('connection', (socket: Socket) => {
 
-      console.log('Cliente conectado ' + socket.id)
+      const roomId = socket.id
+
+      console.log(socket.id)
+
+      socket.join(roomId)
 
       socket.on('disconnect', () => console.log('Cliente desconectado'))
 
     })
   }
 
-  @SubscribeMessage('createChat')
-  create(@MessageBody() createChatDto: CreateChatDto) {
-    return this.chatService.create(createChatDto);
+  @SubscribeMessage('message')
+  async create(@ConnectedSocket() client: Socket, @MessageBody() data: any) {
+
+    const roomId = client.id
+
+    this.server.to(roomId).emit(data)
+    console.log({room: roomId, data})
+
+    this.server.to(roomId).emit('response', "respuesta 1")
   }
 
   @SubscribeMessage('findAllChat')
