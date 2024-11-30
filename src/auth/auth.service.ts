@@ -15,6 +15,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { randomBytes } from 'crypto';
 import { AuthRepository } from './auth.repository';
+import { AuthPayload } from 'src/helpers/AuthPayload';
 
 
 @Injectable()
@@ -128,7 +129,7 @@ export class AuthService {
   }
 
   generateJwt(user: any) {
-    const payload = {
+    const payload: AuthPayload = {
       id: user.id,
       email: user.email,
       role: user.role,
