@@ -6,6 +6,7 @@ import {
   } from '@nestjs/common';
   import { ConfigService } from '@nestjs/config';
   import { JwtService } from '@nestjs/jwt';
+import { SockerWithUser } from 'src/helpers/SocketWithUser';
   
   @Injectable()
   export class WsAuthGuard implements CanActivate {
@@ -15,7 +16,7 @@ import {
     ) {}
   
     async canActivate(context: ExecutionContext): Promise<boolean> {
-      const client = context.switchToWs().getClient(); // Obtiene el cliente WebSocket
+      const client = context.switchToWs().getClient<SockerWithUser>(); // Obtiene el cliente WebSocket
       const token = this.extractTokenFromSocket(client);
   
       if (!token) {
