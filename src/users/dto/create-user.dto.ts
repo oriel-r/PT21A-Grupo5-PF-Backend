@@ -21,15 +21,7 @@ export class CreateUserDto {
     description: 'The password of the user',
     example: 'Password123!',
   })
-  @Matches(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[=!@#$%^&*])[A-Za-z\d=!@#$%^&*]{8,15}$/,
-    {
-      message:
-        'La contraseña debe contener al menos una minúscula, una mayúscula, un número, un caracter especial (= !@#$%^&*) y tener entre 8 y 15 caracteres',
-    },
-  )
-  @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   password: string;
 
   @ApiProperty({ enum: Role, description: 'Enum indicating the user role.' })
