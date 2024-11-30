@@ -121,7 +121,7 @@ export class Course {
     description: 'The language associated with the course.',
     type: () => Language,
   })
-  @ManyToOne(() => Language, (language) => language.courses)
+  @ManyToOne(() => Language, (language) => language.courses, {eager: true})
   @JoinColumn()
   language: Language;
 
