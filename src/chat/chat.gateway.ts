@@ -3,23 +3,17 @@ import {
   SubscribeMessage,
   MessageBody,
   WebSocketServer,
-  OnGatewayConnection,
-  OnGatewayDisconnect,
   ConnectedSocket,
 } from '@nestjs/websockets';
 import { ChatService } from './chat.service';
-import { CreateChatDto } from './dto/create-chat.dto';
-import { UpdateChatDto } from './dto/update-chat.dto';
-import { Server, Socket } from 'socket.io';
-import { OnModuleInit, UseGuards } from '@nestjs/common';
-import { WsAuthGuard } from 'src/guards/wsocket/socket-io.guard';
-import { DeepPartial } from 'typeorm';
-import { User } from 'src/users/entities/user.entity';
+import { Server } from 'socket.io';
+import { OnModuleInit, UseGuards, } from '@nestjs/common';
 import { ChatServiceGemini } from './chat-gemini.service';
-import { OnEvent } from '@nestjs/event-emitter';
+import { WsAuthGuard } from 'src/guards/wsocket/socket-io.guard';
+import { SockerWithUser } from 'src/helpers/SocketWithUser';
 
-@WebSocketGateway()
-export class ChatGateway implements OnModuleInit {
+@WebSocketGateway({namespace: 'chat'})
+export class ChatGateway implements OnModuleInit{
 
   @WebSocketServer()
   server: Server
@@ -29,64 +23,31 @@ export class ChatGateway implements OnModuleInit {
   ) {}
 
   onModuleInit() {
-    this.server.on('connection', (socket: Socket) => {
+    this.server.on('connection', (socket: SockerWithUser) => {
 
-      const roomId = socket.id
-
-      console.log(socket.id)
-
-      socket.join(roomId)
-
-      socket.on('disconnect', () => console.log('Cliente desconectado'))
-
+      const token = socket.handshake.headers.authorization.split(' ')[1]
+      if (token) {  
+        socket.join(token)
+      } else {
+        console.log('disconected')
+        socket.disconnect()
+        socket.on('disconnect', () => console.log('Cliente desconectado'))
+      }
     })
   }
 
-  //@UseGuards(WsAuthGuard)
+ // @UseGuards(WsAuthGuard)
   @SubscribeMessage('message')
-  async create(@ConnectedSocket() client: Socket, @MessageBody() data: any) {
-    let userMock: DeepPartial<User> = {}
+  async create(@ConnectedSocket() client: SockerWithUser, @MessageBody() data: any) {
 
-    const token = client.handshake.headers.authorization
+    const roomId = client.handshake.headers.authorization.split(' ')[1]
+    const language = client.handshake.query?.language as string || 'ingles'
     
-    if(token === '1234' ) {
-      userMock = {
-        id: '12345678',
-        coursesToTake: [
-          {
-            language: {
-              name: 'ingles'
-            } 
-          }
-        ]
-      }
-    }
-
-    if(token === '5678' ) {
-      userMock = {
-        id: '87654321',
-        coursesToTake: [
-          {
-            language: {
-              name: 'guarani'
-            } 
-          }
-        ]
-      }
-    }
-
-    const roomId = userMock.id
-
-    const response = await this.geminiService.handleMessage(userMock.id, userMock.coursesToTake[0].language.name , data)
-
-   // console.log(response)
-
-    this.server.to(roomId).emit(data)
-    console.log({room: roomId, data})
+    let response = await this.geminiService.handleMessage(roomId, language , data)
 
 
+    this.server.to(roomId).emit('response-message', response)
 
-    this.server.to(roomId).emit('response', response[0])
   }
 
 
