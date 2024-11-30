@@ -35,7 +35,7 @@ export class LessonsService {
 
   async create(data: CreateLessonDto) {
     const { course, ...otherProperties } = data;
-    const aCourse = await this.coursesService.findOne(data.course);
+    const aCourse = await this.coursesService.findById(data.course);
     if (!course) throw new NotFoundException('El curso no existe');
     const lesson: Partial<Lesson> = { ...otherProperties, course: aCourse };
     return await this.lessonsRepositoy.create(lesson);
