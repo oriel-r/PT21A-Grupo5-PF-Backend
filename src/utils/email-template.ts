@@ -70,7 +70,7 @@ export const emailHtml = `
             <p>Hola, <strong>{{userName}}</strong>,</p>
             <p>Estamos encantados de tenerte a bordo. Nuestro objetivo es proporcionarte la mejor experiencia posible.
             </p>
-            <p>Haz clic en el siguiente botón para verificar su cuenta:</p>
+            <p>Haz clic en el siguiente botón para verificar tu cuenta:</p>
             <a href="{{verificationLink}}" class="button">Explorar Ahora</a>
             <p>Si tienes alguna pregunta, no dudes en responder a este correo o visitar nuestra página de soporte.</p>
             <p>¡Gracias por elegirnos!</p>
