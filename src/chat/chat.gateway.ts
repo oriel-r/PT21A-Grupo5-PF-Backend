@@ -4,33 +4,36 @@ import {
   MessageBody,
   WebSocketServer,
   ConnectedSocket,
+  WsException,
 } from '@nestjs/websockets';
-import { ChatService } from './chat.service';
 import { Server } from 'socket.io';
 import { OnModuleInit, UseGuards, } from '@nestjs/common';
 import { ChatServiceGemini } from './chat-gemini.service';
 import { WsAuthGuard } from 'src/guards/wsocket/socket-io.guard';
 import { SockerWithUser } from 'src/helpers/SocketWithUser';
 
-@WebSocketGateway({namespace: 'chat'})
+
+@WebSocketGateway({namespace: 'chat', cors: {orgin: ['*']}})
 export class ChatGateway implements OnModuleInit{
 
   @WebSocketServer()
   server: Server
 
-  constructor(private readonly chatService: ChatService,
+  constructor(
     private readonly geminiService: ChatServiceGemini
   ) {}
 
   onModuleInit() {
     this.server.on('connection', (socket: SockerWithUser) => {
       try {
-      const token = socket.handshake.headers.authorization?.split(' ')[1]
-      socket.join(token)
+        const token = socket.handshake.auth.token
+        if (!token) throw new WsException("Token no encontrado o invalido al inicializar la conexion")
+        const roomId = token.replace(/^"|"$/g, '')
+        socket.join(roomId)
       } catch (error) {
-        console.error(error)
+        console.error('Error desconocido en conexión:', error)
+        socket.emit('error', { message: "Error desconocido en conexión:" })
         socket.disconnect()
-        socket.on('disconnect', () => console.log('Cliente desconectado'))
       }
     })
   }
@@ -39,13 +42,15 @@ export class ChatGateway implements OnModuleInit{
   @SubscribeMessage('message')
   async create(@ConnectedSocket() client: SockerWithUser, @MessageBody() data: any) {
 
-    const roomId = client.handshake.headers.authorization.split(' ')[1]
-    const language = client.handshake.query?.language as string || 'ingles'
-    
-    let response = await this.geminiService.handleMessage(roomId, language , data)
-
-
-    this.server.to(roomId).emit('response-message', response)
+    try {
+      const token = client.handshake.auth.token
+      if(!token) throw new WsException('No recibimos el token correctamente')
+      const roomId = token.replace(/^"|"$/g, '')    
+      let response = await this.geminiService.handleMessage(roomId , data)
+      this.server.to(roomId).emit( response)
+    } catch(error) {
+      console.error({message: "hubo un error", error})
+    }
 
   }
 
