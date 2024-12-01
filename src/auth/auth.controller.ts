@@ -21,9 +21,7 @@ import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-  ) { }
+  constructor(private readonly authService: AuthService) {}
 
   @ApiOperation({ summary: 'Register a new user' })
   @Post('signup')
@@ -31,7 +29,8 @@ export class AuthController {
   async signUp(@Body() signUpUser: SignupUserDto) {
     const newUser = await this.authService.signUp(signUpUser);
     return {
-      message: 'Usuario registrado exitosamente. Revisa tu correo para verificar tu cuenta.',
+      message:
+        'Usuario registrado exitosamente. Revisa tu correo para verificar tu cuenta.',
       user: new UserResponseAuthDto(newUser),
     };
   }
@@ -58,7 +57,7 @@ export class AuthController {
     return { message: 'Login exitoso' };
   }
 
-  @ApiOperation({summary: 'Handle Auth0 callback and issue JWT'})
+  @ApiOperation({ summary: 'Handle Auth0 callback and issue JWT' })
   @Get('callback')
   @UseGuards(AuthGuard('auth0'))
   async callback(@Req() req, @Res() res) {
@@ -66,14 +65,16 @@ export class AuthController {
 
     const token = await this.authService.generateJwt(user);
 
-    const redirectUrl = `http://localhost:3000/auth/callback/?token=${encodeURIComponent(
+    const redirectUrl = `https://rompiendo-barreras-pf.vercel.app/auth/callback/?token=${encodeURIComponent(
       token,
     )}&user=${encodeURIComponent(JSON.stringify(user))}`;
-  
+
     return res.redirect(redirectUrl);
   }
 
-  @ApiOperation({summary: 'Log out the user and redirect to Auth0 logout URL'})
+  @ApiOperation({
+    summary: 'Log out the user and redirect to Auth0 logout URL',
+  })
   @Get('logout')
   async logout(@Req() req, @Res() res): Promise<void> {
     try {
