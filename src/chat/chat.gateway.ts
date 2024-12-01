@@ -24,6 +24,8 @@ export class ChatGateway implements OnModuleInit{
 
   onModuleInit() {
     this.server.on('connection', (socket: SockerWithUser) => {
+
+
       try {
       const token = socket.handshake.headers.authorization?.split(' ')[1]
       socket.join(token)
