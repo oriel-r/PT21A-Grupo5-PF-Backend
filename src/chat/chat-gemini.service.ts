@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenerativeAI, } from '@google/generative-ai';
+import { Socket } from 'socket.io';
 
 @Injectable()
 export class ChatServiceGemini {
@@ -10,26 +11,23 @@ export class ChatServiceGemini {
 
   constructor(
     private configService: ConfigService,
-    private eventEmitter: EventEmitter2,
   ) {
-    const apiKey = this.configService.get<string>('GEMIANIAI_API_KEY');
+    //const apiKey =
+     const apiKey = this.configService.get<string>('GEMIANIAI_API_KEY');
     if (!apiKey) {
+
       throw new Error('GEMIANIAI_API_KEY no está configurado en las variables de entorno.');
     }
-
     this.genAI = new GoogleGenerativeAI(apiKey);
   }
 
-  async handleMessage(userId: string, language: string, message: string) {
+  async handleMessage(userId: string, language: string, message: string, ) {
     const context = this.getOrCreateContext(userId);
     context.push(`Usuario: ${message}`);
-
-    const response = await this.getAIResponse(language, context);
+    const response = await this.getAIResponse( language, context,);
 
     context.push(`Profesor: ${response}`);
     this.chatHistory.set(userId, context);
-
-    this.eventEmitter.emit('chat.response', { userId, response });
 
     return response;
   }
@@ -41,29 +39,35 @@ export class ChatServiceGemini {
     return this.chatHistory.get(userId)!;
   }
 
-  private async getAIResponse(language: string, context: string[]) {
-    const prompt = `Eres un profesor experto en ${language}. Ayuda a los estudiantes de forma interactiva, responde en español. 
-    Contexto actual: ${context.join('\n')}`;
-
+  private async getAIResponse( language: string, context: string[]) {
+    const prompt = `Eres un profesor experto en ${language}. Ayuda a los estudiantes de forma interactiva, responde en español, . 
+    Contexto actual: ${context.join('\n')}
+    Si bien este es el contexto actual no es necesario que me respondas todo ca vez que te pregunto algo, responde la ultima pregunta y solo algo del contexto si te lo indico
+    `;
+  
     try {
       const model = this.genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-
-      const result = await model.generateContent(prompt);
-
-      if (result.response && result.response.candidates && result.response.candidates.length > 0) {
-        if (result.response.candidates.length > 1) {
-          console.warn(`Esta respuesta tiene ${result.response.candidates.length} candidatos. Se está devolviendo el texto del primer candidato.`);
-        }
-
-        return result.response.candidates[0]?.content || 'Lo siento, no tengo una respuesta en este momento.';
-      }
-
-      return 'Lo siento, no tengo una respuesta en este momento.';
+      const chat = model.startChat({
+        history: [
+          {
+            role: "user",
+            parts: [{ text: "Hola" }],
+          },
+          {
+            role: "model",
+            parts: [{ text: "Un gusto conocer, que te gustaria saber ahora?" }],
+          },
+        ],
+      });
+  
+      const result = await chat.sendMessage(prompt);
+      return result.response.text();
     } catch (error) {
       console.error('Error al generar la respuesta:', error);
       return 'Hubo un error al procesar la solicitud.';
     }
   }
+
 }
 
 
