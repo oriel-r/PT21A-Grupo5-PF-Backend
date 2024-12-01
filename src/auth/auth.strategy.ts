@@ -3,14 +3,13 @@ import { JwtService } from '@nestjs/jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-auth0';
 import { UsersService } from 'src/users/users.service';
-import { AuthService } from './auth.service';
 
 @Injectable()
 export class AuthStrategy extends PassportStrategy(Strategy, 'auth0') {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
-    private readonly authService: AuthService
+
   ) {
     super({
       domain: process.env.AUTH0_DOMAIN.replace(/^https?:\/\//, ''),
@@ -44,17 +43,19 @@ export class AuthStrategy extends PassportStrategy(Strategy, 'auth0') {
       userExisting = await this.usersService.createUserFromAuth0(user)
     }
 
-    console.log("usuario de lau:", userExisting);
-    
+    const responseUser = {
+      ...userExisting,
+      courses: [],
+    };    
 
     const jwt = await this.jwtService.signAsync({
-      authId: userExisting.authId,
-      email: userExisting.email,
-      name: userExisting.name,
-      role: userExisting.role,
+      authId: responseUser.authId,
+      email: responseUser.email,
+      name: responseUser.name,
+      role: responseUser.role,
     });
     
-    return done(null, userExisting , { tokens: jwt });
+    return done(null, responseUser , { tokens: jwt });
   }
 }
 

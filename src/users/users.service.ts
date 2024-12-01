@@ -133,7 +133,7 @@ export class UsersService {
         'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg'),
       (user.password = uuid()),
       (user.idNumber = uuid()),
-      user.isVerified = true
+      user.isVerified = true,
       await this.usersRepository.save(user);
     const membership: Membership =
       await this.membershipService.createMembership(user);
@@ -141,7 +141,7 @@ export class UsersService {
 
     await this.usersRepository.save(user);
 
-    return user;
+    return { ...user, courses: [] };
   }
 
   async findAll() {
