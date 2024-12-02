@@ -3,16 +3,6 @@ import { IsArray, IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class SendEmailDto {
   @ApiProperty({
-    type: String,
-    title: 'From',
-    description: 'Email sender',
-    example: 'Uniendo Culturas <no-reply@uniendoculturas.edu.ar>',
-  })
-  @IsString()
-  @IsEmail()
-  @IsNotEmpty()
-  from: string;
-  @ApiProperty({
     type: Array<string>,
     title: 'To',
     description: 'Email recepients',
@@ -27,6 +17,8 @@ export class SendEmailDto {
     description: 'Email subject',
     example: 'Apertura de nuevos cursos.',
   })
+  @IsString()
+  @IsNotEmpty()
   subject: string;
   @ApiProperty({
     type: String,
@@ -34,5 +26,7 @@ export class SendEmailDto {
     description: 'Body of the email',
     example: 'Te presentamos nuestros nuevos cursos.',
   })
+  @IsString()
+  @IsNotEmpty()
   message: string;
 }

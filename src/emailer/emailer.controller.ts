@@ -8,7 +8,7 @@ export class EmailerController {
 
   @Post('send')
   async sendMail(@Body() sendEmailDto: SendEmailDto) {
-    const { from, to, subject, message } = sendEmailDto;
-    return await this.emailerService.sendEmail({ from, to, subject, message });
+    const { to, subject, message } = sendEmailDto;
+    return await this.emailerService.sendEmail({ to, subject, message });
   }
 }

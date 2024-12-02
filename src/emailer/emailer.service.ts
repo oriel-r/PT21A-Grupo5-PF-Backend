@@ -7,9 +7,8 @@ export class EmailerService {
   constructor(private readonly mailService: MailerService) {}
 
   async sendEmail(sendEmailDto: SendEmailDto): Promise<string> {
-    const { from, to, subject, message } = sendEmailDto;
+    const { to, subject, message } = sendEmailDto;
     await this.mailService.sendMail({
-      from: from,
       to: to,
       subject: subject,
       text: message,
@@ -19,9 +18,8 @@ export class EmailerService {
   }
 
   async sendWelcomeEmail(sendEmailDto: SendEmailDto): Promise<void> {
-    const { from, to, subject, message } = sendEmailDto;
+    const { to, subject, message } = sendEmailDto;
     await this.mailService.sendMail({
-      from: from,
       to: to,
       subject: subject,
       html: message,
