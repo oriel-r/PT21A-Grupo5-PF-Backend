@@ -53,11 +53,11 @@ export class AuthService {
     .replace('{{userName}}', signUpUser.name)
     .replace('{{verificationLink}}', verificationLink);
 
-    const from = 'Uniendo Culturas <no-reply@uniendoculturas.edu.ar>';
+
     const to = [signUpUser.email];
     const subject = 'Verifica tu cuenta en Uniendo Culturas';
     
-    await this.emailService.sendWelcomeEmail({ from, to, subject, message });
+    await this.emailService.sendWelcomeEmail({ to, subject, message });
     
     return newUser;
   }

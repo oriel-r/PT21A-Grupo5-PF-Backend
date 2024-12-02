@@ -20,10 +20,10 @@ export class ChatServiceGemini {
     this.genAI = new GoogleGenerativeAI(apiKey);
   }
 
-  async handleMessage(userId: string, language: string, message: string, ) {
+  async handleMessage(userId: string, message: string, ) {
     const context = this.getOrCreateContext(userId);
     context.push(`Usuario: ${message}`);
-    const response = await this.getAIResponse( language, context,);
+    const response = await this.getAIResponse( context,);
 
     context.push(`Profesor: ${response}`);
     this.chatHistory.set(userId, context);
@@ -38,8 +38,8 @@ export class ChatServiceGemini {
     return this.chatHistory.get(userId)!;
   }
 
-  private async getAIResponse( language: string, context: string[]) {
-    const prompt = `Eres un profesor experto en ${language}. Ayuda a los estudiantes de forma interactiva, responde en español. 
+  private async getAIResponse( context: string[]) {
+    const prompt = `Eres un profesor experto en idiomas, poligdota, manejas todos los idiomas del mundo a  los que tengas acceso. Ayuda a los estudiantes de forma interactiva, responde en español, . 
     Contexto actual: ${context.join('\n')}
     Si bien este es el contexto actual no es necesario que me respondas todo cada vez que te pregunto algo, responde la ultima pregunta y solo algo del contexto si te lo indico
     `;
