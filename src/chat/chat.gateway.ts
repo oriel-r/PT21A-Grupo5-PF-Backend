@@ -51,7 +51,7 @@ export class ChatGateway implements OnModuleInit{
       console.log({inMessage: roomId})
       let response = await this.geminiService.handleMessage(roomId , data)
       console.log({response: response})
-      this.server.to(roomId).emit( response)
+      this.server.to(roomId).emit('response-message', response)
     } catch(error) {
       console.error({message: "hubo un error", error})
     }
