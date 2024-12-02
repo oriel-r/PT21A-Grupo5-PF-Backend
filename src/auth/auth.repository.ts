@@ -38,7 +38,8 @@ export class AuthRepository {
         }
 
         user.isVerified = true;
-        await this.userRepository.save(user); 
+        const userVerified = await this.userRepository.save(user);
+        return userVerified;
     }
 
 }

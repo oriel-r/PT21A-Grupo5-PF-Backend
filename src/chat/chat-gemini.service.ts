@@ -12,7 +12,6 @@ export class ChatServiceGemini {
   constructor(
     private configService: ConfigService,
   ) {
-    //const apiKey =
      const apiKey = this.configService.get<string>('GEMIANIAI_API_KEY');
     if (!apiKey) {
 
@@ -40,9 +39,9 @@ export class ChatServiceGemini {
   }
 
   private async getAIResponse( language: string, context: string[]) {
-    const prompt = `Eres un profesor experto en ${language}. Ayuda a los estudiantes de forma interactiva, responde en español, . 
+    const prompt = `Eres un profesor experto en ${language}. Ayuda a los estudiantes de forma interactiva, responde en español. 
     Contexto actual: ${context.join('\n')}
-    Si bien este es el contexto actual no es necesario que me respondas todo ca vez que te pregunto algo, responde la ultima pregunta y solo algo del contexto si te lo indico
+    Si bien este es el contexto actual no es necesario que me respondas todo cada vez que te pregunto algo, responde la ultima pregunta y solo algo del contexto si te lo indico
     `;
   
     try {
