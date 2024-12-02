@@ -38,8 +38,7 @@ export class CronsService {
 
     const message = `Checkout our new courses: ${latestCourses.map((course) => course.title)}`;
     const subject = 'New Courses Available';
-    const from = 'Uniendo Culturas <no-reply@uniendoculturas.edu.ar>';
-    // await this.emailerService.sendEmail({ from, to, subject, message });
+    // await this.emailerService.sendEmail({ to, subject, message });
     console.log(message);
   }
 }
