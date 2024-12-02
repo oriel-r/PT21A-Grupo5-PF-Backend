@@ -27,10 +27,8 @@ export class ChatGateway implements OnModuleInit{
     this.server.on('connection', (socket: SockerWithUser) => {
       try {
         const token = socket.handshake.auth.token
-        console.log({onConnection: token})
         if (!token) throw new WsException("Token no encontrado o invalido al inicializar la conexion")
         const roomId = token.replace(/^"|"$/g, '')
-      console.log({OnConnection: roomId})
         socket.join(roomId)
       } catch (error) {
         console.error('Error desconocido en conexión:', error)
@@ -48,9 +46,7 @@ export class ChatGateway implements OnModuleInit{
       const token = client.handshake.auth.token
       if(!token) throw new WsException('No recibimos el token correctamente')
         const roomId = token.replace(/^"|"$/g, '')    
-      console.log({inMessage: roomId})
       let response = await this.geminiService.handleMessage(roomId , data)
-      console.log({response: response})
       this.server.to(roomId).emit('response-message', response)
     } catch(error) {
       console.error({message: "hubo un error", error})
