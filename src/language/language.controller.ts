@@ -62,13 +62,23 @@ export class LanguageController {
   @ApiOperation({ summary: 'Create language' })
   @Post('create')
   async createLanguage(@Body() createLanguageDto: CreateLanguageDto) {
-    const { path, name, general_description, brief_description } =
-      createLanguageDto;
+    const {
+      path,
+      name,
+      general_description,
+      brief_description,
+      img_url,
+      flag_url,
+      country_photo_url,
+    } = createLanguageDto;
     return await this.languageService.addLanguage({
       path,
       name,
       general_description,
       brief_description,
+      img_url,
+      flag_url,
+      country_photo_url,
     });
   }
 

@@ -70,7 +70,15 @@ export class LanguageService {
   }
 
   async addLanguage(data: CreateLanguageDto): Promise<Language | null> {
-    const { path, name, general_description, brief_description } = data;
+    const {
+      path,
+      name,
+      general_description,
+      brief_description,
+      img_url,
+      flag_url,
+      country_photo_url,
+    } = data;
     const language = await this.languageRepository.findByName(name);
     if (language) throw new BadRequestException('Este lenguaje ya  existe');
 
@@ -79,6 +87,9 @@ export class LanguageService {
     newLanguage.name = name;
     newLanguage.general_description = general_description;
     newLanguage.brief_description = brief_description;
+    if (img_url) newLanguage.image_url = img_url;
+    if (flag_url) newLanguage.flag_url = flag_url;
+    if (country_photo_url) newLanguage.country_photo_url = country_photo_url;
     await this.languageRepository.create(newLanguage);
     return newLanguage;
   }
