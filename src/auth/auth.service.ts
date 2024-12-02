@@ -45,7 +45,10 @@ export class AuthService {
 
     await this.authRepository.createVerificationCode(newUser.email, verificationCode, expiresAt);
 
-    const verificationLink = `http://localhost:3000/verify-email?code=${verificationCode}`;
+    const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
+    const verificationLink = `${baseUrl}/auth/verify-email?email=${encodeURIComponent(signUpUser.email)}&code=${verificationCode}`;
+
+
     const message = emailHtml
     .replace('{{userName}}', signUpUser.name)
     .replace('{{verificationLink}}', verificationLink);
