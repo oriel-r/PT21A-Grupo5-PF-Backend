@@ -39,6 +39,33 @@ export class CreateLanguageDto {
   @IsNotEmpty()
   brief_description: string;
 
+  @ApiProperty({
+    name: 'image_url',
+    description: 'A reference image of the language',
+    type: 'string',
+  })
+  @IsString()
+  @IsOptional()
+  img_url?: string;
+
+  @ApiProperty({
+    name: 'flag_url',
+    description: 'A reference image of the flag',
+    type: 'string',
+  })
+  @IsString()
+  @IsOptional()
+  flag_url?: string;
+
+  @ApiProperty({
+    name: 'country_photo',
+    description: 'a photo from a city or place in this country',
+    type: 'string',
+  })
+  @IsString()
+  @IsOptional()
+  country_photo_url?: string;
+
   constructor(partial: DeepPartial<CreateLanguageDto>) {
     Object.assign(this, partial);
   }
