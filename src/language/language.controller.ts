@@ -82,7 +82,7 @@ export class LanguageController {
     });
   }
 
-  @Put('id:/flag_url')
+  @Put(':id/flag_url')
   @ApiOperation({
     summary: 'Add a new language',
     description: 'This endpoint acepto send files with multipart',
@@ -116,6 +116,10 @@ export class LanguageController {
     return await this.languageService.addFlag(id, file);
   }
 
+  @ApiOperation({
+    summary: 'Upload an image for the language',
+    description: 'This endpoint accepts a file upload for the language image.',
+  })
   @Put(':id/image')
   @UseInterceptors(FileInterceptor('file'))
   async updateImage(
@@ -133,6 +137,10 @@ export class LanguageController {
     return await this.languageService.addImage(id, file);
   }
 
+  @ApiOperation({
+    summary: 'Upload a country photo for the language',
+    description: 'This endpoint accepts a file upload for the language country photo.',
+  })
   @Put(':id/country_photo')
   @UseInterceptors(FileInterceptor('file'))
   async updateCountryPhoto(
@@ -150,6 +158,9 @@ export class LanguageController {
     return await this.languageService.addCountryPhoto(id, file);
   }
 
+  @ApiOperation({
+    summary: 'Update language details',
+  })
   @Put('update/:id')
   async update(
     @Param('id') id: string,
@@ -158,8 +169,12 @@ export class LanguageController {
     return await this.languageService.updateLanguage(id, updateLanguageDto);
   }
 
+  @ApiOperation({
+    summary: 'Delete a language',
+  })
   @Delete(':id')
-  async deleteLanguage(@Param() id: string) {
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async deleteLanguage(@Param('id') id: string) {
     return await this.languageService.delete(id);
   }
 }
