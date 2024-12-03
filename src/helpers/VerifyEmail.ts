@@ -1,6 +1,6 @@
 import { Redirect } from '@nestjs/common';
 
-const baseUrl = process.env.BASE_URL || 'http://localhost:3000/';
+const baseUrl = process.env.BASE_URL_BACK || 'http://localhost:3000/';
 
 export const verificationEmail = async (
   email: string,
