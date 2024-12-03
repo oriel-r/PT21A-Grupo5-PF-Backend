@@ -46,7 +46,7 @@ export class CreateLanguageDto {
   })
   @IsString()
   @IsOptional()
-  img_url?: string;
+  image_url?: string;
 
   @ApiProperty({
     name: 'flag_url',
