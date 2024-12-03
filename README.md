@@ -163,6 +163,10 @@ The API is documented using Swagger. After the application starts, you can acces
 ### Error Handling
 The API returns standard HTTP error codes with descriptive error messages.
 
+
+### Authors
+* **Your Name** - Your GitHub
+
 ## Database Diagram
 
 You can visualize the database schema by pasting the following Mermaid code into the [Mermaid Live Editor](https://mermaid-js.github.io/mermaid-live-editor/):
@@ -225,7 +229,3 @@ erDiagram
     MEMBERSHIP ||--o{ PAYMENT : "is paid by"
     REFERRAL_CODE ||--o| USER : "is issued by"
     REFERRAL_CODE ||--o| USER : "is redeemed by"
-
-
-### Authors
-* **Your Name** - Your GitHub
