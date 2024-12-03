@@ -163,5 +163,69 @@ The API is documented using Swagger. After the application starts, you can acces
 ### Error Handling
 The API returns standard HTTP error codes with descriptive error messages.
 
+## Database Diagram
+
+You can visualize the database schema by pasting the following Mermaid code into the [Mermaid Live Editor](https://mermaid-js.github.io/mermaid-live-editor/):
+
+```mermaid
+erDiagram
+    USER {
+        string id PK
+        string name
+        string email
+        string password
+    }
+    COURSE {
+        string id PK
+        string title
+        string description
+        decimal price
+    }
+    LESSON {
+        string id PK
+        string title
+        text content
+        string courseId FK
+    }
+    SUBSCRIPTION {
+        string id PK
+        string name
+        string[] description
+        decimal price
+    }
+    MEMBERSHIP {
+        string id PK
+        date startDate
+        date endDate
+        string userId FK
+        string subscriptionId FK
+    }
+    PAYMENT {
+        string id PK
+        decimal amount
+        string status
+        date paymentDate
+        string membershipId FK
+    }
+    REFERRAL_CODE {
+        string id PK
+        string code
+        integer discount
+        date issuedAt
+        date expirationDate
+        boolean redeemed
+        string issuerId FK
+        string redeemerId FK
+    }
+
+    USER ||--o{ COURSE : "creates"
+    COURSE ||--o{ LESSON : "contains"
+    USER ||--o{ MEMBERSHIP : "has"
+    SUBSCRIPTION ||--o{ MEMBERSHIP : "belongs to"
+    MEMBERSHIP ||--o{ PAYMENT : "is paid by"
+    REFERRAL_CODE ||--o| USER : "is issued by"
+    REFERRAL_CODE ||--o| USER : "is redeemed by"
+
+
 ### Authors
 * **Your Name** - Your GitHub
