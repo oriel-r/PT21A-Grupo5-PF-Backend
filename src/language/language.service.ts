@@ -69,27 +69,42 @@ export class LanguageService {
     return language;
   }
 
-  async addLanguage(data: CreateLanguageDto): Promise<Language | null> {
-    const {
-      path,
-      name,
-      general_description,
-      brief_description,
-      img_url,
-      flag_url,
-      country_photo_url,
-    } = data;
+  async addLanguage(
+    data: CreateLanguageDto,
+    image_file?: Express.Multer.File,
+    flag_file?: Express.Multer.File,
+    country_file?: Express.Multer.File,
+  ): Promise<Language | null> {
+    const { path, name, general_description, brief_description } = data;
+
     const language = await this.languageRepository.findByName(name);
     if (language) throw new BadRequestException('Este lenguaje ya  existe');
+
+    const uploadFile = async (
+      file?: Express.Multer.File,
+    ): Promise<string | null> => {
+      return file
+        ? await this.fileUploadService.uploadFile(
+            file.buffer,
+            file.originalname,
+          )
+        : null;
+    };
+
+    const [image_url, flag_url, country_photo_url] = await Promise.all([
+      uploadFile(image_file),
+      uploadFile(flag_file),
+      uploadFile(country_file),
+    ]);
 
     const newLanguage = new Language();
     newLanguage.path = path;
     newLanguage.name = name;
     newLanguage.general_description = general_description;
     newLanguage.brief_description = brief_description;
-    if (img_url) newLanguage.image_url = img_url;
-    if (flag_url) newLanguage.flag_url = flag_url;
-    if (country_photo_url) newLanguage.country_photo_url = country_photo_url;
+    newLanguage.image_url = image_url || undefined;
+    newLanguage.flag_url = flag_url || undefined;
+    newLanguage.country_photo_url = country_photo_url || undefined;
     await this.languageRepository.create(newLanguage);
     return newLanguage;
   }

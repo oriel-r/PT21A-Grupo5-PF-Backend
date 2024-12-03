@@ -3,8 +3,8 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class WebhooksService {
 
-    handleSubscriptionCreated(data: any) {
-        console.log('Creación de suscripción:', data);
+    handleSubscriptionAuthroizedPayment(data: any) {
+        console.log('subscription_authorized_payment', data);
       }
     
       handleSubscriptionUpdated(data: any) {

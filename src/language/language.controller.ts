@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -10,12 +11,13 @@ import {
   Put,
   Query,
   UploadedFile,
+  UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
 import { LanguageService } from './language.service';
 import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateLanguageDto } from './dto/create-language.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { FilePipe } from 'src/pipes/file/file.pipe';
 import { FilterCourses } from 'src/helpers/Filter';
 import { UpdateLanguageDto } from './dto/update-language.dto';
@@ -60,26 +62,43 @@ export class LanguageController {
   }
 
   @ApiOperation({ summary: 'Create language' })
+  @UseInterceptors(
+    FilesInterceptor('files', 3, {
+      fileFilter: (req, file, callback) => {
+        const allowedMimeTypes = [
+          'image/jpeg',
+          'image/png',
+          'image/webp',
+          'image/jpg',
+        ];
+        if (allowedMimeTypes.includes(file.mimetype)) {
+          callback(null, true);
+        } else {
+          callback(new BadRequestException('Invalid file type'), false);
+        }
+      },
+      limits: { fileSize: 200000 },
+    }),
+  )
   @Post('create')
-  async createLanguage(@Body() createLanguageDto: CreateLanguageDto) {
-    const {
-      path,
-      name,
-      general_description,
-      brief_description,
-      img_url,
-      flag_url,
-      country_photo_url,
-    } = createLanguageDto;
-    return await this.languageService.addLanguage({
-      path,
-      name,
-      general_description,
-      brief_description,
-      img_url,
-      flag_url,
-      country_photo_url,
-    });
+  async createLanguage(
+    @UploadedFiles() files: Express.Multer.File[],
+    @Body() createLanguageDto: CreateLanguageDto,
+  ) {
+    const [image_file, flag_file, country_file] = files || [];
+    const { path, name, general_description, brief_description } =
+      createLanguageDto;
+    return await this.languageService.addLanguage(
+      {
+        path,
+        name,
+        general_description,
+        brief_description,
+      },
+      image_file,
+      flag_file,
+      country_file,
+    );
   }
 
   @Put(':id/flag_url')
@@ -104,7 +123,7 @@ export class LanguageController {
   async updateFlagg(
     @Param('id') id: string,
     @UploadedFile(
-      new FilePipe(0, 2000, [
+      new FilePipe(0, 200000, [
         'image/jpeg',
         'image/png',
         'image/webp',
@@ -113,6 +132,7 @@ export class LanguageController {
     )
     file: Express.Multer.File,
   ) {
+    console.log(file);
     return await this.languageService.addFlag(id, file);
   }
 
@@ -121,11 +141,23 @@ export class LanguageController {
     description: 'This endpoint accepts a file upload for the language image.',
   })
   @Put(':id/image')
+  @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   async updateImage(
     @Param('id') id: string,
     @UploadedFile(
-      new FilePipe(0, 2000, [
+      new FilePipe(0, 200000, [
         'image/jpeg',
         'image/png',
         'image/webp',
@@ -139,14 +171,27 @@ export class LanguageController {
 
   @ApiOperation({
     summary: 'Upload a country photo for the language',
-    description: 'This endpoint accepts a file upload for the language country photo.',
+    description:
+      'This endpoint accepts a file upload for the language country photo.',
   })
   @Put(':id/country_photo')
+  @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   async updateCountryPhoto(
     @Param('id') id: string,
     @UploadedFile(
-      new FilePipe(0, 2000, [
+      new FilePipe(0, 200000, [
         'image/jpeg',
         'image/png',
         'image/webp',
@@ -162,6 +207,19 @@ export class LanguageController {
     summary: 'Update language details',
   })
   @Put('update/:id')
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   async update(
     @Param('id') id: string,
     @Body() updateLanguageDto: UpdateLanguageDto,
