@@ -1,99 +1,167 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# ![NestJS Logo](https://nestjs.com/img/logo-small.svg) Project Name: Learning Platform
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Overview
 
-## Description
+This is a Learning Platform built with **NestJS**, **TypeScript**, and **PostgreSQL**. It allows users to sign up, manage subscriptions, enroll in courses, view lessons, and interact via a chat powered by Gemini. The platform integrates with the **Mercado Pago** API to handle payments, and referral codes are also implemented to provide discounts.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Features
 
-## Project setup
+- **User Authentication & Authorization** with JWT and Auth0.
+- **Role-Based Access Control** (Admin, Teacher, Student).
+- **Course Management**: Create, update, and delete courses and lessons.
+- **Subscription Management**: Multiple subscription plans (e.g., Basic, Premium, Pro).
+- **Referral Program**: Users can redeem referral codes for discounts.
+- **Chat System**: Integrated chat powered by Gemini.
+- **Payment Integration**: Webhooks to handle payments via Mercado Pago API.
 
-```bash
-$ npm install
-```
+## Technologies Used
 
-## Compile and run the project
+- **NestJS**: A progressive Node.js framework.
+- **TypeORM**: Object-Relational Mapping (ORM) for database management.
+- **PostgreSQL**: Relational database for storing application data.
+- **Auth0**: For authentication and user management.
+- **Mercado Pago API**: Payment gateway for processing transactions.
+- **Gemini**: AI-powered chat integration.
 
-```bash
-# development
-$ npm run start
+## Prerequisites
 
-# watch mode
-$ npm run start:dev
+Ensure the following are installed:
+- **Node.js** (version 16 or higher)
+- **TypeScript** (Global installation)
+- **PostgreSQL** (for database setup)
 
-# production mode
-$ npm run start:prod
-```
+You will also need an Auth0 account for authentication, and a Mercado Pago account for payment integration.
 
-## Run tests
+## Installation
 
-```bash
-# unit tests
-$ npm run test
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/learning-platform.git
 
-# e2e tests
-$ npm run test:e2e
+2. Navigate to the project directory:
+   ```bash
+   cd learning-platform
 
-# test coverage
-$ npm run test:cov
-```
+3. Install dependencies:
+   ```bash
+   npm install
 
-## Deployment
+4. Configure environment variables:
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+   Create a .env file in the root of the project with the following content:
+   ```env
+   DATABASE_HOST=localhost
+   DATABASE_PORT=5432
+   DATABASE_USER=your-database-user
+   DATABASE_PASSWORD=your-database-password
+   DATABASE_NAME=learning_platform
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+   AUTH0_SECRET=your-auth0-secret
+   AUTH0_BASE_URL=your-auth0-base-url
+   AUTH0_CLIENT_ID=your-auth0-client-id
+   AUTH0_ISSUER_BASE_URL=your-auth0-issuer-base-url
 
-```bash
-$ npm install -g mau
-$ mau deploy
-```
+   MERCADO_PAGO_ACCESS_TOKEN=your-mercado-pago-access-token
+   GEMINI_API_KEY=your-gemini-api-key
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
 
-## Resources
 
-Check out a few resources that may come in handy when working with NestJS:
+## Running the Application
+1. Start PostgreSQL: Ensure that PostgreSQL is running and the database is set up.
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+2. Run the application:
+   ```bash
+   npm start
 
-## Support
+3. The app will be available at http://localhost:3000.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+# API Documentation
 
-## Stay in touch
+## Authentication
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- **Login**: `POST /auth/login`
+- **Register**: `POST /auth/register`
 
-## License
+## Courses
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- **Get all courses**: `GET /courses`
+- **Get course by ID**: `GET /courses/:id`
+- **Create course**: `POST /courses`
+- **Update course**: `PUT /courses/:id`
+- **Delete course**: `DELETE /courses/:id`
+
+## Lessons
+
+- **Get all lessons**: `GET /lessons`
+- **Get lessons by course ID**: `GET /lessons/by-course/:id`
+- **Create lesson**: `POST /lessons`
+- **Update lesson**: `PUT /lessons/:id`
+- **Delete lesson**: `DELETE /lessons/:id`
+
+## Subscription Management
+
+- **Get all subscriptions**: `GET /subscriptions`
+- **Create subscription**: `POST /subscriptions`
+- **Update subscription**: `PUT /subscriptions/:id`
+- **Delete subscription**: `DELETE /subscriptions/:id`
+
+## Membership & Payment
+
+- **Create membership**: `POST /memberships`
+- **Get all memberships**: `GET /memberships`
+- **Create payment**: `POST /payments`
+- **Get all payments**: `GET /payments`
+
+## Referral Codes
+
+- **Create referral codes**: `POST /referral-codes/create`
+- **Redeem referral code**: `POST /referral-codes/redeem/:id`
+- **Get all referral codes**: `GET /referral-codes`
+- **Get referral code by ID**: `GET /referral-codes/:id`
+- **Update referral code**: `PATCH /referral-codes/:id`
+- **Delete referral code**: `DELETE /referral-codes/:id`
+
+## Chat System (Gemini)
+
+The platform integrates a chat system powered by **Gemini** for user interaction. You can send messages and receive responses from the bot.
+
+- **Send message**: `POST /chat/send`
+- **Receive response**: `GET /chat/response`
+
+## Payment Integration (Mercado Pago)
+
+The platform uses the **Mercado Pago API** for processing payments. You need to configure the API credentials in your environment file (`MERCADO_PAGO_ACCESS_TOKEN`).
+
+- **Webhook**: The system listens to webhooks to update the payment status and membership status after successful payment.
+
+# Contributing
+
+We welcome contributions! If you'd like to improve the project, please follow these steps:
+
+1. **Fork the repository**  
+2. **Create your feature branch**:  
+   ```bash
+   git checkout -b feature/new-feature
+3. **Commit your changes**:  
+   ```bash
+   git commit -am 'Add new feature'
+4. **Push to the branch**:  
+   ```bash
+   git push origin feature/new-feature
+5. **Create a new Pull Request on GitHub.** 
+
+
+# License
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+## Additional Notes
+
+### Swagger Documentation
+The API is documented using Swagger. After the application starts, you can access the API documentation at: http://localhost:3000/docs
+
+### Error Handling
+The API returns standard HTTP error codes with descriptive error messages.
+
+### Authors
+* **Your Name** - Your GitHub

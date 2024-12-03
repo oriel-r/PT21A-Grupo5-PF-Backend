@@ -67,6 +67,7 @@ export class User {
   @ApiProperty({
     enum: Role,
     description: 'Enum indicating the user role.',
+    default: Role.USER,
   })
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   role: Role;
@@ -96,6 +97,7 @@ export class User {
     type: Date,
     description: 'Timestamp indicating when the user was created.',
     default: () => 'CURRENT_TIMESTAMP',
+    example: '2024-01-01T00:00:00.000Z',
   })
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
@@ -108,6 +110,11 @@ export class User {
   @Column({ default: true })
   isActive: boolean;
 
+  @ApiProperty({
+    type: Boolean,
+    description: 'Indicates whether the user account is verified.',
+    default: false,
+  })
   @Column({ default: false})
   isVerified: boolean; 
 

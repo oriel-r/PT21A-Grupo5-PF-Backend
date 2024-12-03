@@ -103,7 +103,7 @@ export class CoursesService {
     return await this.coursesRepository.findById(id)
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     return `This action removes a #${id} course`;
   }
 
