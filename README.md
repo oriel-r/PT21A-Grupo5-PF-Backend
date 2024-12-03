@@ -1,4 +1,5 @@
-# Project Name: Learning Platform
+# ![NestJS Logo](https://nestjs.com/img/logo-small.svg) Project Name: Learning Platform
+
 
 ## Overview
 
