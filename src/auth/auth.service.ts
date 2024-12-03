@@ -16,7 +16,7 @@ import { Repository } from 'typeorm';
 import { randomBytes } from 'crypto';
 import { AuthRepository } from './auth.repository';
 import { AuthPayload } from 'src/helpers/AuthPayload';
-
+import { verificationEmail } from 'src/helpers/VerifyEmail';
 
 @Injectable()
 export class AuthService {
@@ -43,39 +43,54 @@ export class AuthService {
     const verificationCode = randomBytes(4).toString('hex');
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
 
-    await this.authRepository.createVerificationCode(newUser.email, verificationCode, expiresAt);
+    await this.authRepository.createVerificationCode(
+      newUser.email,
+      verificationCode,
+      expiresAt,
+    );
 
     const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
-    const verificationLink = `${baseUrl}/auth/codeVerification?email=${encodeURIComponent(signUpUser.email)}&code=${verificationCode}`;
-
+    const verificationLink = verificationEmail(
+      newUser.email,
+      verificationCode,
+      baseUrl,
+    );
 
     const message = emailHtml
-    .replace('{{userName}}', signUpUser.name)
-    .replace('{{verificationLink}}', verificationLink);
-
+      .replace('{{userName}}', signUpUser.name)
+      .replace('{{verificationLink}}', await verificationLink);
 
     const to = [signUpUser.email];
     const subject = 'Verifica tu cuenta en Uniendo Culturas';
-    
+
     await this.emailService.sendWelcomeEmail({ to, subject, message });
-    
+
     return newUser;
   }
 
   async verifyEmail(email: string, code: string) {
-    const verification = await this.authRepository.findVerificationCode(email, code);
+    const verification = await this.authRepository.findVerificationCode(
+      email,
+      code,
+    );
 
     if (!verification) {
-      throw new HttpException('Código de verificación inválido.', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'Código de verificación inválido.',
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     if (new Date() > verification.expiresAt) {
-      throw new HttpException('El código de verificación ha expirado.', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'El código de verificación ha expirado.',
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     await this.authRepository.activateUser(email);
 
-    await this.authRepository.deleteVerificationCode(verification.id)
+    await this.authRepository.deleteVerificationCode(verification.id);
 
     return { message: 'Cuenta verificada exitosamente.' };
   }
@@ -88,7 +103,10 @@ export class AuthService {
     }
 
     if (!user.isVerified) {
-      throw new HttpException('El usuario no ha verificado su correo.', HttpStatus.UNAUTHORIZED);
+      throw new HttpException(
+        'El usuario no ha verificado su correo.',
+        HttpStatus.UNAUTHORIZED,
+      );
     }
 
     const isPasswordMatching = await compare(
@@ -140,7 +158,7 @@ export class AuthService {
     return this.jwtService.sign(payload);
   }
 
-  findCourseType(user: User):Course[] | undefined {
+  findCourseType(user: User): Course[] | undefined {
     switch (user.role) {
       case Role.USER:
         return user.coursesToTake;
