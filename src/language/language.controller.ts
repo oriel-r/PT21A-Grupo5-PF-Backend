@@ -104,7 +104,7 @@ export class LanguageController {
   async updateFlagg(
     @Param('id') id: string,
     @UploadedFile(
-      new FilePipe(0, 2000, [
+      new FilePipe(0, 200000, [
         'image/jpeg',
         'image/png',
         'image/webp',
@@ -113,15 +113,28 @@ export class LanguageController {
     )
     file: Express.Multer.File,
   ) {
+    console.log(file)
     return await this.languageService.addFlag(id, file);
   }
 
   @Put(':id/image')
+  @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   async updateImage(
     @Param('id') id: string,
     @UploadedFile(
-      new FilePipe(0, 2000, [
+      new FilePipe(0, 200000, [
         'image/jpeg',
         'image/png',
         'image/webp',
@@ -134,11 +147,23 @@ export class LanguageController {
   }
 
   @Put(':id/country_photo')
+  @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   async updateCountryPhoto(
     @Param('id') id: string,
     @UploadedFile(
-      new FilePipe(0, 2000, [
+      new FilePipe(0, 200000, [
         'image/jpeg',
         'image/png',
         'image/webp',
@@ -151,6 +176,19 @@ export class LanguageController {
   }
 
   @Put('update/:id')
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   async update(
     @Param('id') id: string,
     @Body() updateLanguageDto: UpdateLanguageDto,
