@@ -88,7 +88,8 @@ export class CoursesService {
       img_url: image_url || undefined,
       video_url: video_url || undefined,
     };
-    return await this.coursesRepository.createCourse(newCurse);
+    await this.coursesRepository.createCourse(newCurse);
+    return newCurse;
   }
 
   async updateVideo(id: string, data) {

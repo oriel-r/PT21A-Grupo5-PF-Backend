@@ -31,6 +31,12 @@ export class UserResponseDto {
   idNumber: string;
 
   @ApiProperty({
+    type: String,
+    description: 'Photo string of the user.',
+  })
+  photo: string;
+
+  @ApiProperty({
     type: Date,
     description: 'Timestamp when the user was created.',
     example: '2023-01-01T00:00:00.000Z',
@@ -49,16 +55,42 @@ export class UserResponseDto {
     description: 'Membership type associated with the user.',
     example: 'premium',
   })
-  membership: string;
+  membership: object;
+
+  newsletter: boolean;
+  isActive: boolean;
+  isVerified: boolean;
+  coursesToTeach: object[];
+  coursesToTake: object[];
 
   constructor(partial: Partial<UserResponseDto>) {
-    const { id, name, email, idNumber, createdAt, role, membership } = partial;
+    const {
+      id,
+      name,
+      email,
+      idNumber,
+      createdAt,
+      role,
+      membership,
+      photo,
+      newsletter,
+      isActive,
+      isVerified,
+      coursesToTake,
+      coursesToTeach,
+    } = partial;
     this.id = id;
     this.name = name;
     this.email = email;
     this.idNumber = idNumber;
+    this.photo = photo;
     this.createdAt = createdAt;
     this.role = role;
     this.membership = membership;
+    this.newsletter = newsletter;
+    this.isActive = isActive;
+    this.isVerified = isVerified;
+    this.coursesToTeach = coursesToTeach;
+    this.coursesToTake = coursesToTake;
   }
 }
