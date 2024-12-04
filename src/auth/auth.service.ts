@@ -58,7 +58,8 @@ export class AuthService {
 
     const message = emailHtml
       .replace('{{userName}}', signUpUser.name)
-      .replace('{{verificationLink}}', await verificationLink);
+      .replace('{{verificationLink}}', await verificationLink)
+      .replace('{{code}}', verificationCode);
 
     const to = [signUpUser.email];
     const subject = 'Verifica tu cuenta en Uniendo Culturas';
@@ -118,6 +119,13 @@ export class AuthService {
       throw new HttpException(
         'Credenciales Incorrectas',
         HttpStatus.UNAUTHORIZED,
+      );
+    }
+
+    if(user.isActive === false) {
+      throw new HttpException(
+      `Tu cuenta está inactiva. Por favor, contáctanos para más información a ${process.env.EMAIL_USERNAME}`,
+        HttpStatus.FORBIDDEN,
       );
     }
 

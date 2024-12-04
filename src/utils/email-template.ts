@@ -28,7 +28,7 @@ export const emailHtml = `
         }
 
         .header {
-            background-color: #A435F0;
+            background-color: #0033A0;
             color: white;
             text-align: center;
             padding: 20px;
@@ -54,9 +54,12 @@ export const emailHtml = `
             font-size: 16px;
             font-weight: 600;
             color: white;
-            background-color: #A435F0;
+            background-color: #0033A0;
             text-decoration: none;
             border-radius: 5px;
+                &:hover {
+                    background-color: #0033A022;
+                }
         }
     </style>
 </head>
@@ -72,6 +75,7 @@ export const emailHtml = `
             </p>
             <p>Haz clic en el siguiente botón para verificar tu cuenta:</p>
             <a href="{{verificationLink}}" class="button">Explorar Ahora</a>
+            <p>Código de verificación: {{code}}</p>
             <p>Si tienes alguna pregunta, no dudes en responder a este correo o visitar nuestra página de soporte.</p>
             <p>¡Gracias por elegirnos!</p>
             <p>El equipo de Uniendo Culturas</p>
