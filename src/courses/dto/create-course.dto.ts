@@ -15,7 +15,6 @@ export class CreateCourseDto {
   @IsString()
   title: string;
 
-
   @ApiProperty({
     name: 'lessons',
     description: "Course's lessons",
@@ -32,7 +31,14 @@ export class CreateCourseDto {
   @IsString()
   language: string;
 
-  
+  @ApiProperty({
+    description: 'URL of the course image.',
+    example: 'https://example.com/course-image.jpg',
+  })
+  @IsString()
+  @IsOptional()
+  img_url?: string;
+
   @ApiProperty({
     description: 'The specialization of the course.',
     enum: Specialization,

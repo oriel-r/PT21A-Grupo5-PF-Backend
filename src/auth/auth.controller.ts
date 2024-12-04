@@ -7,7 +7,6 @@ import {
   HttpStatus,
   Post,
   Query,
-  Redirect,
   Req,
   Res,
   UseGuards,
@@ -42,7 +41,7 @@ export class AuthController {
     return await this.authService.signIn(credentials);
   }
 
-  @Post('verify-email')
+  @Post('codeVerification')
   async verifyEmail(
     @Query('email') email: string,
     @Query('code') code: string,

@@ -48,9 +48,9 @@ export class ChatGateway implements OnModuleInit{
       const token = client.handshake.auth.token
       if(!token) throw new WsException('No recibimos el token correctamente')
         const roomId = token.replace(/^"|"$/g, '')    
-      console.log({inMessage: roomId})
+
       let response = await this.geminiService.handleMessage(roomId , data)
-      console.log({response: response})
+
       this.server.to(roomId).emit('response-message', response)
     } catch(error) {
       console.error({message: "hubo un error", error})

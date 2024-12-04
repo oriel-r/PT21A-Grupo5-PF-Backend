@@ -2,6 +2,7 @@ import { AutoRecurringRequest, PreApprovalRequest } from "mercadopago/dist/clien
 import { Membership } from "../entities/membership.entity";
 import { Subscription } from "src/subscriptions/entities/subscription.entity";
 import * as dotenv from 'dotenv'
+import { getMonth } from "date-fns";
 
 dotenv.config({path: '.env.development.local'})
 
@@ -15,6 +16,7 @@ export class MyPreApproval implements PreApprovalRequest {
     reason?: string;
     preapproval_plan_id?: string
     notification_url: string
+    initialDate: string
     
     constructor(membership: Membership, subscription:  Subscription, vaucher?: number) {
         this.external_reference = subscription.id
@@ -23,7 +25,9 @@ export class MyPreApproval implements PreApprovalRequest {
             frequency: 1,
             currency_id: 'ARS',
             frequency_type: 'months',
-            transaction_amount: 0
+            transaction_amount: 0,
+            start_date: new Date().toISOString(),
+            end_date: new Date(new Date().setMonth(new Date().getMonth() + 12)).toISOString()
         }
         this.auto_recurring.transaction_amount = this.calculateFinalPrice(subscription.price, vaucher)
         this.reason = subscription.name

@@ -9,8 +9,6 @@ import { PassportModule } from '@nestjs/passport';
 import { EmailerModule } from 'src/emailer/emailer.module';
 import { JwtModule } from '@nestjs/jwt';
 import { UserVerification } from './entities/user-verification.entity';
-import { UsersRepository } from 'src/users/users.repository';
-import { UsersService } from 'src/users/users.service';
 import { AuthRepository } from './auth.repository';
 
 @Module({

@@ -62,9 +62,33 @@ export class LessonsController {
     summary: 'Create a Lesson',
     description: "Send course's titlte",
   })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @UseInterceptors(FileInterceptor('file'))
   @Post()
-  async createLesson(@Body() data: CreateLessonDto) {
-    return await this.lessonsService.create(data);
+  async createLesson(
+    @Body() data: CreateLessonDto,
+    @UploadedFile(
+      new FilePipe(0, 50000000, [
+        'video/mp4',
+        'video/mpeg',
+        'video/webm',
+        'video/x-msvideo',
+      ]),
+    )
+    file: Express.Multer.File,
+  ) {
+    return await this.lessonsService.create(data, file);
   }
 
   @ApiOperation({
@@ -102,14 +126,11 @@ export class LessonsController {
 
   @ApiOperation({
     summary: 'Edit lesson',
-    description: "Modify lesson data",
+    description: 'Modify lesson data',
   })
   @Put(':id')
-  async updateLesson(
-    @Param('id') id: string,
-    @Body() data: UpdateLessonDto,
-  ) {
-    return await this.lessonsService.updateLesson(id, data)
+  async updateLesson(@Param('id') id: string, @Body() data: UpdateLessonDto) {
+    return await this.lessonsService.updateLesson(id, data);
   }
 
   @ApiOperation({

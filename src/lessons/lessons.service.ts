@@ -33,11 +33,19 @@ export class LessonsService {
     return lesson;
   }
 
-  async create(data: CreateLessonDto) {
+  async create(data: CreateLessonDto, file?: Express.Multer.File) {
     const { course, ...otherProperties } = data;
     const aCourse = await this.coursesService.findById(data.course);
     if (!course) throw new NotFoundException('El curso no existe');
-    const lesson: Partial<Lesson> = { ...otherProperties, course: aCourse };
+    const video_url = await this.fileUploadService.uploadFile(
+      file.buffer,
+      file.originalname,
+    );
+    const lesson: Partial<Lesson> = {
+      ...otherProperties,
+      course: aCourse,
+      video_url: video_url || undefined,
+    };
     return await this.lessonsRepositoy.create(lesson);
   }
 

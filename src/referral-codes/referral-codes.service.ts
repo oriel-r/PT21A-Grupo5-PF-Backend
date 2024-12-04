@@ -19,6 +19,13 @@ export class ReferralCodesService {
     private readonly referralCodesRepository: Repository<ReferralCode>,
     private readonly usersService: UsersService,
   ) {}
+
+  @OnEvent('ea', {async: true})
+  async hello(payload) {
+    console.log('probando', payload)
+    return "1, 2, 3"
+  }
+
   async create(
     createReferralCodeDto: CreateReferralCodeDto,
   ):Promise<ReferralCode[]> {
@@ -49,11 +56,12 @@ export class ReferralCodesService {
     return referralCodeEntitites;
   }
 
-  @OnEvent('checkReferral')
-  async redeemCode(data:RedeemCodeDto):Promise<ReferralCode> {
-    const {code} = data
+  @OnEvent('*', {async: true})
+  async redeemCode(payload:RedeemCodeDto):Promise<ReferralCode> {
+    console.log({recive: payload})
+    const {code} = payload
     const referralCode = await this.referralCodesRepository.findOne({where:{code}})
-    const redeemer = await this.usersService.findOne(data.userId)
+    const redeemer = await this.usersService.findOne(payload.userId)
     const isExpired =  (compareAsc(referralCode.expirationDate, new Date())) === -1
     if (!referralCode) {
       throw new BadRequestException('Código inválido');

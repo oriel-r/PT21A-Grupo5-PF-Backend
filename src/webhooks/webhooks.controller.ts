@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Query } from '@nestjs/common';
 import { WebhooksService } from './webhooks.service';
 
 @Controller('webhooks')
@@ -6,15 +6,18 @@ export class WebhooksController {
   constructor(private readonly webhooksService: WebhooksService) {}
 
   @Post()
-  async handleWebhook(@Body() event: any): Promise<any> {
+  async handleWebhook(
+    @Query() event: any,
+    @Body() data: any
+  ): Promise<any> {
     try {
       console.log(event)
-      const { type, data } = event;
+      const { type } = event
 
       // Manejo de los eventos
       switch (type) {
-        case 'subscription.created':
-          this.webhooksService.handleSubscriptionCreated(data);
+        case 'subscription_authorized_payment':
+          this.webhooksService.handleSubscriptionAuthroizedPayment(data);
           break;
         case 'subscription.updated':
           this.webhooksService.handleSubscriptionUpdated(data);
@@ -22,7 +25,7 @@ export class WebhooksController {
         case 'subscription.cancelled':
           this.webhooksService.handleSubscriptionCancelled(data);
           break;
-        case 'payment.created':
+        case 'payment':
           this.webhooksService.handlePaymentCreated(data);
           break;
         case 'payment.failed':
