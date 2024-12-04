@@ -66,20 +66,23 @@ export class MembershipService {
   
     const discount = checkedReferral.length > 0 ? checkedReferral[0].discount : 0;
     
-    const mpResponse: PreApprovalResponse = await this.externalPayment.createSubscription(new MyPreApproval(membership, newSubscription, discount));
-  
+    const mpSubs = new MyPreApproval(membership, newSubscription, discount)
+    console.log(mpSubs)
+
+    const mpResponse: PreApprovalResponse = await this.externalPayment.createSubscription(mpSubs);
+    console.log(mpResponse)
     if (!mpResponse || !mpResponse.init_point) {
       throw new ServiceUnavailableException('Error al procesar la suscripción externa');
     }
-  
+    
+
     const firstPayment = await this.paymentsServicec.addPayment({ membership });
     if (!firstPayment) {
       throw new ServiceUnavailableException('Hubo un error al procesar el pago');
     }
   
     await this.membershipsRepository.updateMembership(membership.id, {
-      subscription: newSubscription,
-    });
+    } );
   
     return { link: mpResponse.init_point };
   }
