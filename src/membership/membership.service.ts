@@ -59,20 +59,17 @@ export class MembershipService {
     }
   
     if (updateData.vaucher) {
-      console.log(updateData.vaucher)
       checkedReferral = await this.eventEmiter.emitAsync(
-        'check-referral',
+        'referral.aply',
         new RedeemCodeDto(membership.user.id, updateData.vaucher)
       );
     }
-    console.log(checkedReferral)
     const discount = checkedReferral.length > 0 ? checkedReferral[0].discount : 0;
     
     const mpSubs = new MyPreApproval(membership, newSubscription, discount)
 
 
     const mpResponse: PreApprovalResponse = await this.externalPayment.createSubscription(mpSubs);
-    console.log(mpResponse)
     if (!mpResponse || !mpResponse.init_point) {
       throw new ServiceUnavailableException('Error al procesar la suscripción externa');
     }
@@ -91,8 +88,6 @@ export class MembershipService {
   }
 
   async getMemberships() {
-    const recibe = await (await this.eventEmiter.emitAsync('ea', {message: 'probando'}))
-    console.log(recibe)
     const result = await this.membershipsRepository.getAll();
     if (!result) throw new NotFoundException('No se encontraron membresias');
     return result;

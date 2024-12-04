@@ -20,12 +20,6 @@ export class ReferralCodesService {
     private readonly usersService: UsersService,
   ) {}
 
-  @OnEvent('ea', {async: true})
-  async hello(payload) {
-    console.log('probando', payload)
-    return "1, 2, 3"
-  }
-
   async create(
     createReferralCodeDto: CreateReferralCodeDto,
   ):Promise<ReferralCode[]> {
@@ -56,9 +50,8 @@ export class ReferralCodesService {
     return referralCodeEntitites;
   }
 
-  @OnEvent('*', {async: true})
+  @OnEvent('referral.aply')
   async redeemCode(payload:RedeemCodeDto):Promise<ReferralCode> {
-    console.log({recive: payload})
     const {code} = payload
     const referralCode = await this.referralCodesRepository.findOne({where:{code}})
     const redeemer = await this.usersService.findOne(payload.userId)
