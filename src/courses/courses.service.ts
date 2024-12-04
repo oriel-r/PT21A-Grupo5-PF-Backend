@@ -13,9 +13,10 @@ import { DeepPartial } from 'typeorm';
 
 @Injectable()
 export class CoursesService {
-  constructor(private readonly coursesRepository: CoursesRepository,
+  constructor(
+    private readonly coursesRepository: CoursesRepository,
     private readonly languageService: LanguageService,
-    private readonly uploadFileService: CloudinaryService
+    private readonly uploadFileService: CloudinaryService,
   ) {}
 
   async getPagination(page, limit) {
@@ -52,23 +53,51 @@ export class CoursesService {
     return updatedCourse;
   }
 
-  async create(data: CreateCourseDto) {
-    const {language, title, ...othres} = data
+  async create(
+    data: CreateCourseDto,
+    img_file?: Express.Multer.File,
+    video_file?: Express.Multer.File,
+  ) {
+    const { language, title, ...othres } = data;
     const existCourse = await this.coursesRepository.findByTitle(title);
     if (existCourse) throw new BadRequestException('El curso ya existe');
 
-    const existLanguage = await this.languageService.getByName(data.language)
-    if(!existLanguage) throw new BadRequestException("No se encuentra el lenguaje seleccionado")
-    
-    const newCurse: DeepPartial<Course> = {...othres, title, language: existLanguage}
+    const existLanguage = await this.languageService.getByName(data.language);
+    if (!existLanguage)
+      throw new BadRequestException('No se encuentra el lenguaje seleccionado');
+
+    const uploadFile = async (
+      file?: Express.Multer.File,
+    ): Promise<string | null> => {
+      return file
+        ? await this.uploadFileService.uploadFile(
+            file.buffer,
+            file.originalname,
+          )
+        : null;
+    };
+    const [image_url, video_url] = await Promise.all([
+      uploadFile(img_file),
+      uploadFile(video_file),
+    ]);
+
+    const newCurse: DeepPartial<Course> = {
+      ...othres,
+      title,
+      language: existLanguage,
+      img_url: image_url || undefined,
+      video_url: video_url || undefined,
+    };
     return await this.coursesRepository.createCourse(newCurse);
   }
 
   async updateVideo(id: string, data) {
-    const course = await this.coursesRepository.findById(id)
-    if(!course) throw new BadRequestException('No se encuentra el curso')
-    const video: DeepPartial<Course> = {video_url: await this.uploadFileService.uploadFile(data)}
-    await this.coursesRepository.updateCourse(id, video)
+    const course = await this.coursesRepository.findById(id);
+    if (!course) throw new BadRequestException('No se encuentra el curso');
+    const video: DeepPartial<Course> = {
+      video_url: await this.uploadFileService.uploadFile(data),
+    };
+    await this.coursesRepository.updateCourse(id, video);
   }
 
   async findAll(queries) {
@@ -97,15 +126,13 @@ export class CoursesService {
   }
 
   async update(id: string, data: UpdateCourseDto) {
-    const course = await this.coursesRepository.findById(id)
-    if (!course) throw new NotFoundException('No se encontro el curso')
-    await this.coursesRepository.updateCourse(id, data)
-    return await this.coursesRepository.findById(id)
+    const course = await this.coursesRepository.findById(id);
+    if (!course) throw new NotFoundException('No se encontro el curso');
+    await this.coursesRepository.updateCourse(id, data);
+    return await this.coursesRepository.findById(id);
   }
 
   async remove(id: string) {
     return `This action removes a #${id} course`;
   }
-
-
 }
