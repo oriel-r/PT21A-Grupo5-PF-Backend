@@ -6,6 +6,9 @@ import { usersMock } from './users-mock';
 import { hash } from 'bcrypt';
 import { Subscription } from 'src/subscriptions/entities/subscription.entity';
 import { Membership } from 'src/membership/entities/membership.entity';
+import { Course } from 'src/courses/entities/course.entity';
+import { coursesMock } from '../courses/courses-mock';
+import { Role } from 'src/enums/roles.enum';
 
 @Injectable()
 export class UsersSeed {
@@ -15,6 +18,8 @@ export class UsersSeed {
     private readonly subscriptionsRepository: Repository<Subscription>,
     @InjectRepository(Membership)
     private readonly membershipsRepository: Repository<Membership>,
+    @InjectRepository(Course)
+    private readonly coursesRepository: Repository<Course>,
   ) {}
 
   async findSubscriptionByName(name: string): Promise<Subscription> {
@@ -27,7 +32,25 @@ export class UsersSeed {
     return subscription;
   }
 
+  async getCoursesByTile(title: string): Promise<Course> {
+    const course = await this.coursesRepository.findOne({ where: { title } });
+    if (!course) {
+      throw new Error(`Course with title ${title} not found.`);
+    }
+    return course;
+  }
+
+  async getCourses(mockArray) {
+    const courses = [];
+    for (const course of mockArray) {
+      const foundCourse = await this.getCoursesByTile(course.title);
+      courses.push(foundCourse);
+    }
+    return courses;
+  }
+
   async seed() {
+    const courses = await this.getCourses(coursesMock);
     try {
       for (const userData of usersMock) {
         const existingUser = await this.usersRepository.findOne({
@@ -48,6 +71,10 @@ export class UsersSeed {
           user.createdAt = new Date();
           user.isActive = true;
           user.isVerified = true;
+          if (user.role === Role.TEACHER) {
+            user.coursesToTeach = courses;
+          }
+     
 
           // Assign subscription and membership for regular users
           if (user.role === 'user') {
