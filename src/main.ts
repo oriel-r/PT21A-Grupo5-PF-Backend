@@ -52,8 +52,8 @@ async function bootstrap() {
   const langagesSeed = app.get(LanguagesSeed);
   await langagesSeed.seed();
 
-  // const coursesSeed = app.get(CoursesSeed);
-  // await coursesSeed.seed();
+  const coursesSeed = app.get(CoursesSeed);
+  await coursesSeed.seed();
 
   const subscriptionsSeed = app.get(SubscriptionsSeeds);
   await subscriptionsSeed.seed();

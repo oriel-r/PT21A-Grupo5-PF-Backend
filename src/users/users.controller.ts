@@ -60,12 +60,13 @@ export class UsersController {
   })
   @HttpCode(HttpStatus.OK)
   @Get('page')
-  findWithPagination(
+  async findWithPagination(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 1,
     @Query('role') role: Role,
   ) {
-    return this.usersService.pagination(page, limit, role);
+    const users = await this.usersService.pagination(page, limit, role);
+    return users.map((user) => new UserResponseDto(user));
   }
 
   @ApiOperation({
@@ -78,7 +79,7 @@ export class UsersController {
   @Post('register')
   async create(@Body() createUserDto: CreateUserDto) {
     const user = await this.usersService.create(createUserDto);
-    return user;
+    return new UserResponseDto(user);
   }
 
   @ApiOperation({
@@ -108,7 +109,8 @@ export class UsersController {
   })
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return await this.usersService.findOne(id);
+    const user = await this.usersService.findOne(id);
+    return new UserResponseDto(user);
   }
 
   @ApiOperation({
@@ -126,7 +128,8 @@ export class UsersController {
   })
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return await this.usersService.update(id, updateUserDto);
+    const user = await this.usersService.update(id, updateUserDto);
+    return new UserResponseDto(user);
   }
 
   @ApiOperation({
