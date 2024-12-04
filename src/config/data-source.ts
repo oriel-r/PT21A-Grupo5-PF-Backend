@@ -1,4 +1,5 @@
 import { registerAs } from '@nestjs/config';
+import { fail } from 'assert';
 import { config as dotenvConfig } from 'dotenv';
 import { DataSource, DataSourceOptions } from 'typeorm';
 
@@ -14,7 +15,7 @@ const PostgresDataSourceOptions: DataSourceOptions = {
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   synchronize: true,
-  dropSchema: true,
+  dropSchema: false,
   logging: ['error'],
   ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
   entities: ['dist/**/*.entity{.ts,.js}'],

@@ -9,7 +9,7 @@ import { MembershipRepostory } from './membership.repository';
 import { SubscriptionsModule } from 'src/subscriptions/subscriptions.module';
 import { PaymentsModule } from 'src/payments/payments.module';
 import { MercadopagoService } from 'src/services/mercadopago/mercadopago.service';
-import { EventEmitter2 } from '@nestjs/event-emitter';
+import { EventEmitter2, EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Membership, Payment, Subscription]), SubscriptionsModule, PaymentsModule],

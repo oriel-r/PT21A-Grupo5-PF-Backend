@@ -38,7 +38,6 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
       useFactory: (configService: ConfigService) =>
         configService.get('postgres'),
     }),
-    EventEmitterModule.forRoot(),
     UsersModule,
     AuthModule,
     CoursesModule,
@@ -60,6 +59,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     MembershipModule,
     WebhooksModule,
     ReferralCodesModule,
+    EventEmitterModule.forRoot({global: true})
   ],
   controllers: [AppController],
   providers: [AppService, CloudinaryService, MercadopagoService],
