@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Redirect } from '@nestjs/common';
 import { SignupUserDto } from './dto/signup-auth.dto';
 import { hash, compare } from 'bcrypt';
 import { UsersService } from 'src/users/users.service';
@@ -122,9 +122,9 @@ export class AuthService {
       );
     }
 
-    if(user.isActive === false) {
+    if (user.isActive === false) {
       throw new HttpException(
-      `Tu cuenta está inactiva. Por favor, contáctanos para más información a ${process.env.EMAIL_USERNAME}`,
+        `Tu cuenta está inactiva. Por favor, contáctanos para más información a ${process.env.EMAIL_USERNAME}`,
         HttpStatus.FORBIDDEN,
       );
     }
@@ -133,6 +133,7 @@ export class AuthService {
       id: user.id,
       email: user.email,
       role: user.role,
+      membership: user.membership,
     };
 
     const token = this.jwtService.sign(userPayload);
@@ -162,6 +163,7 @@ export class AuthService {
       id: user.id,
       email: user.email,
       role: user.role,
+      membership: user.membership,
     };
     return this.jwtService.sign(payload);
   }

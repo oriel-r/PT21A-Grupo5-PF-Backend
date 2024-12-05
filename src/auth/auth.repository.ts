@@ -36,7 +36,6 @@ export class AuthRepository {
         if (user.isVerified) {
             throw new Error('El usuario ya está activado');
         }
-
     
         return await this.userRepository.update(user.id, {isVerified: true}); 
     }

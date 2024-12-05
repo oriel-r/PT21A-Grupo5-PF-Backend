@@ -12,16 +12,22 @@ import {
   Query,
   UploadedFile,
   UploadedFiles,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { LanguageService } from './language.service';
-import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateLanguageDto } from './dto/create-language.dto';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { FilePipe } from 'src/pipes/file/file.pipe';
 import { FilterCourses } from 'src/helpers/Filter';
 import { UpdateLanguageDto } from './dto/update-language.dto';
+import { AuthGuard } from 'src/guards/auth/auth.guard';
+import { RolesGuard } from 'src/guards/roles/roles.guard';
+import { Roles } from 'src/decorators/roles/roles.decorator';
+import { Role } from 'src/enums/roles.enum';
 
+@ApiBearerAuth()
 @ApiTags('Languages')
 @Controller('language')
 export class LanguageController {
@@ -62,6 +68,8 @@ export class LanguageController {
   }
 
   @ApiOperation({ summary: 'Create language' })
+  @UseGuards(AuthGuard,RolesGuard)
+  @Roles(Role.ADMIN)
   @UseInterceptors(
     FilesInterceptor('files', 3, {
       fileFilter: (req, file, callback) => {
@@ -101,6 +109,8 @@ export class LanguageController {
     );
   }
 
+  @UseGuards(AuthGuard,RolesGuard)
+  @Roles(Role.ADMIN, Role.TEACHER)
   @Put(':id/flag_url')
   @ApiOperation({
     summary: 'Add a new language',
@@ -132,7 +142,6 @@ export class LanguageController {
     )
     file: Express.Multer.File,
   ) {
-    console.log(file);
     return await this.languageService.addFlag(id, file);
   }
 
@@ -140,6 +149,8 @@ export class LanguageController {
     summary: 'Upload an image for the language',
     description: 'This endpoint accepts a file upload for the language image.',
   })
+  @UseGuards(AuthGuard,RolesGuard)
+  @Roles(Role.ADMIN, Role.TEACHER)
   @Put(':id/image')
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
@@ -166,6 +177,7 @@ export class LanguageController {
     )
     file?: Express.Multer.File | undefined,
   ) {
+    
     return await this.languageService.addImage(id, file);
   }
 
@@ -174,6 +186,8 @@ export class LanguageController {
     description:
       'This endpoint accepts a file upload for the language country photo.',
   })
+  @UseGuards(AuthGuard,RolesGuard)
+  @Roles(Role.ADMIN, Role.TEACHER)
   @Put(':id/country_photo')
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
@@ -206,6 +220,8 @@ export class LanguageController {
   @ApiOperation({
     summary: 'Update language details',
   })
+  @UseGuards(AuthGuard,RolesGuard)
+  @Roles(Role.ADMIN, Role.TEACHER)
   @Put('update/:id')
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
@@ -230,6 +246,8 @@ export class LanguageController {
   @ApiOperation({
     summary: 'Delete a language',
   })
+  @UseGuards(AuthGuard,RolesGuard)
+  @Roles(Role.ADMIN)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async deleteLanguage(@Param('id') id: string) {

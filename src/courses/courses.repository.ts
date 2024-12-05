@@ -22,6 +22,7 @@ export class CoursesRepository {
         teachers: true,
         language: true,
         students: true,
+        category:true
       },
       order: { title: 'ASC' },
     });
@@ -124,6 +125,7 @@ export class CoursesRepository {
         lessons: true,
         language: true,
         students: true,
+        category:true
       },
     });
     if (!result) throw new NotFoundException('Curso no encontrado');
