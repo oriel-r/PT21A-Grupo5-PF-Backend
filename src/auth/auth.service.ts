@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Redirect } from '@nestjs/common';
 import { SignupUserDto } from './dto/signup-auth.dto';
 import { hash, compare } from 'bcrypt';
 import { UsersService } from 'src/users/users.service';
