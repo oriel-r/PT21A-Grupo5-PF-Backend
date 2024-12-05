@@ -81,8 +81,8 @@ export class LessonsController {
       },
     },
   })
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.TEACHER)
+  @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(FileInterceptor('file'))
   @Post()
   async createLesson(
@@ -117,8 +117,8 @@ export class LessonsController {
       },
     },
   })
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.TEACHER)
+  @UseGuards(AuthGuard, RolesGuard)
   @Put(':id/upload')
   async create(
     @Param() id: string,
@@ -139,8 +139,8 @@ export class LessonsController {
     summary: 'Edit lesson',
     description: 'Modify lesson data',
   })
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.TEACHER)
+  @UseGuards(AuthGuard, RolesGuard)
   @Put(':id')
   async updateLesson(@Param('id') id: string, @Body() data: UpdateLessonDto) {
     return await this.lessonsService.updateLesson(id, data);
@@ -149,8 +149,8 @@ export class LessonsController {
   @ApiOperation({
     summary: 'Delete a lesson',
   })
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<string> {
     return await this.lessonsService.delete(id);

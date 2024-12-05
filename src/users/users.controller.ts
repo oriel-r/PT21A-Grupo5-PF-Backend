@@ -63,8 +63,8 @@ export class UsersController {
     example: Role.USER,
   })
   @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Get('page')
   async findWithPagination(
     @Query('page') page: number = 1,
@@ -82,8 +82,8 @@ export class UsersController {
     status: 201,
     description: 'Teacher successfully created',
   })
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Post('register')
   async create(@Body() createUserDto: CreateUserDto) {
     const user = await this.usersService.create(createUserDto);
@@ -97,8 +97,8 @@ export class UsersController {
     status: 200,
     description: 'Returns a list of users',
   })
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Get()
   async findAll() {
     return await this.usersService.findAll();
@@ -226,8 +226,8 @@ export class UsersController {
     status: 200,
     description: 'Teacher successfully assigned to the course',
   })
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Put('assign-teacher/:id')
   async assignCourseToTeacher(
     @Param('id') courseId: string,
@@ -249,8 +249,8 @@ export class UsersController {
     status: 200,
     description: 'User successfully deactivated',
   })
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return await this.usersService.remove(id);

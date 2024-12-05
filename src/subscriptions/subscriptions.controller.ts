@@ -22,22 +22,22 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 export class SubscriptionsController {
   constructor(private readonly subscriptionsService: SubscriptionsService) {}
 
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Post('create')
   async create(@Body() createSubscriptionDto: CreateSubscriptionDto) {
     return await this.subscriptionsService.create(createSubscriptionDto);
   }
 
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Get()
   async findAll() {
     return await this.subscriptionsService.findAll();
   }
 
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.subscriptionsService.findOne(id);
@@ -52,8 +52,8 @@ export class SubscriptionsController {
     return await this.subscriptionsService.update(id, updateSubscriptionDto);
   }
 
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return await this.subscriptionsService.remove(id);
