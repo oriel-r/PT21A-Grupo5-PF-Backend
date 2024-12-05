@@ -9,6 +9,7 @@ import { Subscription } from './entities/subscription.entity';
 import { Repository } from 'typeorm';
 import { CreateSubscriptionDto } from './dto/create-subscription.dto';
 import { UpdateSubscriptionDto } from './dto/update-subscription.dto';
+import { populate } from 'dotenv';
 
 @Injectable()
 export class SubscriptionsRepository {
@@ -18,7 +19,7 @@ export class SubscriptionsRepository {
   ) {}
 
   async findAll() {
-    return await this.subscriptionsRepository.find({relations:{memberships:true}});
+    return await this.subscriptionsRepository.find();
   }
 
   async create(createSubscriptionDto: CreateSubscriptionDto) {
@@ -28,7 +29,10 @@ export class SubscriptionsRepository {
   }
 
   async findOne(id: string) {
-    const subscription = await this.subscriptionsRepository.findOne({ where:{id}, relations:{memberships:true} });
+    const subscription = await this.subscriptionsRepository.findOne({
+      where: { id },
+      relations: { memberships: true },
+    });
     if (!subscription) {
       throw new BadRequestException('Susbscription not found');
     }
