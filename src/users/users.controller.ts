@@ -29,6 +29,10 @@ import { Role } from 'src/enums/roles.enum';
 import { ChangeSubscriptionDto } from './dto/change-subscription.dto';
 import { EnrollStudentDto } from './dto/enroll-student.dto';
 import { AssignTeacherDto } from './dto/assign-teacher.dto';
+import { AuthGuard } from 'src/guards/auth/auth.guard';
+import { SubscriptionsGuard } from 'src/guards/subscriptions/subscriptions.guard';
+import { RolesGuard } from 'src/guards/roles/roles.guard';
+import { Roles } from 'src/decorators/roles/roles.decorator';
 
 @ApiBearerAuth()
 @Controller('users')
@@ -59,6 +63,8 @@ export class UsersController {
     example: Role.USER,
   })
   @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Get('page')
   async findWithPagination(
     @Query('page') page: number = 1,
@@ -76,6 +82,8 @@ export class UsersController {
     status: 201,
     description: 'Teacher successfully created',
   })
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Post('register')
   async create(@Body() createUserDto: CreateUserDto) {
     const user = await this.usersService.create(createUserDto);
@@ -89,6 +97,8 @@ export class UsersController {
     status: 200,
     description: 'Returns a list of users',
   })
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Get()
   async findAll() {
     return await this.usersService.findAll();
@@ -126,6 +136,7 @@ export class UsersController {
     description: 'User successfully updated',
     type: UserResponseDto,
   })
+  @UseGuards(AuthGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     const user = await this.usersService.update(id, updateUserDto);
@@ -144,6 +155,7 @@ export class UsersController {
     status: 200,
     description: 'Password successfully changed',
   })
+  @UseGuards(AuthGuard)
   @Put(':id')
   async changePassword(
     @Param('id') id: string,
@@ -169,6 +181,7 @@ export class UsersController {
     status: 200,
     description: 'Subscription successfully changed',
   })
+  @UseGuards(AuthGuard)
   @Put('user-subscription/:id')
   async changeSubscription(
     @Param('id') userId: string,
@@ -190,6 +203,7 @@ export class UsersController {
     status: 200,
     description: 'Student successfully enrolled in the course',
   })
+  @UseGuards(AuthGuard, SubscriptionsGuard)
   @Put('enroll/:id')
   @HttpCode(HttpStatus.OK)
   async enrollStudent(
@@ -212,6 +226,8 @@ export class UsersController {
     status: 200,
     description: 'Teacher successfully assigned to the course',
   })
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Put('assign-teacher/:id')
   async assignCourseToTeacher(
     @Param('id') courseId: string,
@@ -233,6 +249,8 @@ export class UsersController {
     status: 200,
     description: 'User successfully deactivated',
   })
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return await this.usersService.remove(id);

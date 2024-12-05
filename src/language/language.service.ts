@@ -111,10 +111,12 @@ export class LanguageService {
 
   async addFlag(id: string, file?) {
     const language = await this.languageRepository.findById(id);
+
     if (!language) throw new NotFoundException('Product not found');
     const newData: Partial<Language> = { image_url: '' };
+
     if (file) {
-      let url = await this.fileUploadService.uploadFile(file);
+      let url = await this.fileUploadService.uploadFile(file.buffer,file.originalname);
       newData.flag_url = url;
     }
     const result = await this.languageRepository.update(id, newData);
@@ -126,7 +128,7 @@ export class LanguageService {
     if (!language) throw new NotFoundException('Product not found');
     const newData: Partial<Language> = { image_url: '' };
     if (file) {
-      const url: string = await this.fileUploadService.uploadFile(file);
+      const url: string = await this.fileUploadService.uploadFile(file.buffer, file.originalname);
       newData.country_photo_url = url;
     }
     const result = await this.languageRepository.update(id, newData);
@@ -138,7 +140,9 @@ export class LanguageService {
     if (!language) throw new NotFoundException('Product not found');
     const newData: Partial<Language> = { image_url: '' };
     if (file) {
-      const url: string = await this.fileUploadService.uploadFile(file);
+      const url: string = await this.fileUploadService.uploadFile(file.buffer,file.originalname);
+      console.log(url);
+
       newData.image_url = url;
     }
     const result = await this.languageRepository.update(id, newData);

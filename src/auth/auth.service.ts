@@ -133,6 +133,8 @@ export class AuthService {
       id: user.id,
       email: user.email,
       role: user.role,
+      membership: user.membership,
+
     };
 
     const token = this.jwtService.sign(userPayload);

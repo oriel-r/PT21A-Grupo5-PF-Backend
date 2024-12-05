@@ -10,10 +10,12 @@ import {
   Put,
   Query,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { LessonsService } from './lessons.service';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiConsumes,
   ApiOperation,
@@ -24,7 +26,12 @@ import { CreateLessonDto } from './dto/create-lesson.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FilePipe } from 'src/pipes/file/file.pipe';
 import { UpdateLessonDto } from './dto/update-lesson.dto';
+import { AuthGuard } from 'src/guards/auth/auth.guard';
+import { RolesGuard } from 'src/guards/roles/roles.guard';
+import { Roles } from 'src/decorators/roles/roles.decorator';
+import { Role } from 'src/enums/roles.enum';
 
+@ApiBearerAuth()
 @ApiTags('Lessons')
 @Controller('lessons')
 export class LessonsController {
@@ -74,6 +81,8 @@ export class LessonsController {
       },
     },
   })
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.TEACHER)
   @UseInterceptors(FileInterceptor('file'))
   @Post()
   async createLesson(
@@ -108,6 +117,8 @@ export class LessonsController {
       },
     },
   })
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.TEACHER)
   @Put(':id/upload')
   async create(
     @Param() id: string,
@@ -128,6 +139,8 @@ export class LessonsController {
     summary: 'Edit lesson',
     description: 'Modify lesson data',
   })
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.TEACHER)
   @Put(':id')
   async updateLesson(@Param('id') id: string, @Body() data: UpdateLessonDto) {
     return await this.lessonsService.updateLesson(id, data);
@@ -136,6 +149,8 @@ export class LessonsController {
   @ApiOperation({
     summary: 'Delete a lesson',
   })
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<string> {
     return await this.lessonsService.delete(id);
