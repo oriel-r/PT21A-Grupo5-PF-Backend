@@ -37,7 +37,11 @@ export class CreateCourseDto {
   })
   @IsString()
   @IsOptional()
-  img_url?: string;
+  img_file?: string;
+
+  @IsString()
+  @IsOptional()
+  video_file?: string;
 
   @ApiProperty({
     description: 'The specialization of the course.',
