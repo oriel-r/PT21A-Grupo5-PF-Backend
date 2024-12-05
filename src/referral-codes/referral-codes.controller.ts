@@ -71,8 +71,8 @@ export class ReferralCodesController {
     return await this.referralCodesService.redeemCode(data);
   }
 
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Get()
   @ApiOperation({
     summary: 'Get all referral codes',

@@ -68,8 +68,8 @@ export class LanguageController {
   }
 
   @ApiOperation({ summary: 'Create language' })
-  @UseGuards(AuthGuard,RolesGuard)
   @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard,RolesGuard)
   @UseInterceptors(
     FilesInterceptor('files', 3, {
       fileFilter: (req, file, callback) => {
@@ -109,8 +109,8 @@ export class LanguageController {
     );
   }
 
-  @UseGuards(AuthGuard,RolesGuard)
   @Roles(Role.ADMIN, Role.TEACHER)
+  @UseGuards(AuthGuard,RolesGuard)
   @Put(':id/flag_url')
   @ApiOperation({
     summary: 'Add a new language',
@@ -149,8 +149,8 @@ export class LanguageController {
     summary: 'Upload an image for the language',
     description: 'This endpoint accepts a file upload for the language image.',
   })
-  @UseGuards(AuthGuard,RolesGuard)
   @Roles(Role.ADMIN, Role.TEACHER)
+  @UseGuards(AuthGuard,RolesGuard)
   @Put(':id/image')
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
@@ -186,8 +186,8 @@ export class LanguageController {
     description:
       'This endpoint accepts a file upload for the language country photo.',
   })
-  @UseGuards(AuthGuard,RolesGuard)
   @Roles(Role.ADMIN, Role.TEACHER)
+  @UseGuards(AuthGuard,RolesGuard)
   @Put(':id/country_photo')
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
@@ -220,8 +220,8 @@ export class LanguageController {
   @ApiOperation({
     summary: 'Update language details',
   })
-  @UseGuards(AuthGuard,RolesGuard)
   @Roles(Role.ADMIN, Role.TEACHER)
+  @UseGuards(AuthGuard,RolesGuard)
   @Put('update/:id')
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
@@ -246,8 +246,8 @@ export class LanguageController {
   @ApiOperation({
     summary: 'Delete a language',
   })
-  @UseGuards(AuthGuard,RolesGuard)
   @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard,RolesGuard)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async deleteLanguage(@Param('id') id: string) {

@@ -104,8 +104,8 @@ export class CoursesController {
       limits: { fileSize: 200000000 },
     }),
   )
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.TEACHER)
+  @UseGuards(AuthGuard, RolesGuard)
   @Post()
   async create(
     @Body() data: CreateCourseDto,
@@ -138,8 +138,8 @@ export class CoursesController {
     type: 'string',
     example: 'e6bfb1c7-8c3c-4d9f-a1ec-9f1bb9b2e252',
   })
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.USER)
+  @UseGuards(AuthGuard, RolesGuard)
   @Post(':id/rate')
   async rateCourse(
     @Param('id') courseId: string,
@@ -183,8 +183,8 @@ export class CoursesController {
     type: 'string',
     example: 'e6bfb1c7-8c3c-4d9f-a1ec-9f1bb9b2e252',
   })
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.TEACHER)
+  @UseGuards(AuthGuard, RolesGuard)
   @Put(':id/upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadVideo(
@@ -201,8 +201,8 @@ export class CoursesController {
     type: 'string',
     example: 'e6bfb1c7-8c3c-4d9f-a1ec-9f1bb9b2e252',
   })
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.TEACHER)
+  @UseGuards(AuthGuard, RolesGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCourseDto: UpdateCourseDto) {
     return this.coursesService.update(id, updateCourseDto);
@@ -215,8 +215,8 @@ export class CoursesController {
     type: 'string',
     example: 'e6bfb1c7-8c3c-4d9f-a1ec-9f1bb9b2e252',
   })
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.coursesService.remove(id);
