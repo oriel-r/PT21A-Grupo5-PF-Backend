@@ -15,11 +15,13 @@ import {
   ParseUUIDPipe,
   BadRequestException,
   UploadedFiles,
+  UseGuards,
 } from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiConsumes,
   ApiOperation,
@@ -31,7 +33,12 @@ import { FileInterceptor } from '@nestjs/platform-express/multer/interceptors/fi
 import { RateCourseDto } from './dto/rate-course.dto';
 import { FilterCourses } from 'src/helpers/Filter';
 import { FilesInterceptor } from '@nestjs/platform-express';
+import { RolesGuard } from 'src/guards/roles/roles.guard';
+import { Roles } from 'src/decorators/roles/roles.decorator';
+import { Role } from 'src/enums/roles.enum';
+import { AuthGuard } from 'src/guards/auth/auth.guard';
 
+@ApiBearerAuth()
 @ApiTags('Courses') // Grouping all endpoints under "Courses" in Swagger
 @Controller('courses')
 export class CoursesController {
@@ -97,13 +104,15 @@ export class CoursesController {
       limits: { fileSize: 200000000 },
     }),
   )
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.TEACHER)
   @Post()
   async create(
     @Body() data: CreateCourseDto,
     @UploadedFiles() files: Express.Multer.File[],
   ) {
     const [img_file, video_file] = files;
-    return await this.coursesService.create(data, img_file,video_file);
+    return await this.coursesService.create(data, img_file, video_file);
   }
 
   @ApiOperation({ summary: 'Filter courses' })
@@ -129,6 +138,8 @@ export class CoursesController {
     type: 'string',
     example: 'e6bfb1c7-8c3c-4d9f-a1ec-9f1bb9b2e252',
   })
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.USER)
   @Post(':id/rate')
   async rateCourse(
     @Param('id') courseId: string,
@@ -172,6 +183,8 @@ export class CoursesController {
     type: 'string',
     example: 'e6bfb1c7-8c3c-4d9f-a1ec-9f1bb9b2e252',
   })
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.TEACHER)
   @Put(':id/upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadVideo(
@@ -188,6 +201,8 @@ export class CoursesController {
     type: 'string',
     example: 'e6bfb1c7-8c3c-4d9f-a1ec-9f1bb9b2e252',
   })
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.TEACHER)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCourseDto: UpdateCourseDto) {
     return this.coursesService.update(id, updateCourseDto);
@@ -200,6 +215,8 @@ export class CoursesController {
     type: 'string',
     example: 'e6bfb1c7-8c3c-4d9f-a1ec-9f1bb9b2e252',
   })
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.coursesService.remove(id);
