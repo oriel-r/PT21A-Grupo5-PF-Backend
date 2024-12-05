@@ -55,8 +55,8 @@ export class CoursesService {
 
   async create(
     data: CreateCourseDto,
-    img_file?: Express.Multer.File,
-    video_file?: Express.Multer.File,
+    img_file?: Express.Multer.File[],
+    video_file?: Express.Multer.File[],
   ) {
     const { language, title, ...othres } = data;
     const existCourse = await this.coursesRepository.findByTitle(title);
@@ -77,8 +77,8 @@ export class CoursesService {
         : null;
     };
     const [image_url, video_url] = await Promise.all([
-      uploadFile(img_file),
-      uploadFile(video_file),
+      uploadFile(img_file[0]),
+      uploadFile(video_file[0]),
     ]);
 
     const newCurse: DeepPartial<Course> = {

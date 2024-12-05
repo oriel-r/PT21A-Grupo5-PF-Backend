@@ -29,8 +29,8 @@ export class SubscriptionsController {
     return await this.subscriptionsService.create(createSubscriptionDto);
   }
 
-  @Roles(Role.ADMIN)
-  @UseGuards(AuthGuard, RolesGuard)
+  //@Roles(Role.ADMIN)
+  //@UseGuards(AuthGuard, RolesGuard)
   @Get()
   async findAll() {
     return await this.subscriptionsService.findAll();

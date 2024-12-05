@@ -32,11 +32,14 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express/multer/interceptors/file.interceptor';
 import { RateCourseDto } from './dto/rate-course.dto';
 import { FilterCourses } from 'src/helpers/Filter';
-import { FilesInterceptor } from '@nestjs/platform-express';
+import { FileFieldsInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { RolesGuard } from 'src/guards/roles/roles.guard';
 import { Roles } from 'src/decorators/roles/roles.decorator';
 import { Role } from 'src/enums/roles.enum';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
+import { FilesFromCreateCourse } from './dto/create-course-files.dto';
+import { FilePipe } from 'src/pipes/file/file.pipe';
+import { aceptedMimetypes } from 'src/helpers/mimetypes.array';
 
 @ApiBearerAuth()
 @ApiTags('Courses') // Grouping all endpoints under "Courses" in Swagger
@@ -82,36 +85,19 @@ export class CoursesController {
       },
     },
   })
-  @UseInterceptors(
-    FilesInterceptor('files', 2, {
-      fileFilter: (req, file, callback) => {
-        const allowedMimeTypes = [
-          'image/jpeg',
-          'image/png',
-          'image/webp',
-          'image/jpg',
-          'video/mp4',
-          'video/mpeg',
-          'video/webm',
-          'video/x-msvideo',
-        ];
-        if (allowedMimeTypes.includes(file.mimetype)) {
-          callback(null, true);
-        } else {
-          callback(new BadRequestException('Invalid file type'), false);
-        }
-      },
-      limits: { fileSize: 200000000 },
-    }),
-  )
+  @UseInterceptors(FileFieldsInterceptor([
+    {name: 'img', maxCount: 1},
+    {name: 'video', maxCount: 1}
+  ]))
   @Roles(Role.ADMIN, Role.TEACHER)
   @UseGuards(AuthGuard, RolesGuard)
   @Post()
   async create(
     @Body() data: CreateCourseDto,
-    @UploadedFiles() files: Express.Multer.File[],
+    @UploadedFiles(new FilePipe(0, 5000000, aceptedMimetypes)) files: FilesFromCreateCourse,
   ) {
-    const [img_file, video_file] = files;
+    const {video_file, img_file} = files;
+    console.log(video_file, img_file)
     return await this.coursesService.create(data, img_file, video_file);
   }
 
