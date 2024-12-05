@@ -30,7 +30,7 @@ export class MembershipRepostory {
         return result
     }
 
-    async updateMembership(id: string, data) {
+    async updateMembership(id: string, data: Partial<Membership>) {
         return await this.membershipRepository.update(id, data)
     }
 

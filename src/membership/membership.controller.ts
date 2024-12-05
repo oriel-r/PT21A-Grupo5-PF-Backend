@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Put } from '@nestjs/common';
 import { MembershipService } from './membership.service';
-import { UpdateMembershipDto } from './dto/update-membership.dto';
+import { UpdateMembershipDto } from './dto/update-membership-request.dto';
 import { ApiBody, ApiParam } from '@nestjs/swagger';
 
 @Controller('membership')

@@ -1,6 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PaymentsRepository } from './payments.repository';
 import { Payment } from './entities/payment.entity';
+import { Membership } from 'src/membership/entities/membership.entity';
+import { PreApprovalResponse } from 'mercadopago/dist/clients/preApproval/commonTypes';
 
 @Injectable()
 export class PaymentsService {
@@ -12,7 +14,8 @@ export class PaymentsService {
         return result
     }
 
-    async addPayment(data): Promise<Payment> {
+    async addPayment(membership: Membership, apiReponse: PreApprovalResponse): Promise<Payment> {
+        const data: Partial<Payment> = {membership, status: apiReponse.status, amount: apiReponse.auto_recurring.transaction_amount}
         return await this.paymentsRepository.create(data)
     }
 
