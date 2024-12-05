@@ -6,19 +6,33 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { ReferralCodesService } from './referral-codes.service';
 import { CreateReferralCodeDto } from './dto/create-referral-code.dto';
 import { UpdateReferralCodeDto } from './dto/update-referral-code.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { ReferralCode } from './entities/referral-code.entity';
 import { RedeemCodeDto } from './dto/redeem-code.dto';
+import { AuthGuard } from 'src/guards/auth/auth.guard';
+import { RolesGuard } from 'src/guards/roles/roles.guard';
+import { Roles } from 'src/decorators/roles/roles.decorator';
+import { Role } from 'src/enums/roles.enum';
 
+@ApiBearerAuth()
 @Controller('referral-codes')
 @ApiTags('referral-codes') // Groups routes under 'referral-codes' in Swagger
 export class ReferralCodesController {
   constructor(private readonly referralCodesService: ReferralCodesService) {}
 
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Post('create')
   @ApiOperation({
     summary: 'Create multiple referral codes',
@@ -50,12 +64,15 @@ export class ReferralCodesController {
     status: 201,
     description: 'Referral codes successfully created.',
   })
+  @UseGuards(AuthGuard)
   @Post('redeem/:id')
   async redeem(@Param('id') userId: string, @Body() code: string) {
-    const data = new RedeemCodeDto(userId, code)
+    const data = new RedeemCodeDto(userId, code);
     return await this.referralCodesService.redeemCode(data);
   }
 
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Get()
   @ApiOperation({
     summary: 'Get all referral codes',
@@ -71,6 +88,8 @@ export class ReferralCodesController {
     return await this.referralCodesService.findAll();
   }
 
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Get(':id')
   @ApiOperation({
     summary: 'Get a referral code by ID',
@@ -96,6 +115,8 @@ export class ReferralCodesController {
     return this.referralCodesService.findOne(id);
   }
 
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Patch(':id')
   @ApiOperation({
     summary: 'Update a referral code',
@@ -123,6 +144,8 @@ export class ReferralCodesController {
     return this.referralCodesService.update(id, updateReferralCodeDto);
   }
 
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Delete(':id')
   @ApiOperation({
     summary: 'Delete a referral code',

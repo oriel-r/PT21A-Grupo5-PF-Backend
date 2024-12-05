@@ -13,15 +13,32 @@ import {
   HttpStatus,
   Put,
   ParseUUIDPipe,
+  BadRequestException,
+  UploadedFiles,
+  UseGuards,
 } from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
-import { ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express/multer/interceptors/file.interceptor';
 import { RateCourseDto } from './dto/rate-course.dto';
 import { FilterCourses } from 'src/helpers/Filter';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { RolesGuard } from 'src/guards/roles/roles.guard';
+import { Roles } from 'src/decorators/roles/roles.decorator';
+import { Role } from 'src/enums/roles.enum';
+import { AuthGuard } from 'src/guards/auth/auth.guard';
 
+@ApiBearerAuth()
 @ApiTags('Courses') // Grouping all endpoints under "Courses" in Swagger
 @Controller('courses')
 export class CoursesController {
@@ -29,7 +46,7 @@ export class CoursesController {
 
   @ApiOperation({
     summary: 'Get all courses with pagination',
-    description: "Retrieve courses with pagination. Defaults: page 1, limit 5.",
+    description: 'Retrieve courses with pagination. Defaults: page 1, limit 5.',
   })
   @ApiQuery({
     name: 'page',
@@ -53,16 +70,57 @@ export class CoursesController {
   }
 
   @ApiOperation({ summary: 'Create a new course' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @UseInterceptors(
+    FilesInterceptor('files', 2, {
+      fileFilter: (req, file, callback) => {
+        const allowedMimeTypes = [
+          'image/jpeg',
+          'image/png',
+          'image/webp',
+          'image/jpg',
+          'video/mp4',
+          'video/mpeg',
+          'video/webm',
+          'video/x-msvideo',
+        ];
+        if (allowedMimeTypes.includes(file.mimetype)) {
+          callback(null, true);
+        } else {
+          callback(new BadRequestException('Invalid file type'), false);
+        }
+      },
+      limits: { fileSize: 200000000 },
+    }),
+  )
+  @Roles(Role.ADMIN, Role.TEACHER)
+  @UseGuards(AuthGuard, RolesGuard)
   @Post()
-  async create(@Body() data: CreateCourseDto) {
-    return await this.coursesService.create(data);
+  async create(
+    @Body() data: CreateCourseDto,
+    @UploadedFiles() files: Express.Multer.File[],
+  ) {
+    const [img_file, video_file] = files;
+    return await this.coursesService.create(data, img_file, video_file);
   }
 
   @ApiOperation({ summary: 'Filter courses' })
   @ApiQuery({
     name: 'filters',
     required: false,
-    description: 'Filter parameters like date range, level, specialization, etc.',
+    description:
+      'Filter parameters like date range, level, specialization, etc.',
   })
   @Get('filter')
   async findAllByDate(@Query() filters: FilterCourses) {
@@ -80,6 +138,8 @@ export class CoursesController {
     type: 'string',
     example: 'e6bfb1c7-8c3c-4d9f-a1ec-9f1bb9b2e252',
   })
+  @Roles(Role.USER)
+  @UseGuards(AuthGuard, RolesGuard)
   @Post(':id/rate')
   async rateCourse(
     @Param('id') courseId: string,
@@ -123,6 +183,8 @@ export class CoursesController {
     type: 'string',
     example: 'e6bfb1c7-8c3c-4d9f-a1ec-9f1bb9b2e252',
   })
+  @Roles(Role.ADMIN, Role.TEACHER)
+  @UseGuards(AuthGuard, RolesGuard)
   @Put(':id/upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadVideo(
@@ -139,6 +201,8 @@ export class CoursesController {
     type: 'string',
     example: 'e6bfb1c7-8c3c-4d9f-a1ec-9f1bb9b2e252',
   })
+  @Roles(Role.ADMIN, Role.TEACHER)
+  @UseGuards(AuthGuard, RolesGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCourseDto: UpdateCourseDto) {
     return this.coursesService.update(id, updateCourseDto);
@@ -151,9 +215,10 @@ export class CoursesController {
     type: 'string',
     example: 'e6bfb1c7-8c3c-4d9f-a1ec-9f1bb9b2e252',
   })
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.coursesService.remove(id);
   }
 }
-

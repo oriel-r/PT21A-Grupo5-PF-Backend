@@ -5,6 +5,9 @@ import { v2 as cloudinary, UploadApiOptions } from 'cloudinary';
 @Injectable()
 export class CloudinaryService {
   constructor() {
+    dotenv.config({
+      path:'.env.development.local'
+  })
     cloudinary.config({
       cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
       api_key: process.env.CLOUDINARY_API_KEY,
@@ -24,7 +27,7 @@ export class CloudinaryService {
     };
 
     return new Promise((resolve, reject) => {
-      const stream = cloudinary.uploader.upload_stream(
+      const stream = cloudinary.uploader.upload_chunked_stream(
         options,
         (error, result) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-expressions

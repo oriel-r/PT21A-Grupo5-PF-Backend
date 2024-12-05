@@ -10,10 +10,12 @@ import {
   Put,
   Query,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { LessonsService } from './lessons.service';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiConsumes,
   ApiOperation,
@@ -24,7 +26,12 @@ import { CreateLessonDto } from './dto/create-lesson.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FilePipe } from 'src/pipes/file/file.pipe';
 import { UpdateLessonDto } from './dto/update-lesson.dto';
+import { AuthGuard } from 'src/guards/auth/auth.guard';
+import { RolesGuard } from 'src/guards/roles/roles.guard';
+import { Roles } from 'src/decorators/roles/roles.decorator';
+import { Role } from 'src/enums/roles.enum';
 
+@ApiBearerAuth()
 @ApiTags('Lessons')
 @Controller('lessons')
 export class LessonsController {
@@ -62,9 +69,35 @@ export class LessonsController {
     summary: 'Create a Lesson',
     description: "Send course's titlte",
   })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @Roles(Role.ADMIN, Role.TEACHER)
+  @UseGuards(AuthGuard, RolesGuard)
+  @UseInterceptors(FileInterceptor('file'))
   @Post()
-  async createLesson(@Body() data: CreateLessonDto) {
-    return await this.lessonsService.create(data);
+  async createLesson(
+    @Body() data: CreateLessonDto,
+    @UploadedFile(
+      new FilePipe(0, 50000000, [
+        'video/mp4',
+        'video/mpeg',
+        'video/webm',
+        'video/x-msvideo',
+      ]),
+    )
+    file: Express.Multer.File,
+  ) {
+    return await this.lessonsService.create(data, file);
   }
 
   @ApiOperation({
@@ -84,6 +117,8 @@ export class LessonsController {
       },
     },
   })
+  @Roles(Role.ADMIN, Role.TEACHER)
+  @UseGuards(AuthGuard, RolesGuard)
   @Put(':id/upload')
   async create(
     @Param() id: string,
@@ -102,19 +137,20 @@ export class LessonsController {
 
   @ApiOperation({
     summary: 'Edit lesson',
-    description: "Modify lesson data",
+    description: 'Modify lesson data',
   })
+  @Roles(Role.ADMIN, Role.TEACHER)
+  @UseGuards(AuthGuard, RolesGuard)
   @Put(':id')
-  async updateLesson(
-    @Param('id') id: string,
-    @Body() data: UpdateLessonDto,
-  ) {
-    return await this.lessonsService.updateLesson(id, data)
+  async updateLesson(@Param('id') id: string, @Body() data: UpdateLessonDto) {
+    return await this.lessonsService.updateLesson(id, data);
   }
 
   @ApiOperation({
     summary: 'Delete a lesson',
   })
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<string> {
     return await this.lessonsService.delete(id);

@@ -29,6 +29,10 @@ import { Role } from 'src/enums/roles.enum';
 import { ChangeSubscriptionDto } from './dto/change-subscription.dto';
 import { EnrollStudentDto } from './dto/enroll-student.dto';
 import { AssignTeacherDto } from './dto/assign-teacher.dto';
+import { AuthGuard } from 'src/guards/auth/auth.guard';
+import { SubscriptionsGuard } from 'src/guards/subscriptions/subscriptions.guard';
+import { RolesGuard } from 'src/guards/roles/roles.guard';
+import { Roles } from 'src/decorators/roles/roles.decorator';
 
 @ApiBearerAuth()
 @Controller('users')
@@ -59,13 +63,16 @@ export class UsersController {
     example: Role.USER,
   })
   @HttpCode(HttpStatus.OK)
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Get('page')
-  findWithPagination(
+  async findWithPagination(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 1,
     @Query('role') role: Role,
   ) {
-    return this.usersService.pagination(page, limit, role);
+    const users = await this.usersService.pagination(page, limit, role);
+    return users.map((user) => new UserResponseDto(user));
   }
 
   @ApiOperation({
@@ -75,10 +82,12 @@ export class UsersController {
     status: 201,
     description: 'Teacher successfully created',
   })
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Post('register')
   async create(@Body() createUserDto: CreateUserDto) {
     const user = await this.usersService.create(createUserDto);
-    return user;
+    return new UserResponseDto(user);
   }
 
   @ApiOperation({
@@ -88,6 +97,8 @@ export class UsersController {
     status: 200,
     description: 'Returns a list of users',
   })
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Get()
   async findAll() {
     return await this.usersService.findAll();
@@ -108,7 +119,8 @@ export class UsersController {
   })
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return await this.usersService.findOne(id);
+    const user = await this.usersService.findOne(id);
+    return new UserResponseDto(user);
   }
 
   @ApiOperation({
@@ -124,9 +136,11 @@ export class UsersController {
     description: 'User successfully updated',
     type: UserResponseDto,
   })
+  @UseGuards(AuthGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return await this.usersService.update(id, updateUserDto);
+    const user = await this.usersService.update(id, updateUserDto);
+    return new UserResponseDto(user);
   }
 
   @ApiOperation({
@@ -141,6 +155,7 @@ export class UsersController {
     status: 200,
     description: 'Password successfully changed',
   })
+  @UseGuards(AuthGuard)
   @Put(':id')
   async changePassword(
     @Param('id') id: string,
@@ -166,6 +181,7 @@ export class UsersController {
     status: 200,
     description: 'Subscription successfully changed',
   })
+  @UseGuards(AuthGuard)
   @Put('user-subscription/:id')
   async changeSubscription(
     @Param('id') userId: string,
@@ -187,6 +203,7 @@ export class UsersController {
     status: 200,
     description: 'Student successfully enrolled in the course',
   })
+  @UseGuards(AuthGuard, SubscriptionsGuard)
   @Put('enroll/:id')
   @HttpCode(HttpStatus.OK)
   async enrollStudent(
@@ -209,6 +226,8 @@ export class UsersController {
     status: 200,
     description: 'Teacher successfully assigned to the course',
   })
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Put('assign-teacher/:id')
   async assignCourseToTeacher(
     @Param('id') courseId: string,
@@ -230,6 +249,8 @@ export class UsersController {
     status: 200,
     description: 'User successfully deactivated',
   })
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return await this.usersService.remove(id);
