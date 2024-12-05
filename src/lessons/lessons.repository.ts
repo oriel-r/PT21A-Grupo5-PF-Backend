@@ -13,10 +13,12 @@ export class LessonsRepository {
   ) {}
 
   async getAll(limit: number, page: number): Promise<Lesson[]> {
-    return await this.lessonsRepository.find({
-      skip: (page - 1) * limit,
-      take: limit,
+    const result = await this.lessonsRepository.find({
+      skip: (page * limit) - 1,
+      take: page, 
+      relations: {course: true}
     });
+    return result
   }
 
   async getById(id: string): Promise<Lesson> {
