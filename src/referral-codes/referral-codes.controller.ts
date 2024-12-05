@@ -31,8 +31,8 @@ import { Role } from 'src/enums/roles.enum';
 export class ReferralCodesController {
   constructor(private readonly referralCodesService: ReferralCodesService) {}
 
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Post('create')
   @ApiOperation({
     summary: 'Create multiple referral codes',
@@ -88,8 +88,8 @@ export class ReferralCodesController {
     return await this.referralCodesService.findAll();
   }
 
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Get(':id')
   @ApiOperation({
     summary: 'Get a referral code by ID',
@@ -115,8 +115,8 @@ export class ReferralCodesController {
     return this.referralCodesService.findOne(id);
   }
 
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Patch(':id')
   @ApiOperation({
     summary: 'Update a referral code',
@@ -144,8 +144,8 @@ export class ReferralCodesController {
     return this.referralCodesService.update(id, updateReferralCodeDto);
   }
 
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Delete(':id')
   @ApiOperation({
     summary: 'Delete a referral code',
