@@ -103,7 +103,7 @@ export class AuthService {
       throw new HttpException('Usuario no encontrado', 404);
     }
 
-    if (!user.isVerified) {
+    if (user.isVerified === false) {
       throw new HttpException(
         'El usuario no ha verificado su correo.',
         HttpStatus.UNAUTHORIZED,
