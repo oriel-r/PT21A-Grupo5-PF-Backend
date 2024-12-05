@@ -51,7 +51,7 @@ export class AuthController {
     const result = this.authService.verifyEmail(email, code);
     
     if ((await result).message === 'Cuenta verificada exitosamente.') {
-      return res.redirect(`${process.env.BASE_URL}/verificationSuccess`);
+      return res.redirect(`${process.env.BASE_URL}code-verification`);
     }
 
     throw new HttpException(
