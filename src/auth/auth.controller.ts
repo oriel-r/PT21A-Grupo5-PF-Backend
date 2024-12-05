@@ -17,6 +17,7 @@ import { SignInAuthDto } from './dto/signin-auth.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { UserResponseAuthDto } from './dto/user-response-auth.dto';
 import { ApiOperation } from '@nestjs/swagger';
+import { Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -45,8 +46,18 @@ export class AuthController {
   async verifyEmail(
     @Query('email') email: string,
     @Query('code') code: string,
+    @Res() res: Response, 
   ) {
-    return this.authService.verifyEmail(email, code);
+    const result = this.authService.verifyEmail(email, code);
+    
+    if ((await result).message === 'Cuenta verificada exitosamente.') {
+      return res.redirect(`${process.env.BASE_URL}/verificationSuccess`);
+    }
+
+    throw new HttpException(
+      'Código de verificación inválido o expirado.',
+      400,
+    );
   }
 
   @ApiOperation({ summary: 'Authenticate user and generate token' })
