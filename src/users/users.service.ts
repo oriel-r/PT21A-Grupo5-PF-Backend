@@ -83,6 +83,7 @@ export class UsersService {
   }
 
   async createUser(signUpUserDto: SignupUserDto) {
+    console.log(signUpUserDto)
     const { name, email, password, idNumber, photo } = signUpUserDto;
 
     const subscription = await this.subscriptionService.findByName('Standard');
@@ -113,11 +114,12 @@ export class UsersService {
     user.photo =
       photo ||
       'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg';
+    //user.isVerified = false
 
     await this.usersRepository.save(user);
     const membership: Membership =
       await this.membershipService.createMembership(user);
-    console.log({ inUser: membership });
+    console.log({ inUser: user });
     user.membership = membership;
     await this.usersRepository.save(user);
     return user;
