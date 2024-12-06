@@ -88,7 +88,7 @@ export class LanguageController {
       limits: { fileSize: 200000 },
     }),
   )
-  @Post('create')
+  @Post()
   async createLanguage(
     @UploadedFiles() files: Express.Multer.File[],
     @Body() createLanguageDto: CreateLanguageDto,

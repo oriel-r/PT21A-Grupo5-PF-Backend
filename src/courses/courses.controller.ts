@@ -40,6 +40,7 @@ import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { FilesFromCreateCourse } from './dto/create-course-files.dto';
 import { FilePipe } from 'src/pipes/file/file.pipe';
 import { aceptedMimetypes } from 'src/helpers/mimetypes.array';
+import { FilesPipe } from 'src/pipes/file/files-pipe';
 
 @ApiBearerAuth()
 @ApiTags('Courses') // Grouping all endpoints under "Courses" in Swagger
@@ -86,18 +87,17 @@ export class CoursesController {
     },
   })
   @UseInterceptors(FileFieldsInterceptor([
-    {name: 'img', maxCount: 1},
-    {name: 'video', maxCount: 1}
+    {name: 'img_file', maxCount: 1},
+    {name: 'video_file', maxCount: 1}
   ]))
   @Roles(Role.ADMIN, Role.TEACHER)
   @UseGuards(AuthGuard, RolesGuard)
   @Post()
   async create(
     @Body() data: CreateCourseDto,
-    @UploadedFiles(new FilePipe(0, 5000000, aceptedMimetypes)) files: FilesFromCreateCourse,
+    @UploadedFiles(new FilesPipe(0, 50000000, aceptedMimetypes)) files: FilesFromCreateCourse,
   ) {
     const {video_file, img_file} = files;
-    console.log(video_file, img_file)
     return await this.coursesService.create(data, img_file, video_file);
   }
 

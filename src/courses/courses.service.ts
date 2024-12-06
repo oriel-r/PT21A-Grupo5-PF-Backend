@@ -134,6 +134,9 @@ export class CoursesService {
   }
 
   async remove(id: string) {
-    return `This action removes a #${id} course`;
-  }
+    const course = await this.coursesRepository.findById(id)
+    if(!course) throw new NotFoundException('Curso no encontrado')
+    if(!course.isActive) throw new BadRequestException('El curso ya se encuentra ianctivo')
+    return await this.coursesRepository.remove(id)
+}
 }

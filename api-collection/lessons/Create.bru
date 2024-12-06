@@ -1,0 +1,22 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/lessons
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNmNTVhZmQ0LWE1ZjMtNDI0ZC04ODc5LTk3NTcyZWUzOTVkMyIsImVtYWlsIjoidGVhY2hlckB0ZWFjaGVyLmNvbSIsInJvbGUiOiJ0ZWFjaGVyIiwibWVtYmVyc2hpcCI6bnVsbCwiaWF0IjoxNzMzNDk3MDA4LCJleHAiOjE3MzM1MDA2MDh9.C3YoSb1KvEcfQoTd_epIDTnjmi9_hSMSFazdSKrCh9Q
+}
+
+body:multipart-form {
+  title: Una clase xe
+  content: sdasdadadasdasaad
+  course: 4d353179-ba3f-4e56-a5b4-b749c9b45968
+  file: @file(/home/oriel/Downloads/7565977-hd_2048_1080_25fps.mp4)
+}
