@@ -33,6 +33,8 @@ import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { SubscriptionsGuard } from 'src/guards/subscriptions/subscriptions.guard';
 import { RolesGuard } from 'src/guards/roles/roles.guard';
 import { Roles } from 'src/decorators/roles/roles.decorator';
+import { Subscriptions } from 'src/decorators/subscriptions/subscriptions.decorator';
+import { SubscriptionTypes } from 'src/enums/subscription-types.enum';
 
 @ApiBearerAuth()
 @Controller('users')
@@ -203,6 +205,7 @@ export class UsersController {
     status: 200,
     description: 'Student successfully enrolled in the course',
   })
+  @Subscriptions(SubscriptionTypes.STANDARD, SubscriptionTypes.PREMIUM, SubscriptionTypes.PRO)
   @UseGuards(AuthGuard, SubscriptionsGuard)
   @Put('enroll/:id')
   @HttpCode(HttpStatus.OK)
