@@ -42,6 +42,6 @@ export class AuthGuard implements CanActivate {
       return token.replace(/^['"]|['"]$/g, '');
     }
     
-      }    return undefined;
+          return undefined;
   }
 }
