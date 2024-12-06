@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Course } from './entities/course.entity';
 import { Repository, UpdateResult } from 'typeorm';
@@ -140,5 +140,14 @@ export class CoursesRepository {
 
   async updateCourse(id, data): Promise<UpdateResult> {
     return await this.coursesRepository.update(id, data);
+  }
+
+  async remove(id) {
+    const result = await this.coursesRepository.update(id, {isActive: false})
+    if(result.affected === 0) throw new BadRequestException('Hubo un problema al inhabilitar el curso')
+    return {
+      course: id,
+      isActive: false
+    }
   }
 }
