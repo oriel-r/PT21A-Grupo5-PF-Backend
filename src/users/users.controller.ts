@@ -205,8 +205,7 @@ export class UsersController {
     status: 200,
     description: 'Student successfully enrolled in the course',
   })
-  @Subscriptions(SubscriptionTypes.STANDARD, SubscriptionTypes.PREMIUM, SubscriptionTypes.PRO)
-  @UseGuards(AuthGuard, SubscriptionsGuard)
+  @UseGuards(AuthGuard, /*SubscriptionsGuard*/)
   @Put('enroll/:id')
   @HttpCode(HttpStatus.OK)
   async enrollStudent(
