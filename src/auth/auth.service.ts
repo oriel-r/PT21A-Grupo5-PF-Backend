@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable, Redirect } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Redirect,
+} from '@nestjs/common';
 import { SignupUserDto } from './dto/signup-auth.dto';
 import { hash, compare } from 'bcrypt';
 import { UsersService } from 'src/users/users.service';
@@ -37,6 +42,7 @@ export class AuthService {
     signUpUser.password = await hash(signUpUser.password, 10);
 
     const newUser = await this.usersService.createUser(signUpUser);
+
     newUser.isVerified = false;
     await this.usersRepository.save(newUser);
 
@@ -50,15 +56,16 @@ export class AuthService {
     );
 
     const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
-    const verificationLink = verificationEmail(
+    /* const verificationLink = verificationEmail(
       newUser.email,
       verificationCode,
       baseUrl,
-    );
+    ); */
+    const verificationLink = `http://localhost:3000/code-verification?email=${newUser.email}&code=${verificationCode}`;
 
     const message = emailHtml
       .replace('{{userName}}', signUpUser.name)
-      .replace('{{verificationLink}}', await verificationLink)
+      .replace('{{verificationLink}}', verificationLink)
       .replace('{{code}}', verificationCode);
 
     const to = [signUpUser.email];
@@ -89,9 +96,9 @@ export class AuthService {
       );
     }
 
-    await this.authRepository.activateUser(email);
-
     await this.authRepository.deleteVerificationCode(verification.id);
+
+    await this.authRepository.activateUser(email);
 
     return { message: 'Cuenta verificada exitosamente.' };
   }
@@ -103,7 +110,7 @@ export class AuthService {
       throw new HttpException('Usuario no encontrado', 404);
     }
 
-    if (user.isVerified === false) {
+    if (!user.isVerified) {
       throw new HttpException(
         'El usuario no ha verificado su correo.',
         HttpStatus.UNAUTHORIZED,
@@ -137,8 +144,6 @@ export class AuthService {
     };
 
     const token = this.jwtService.sign(userPayload);
-
-    console.log('This is the payload: ', userPayload);
 
     return {
       token,

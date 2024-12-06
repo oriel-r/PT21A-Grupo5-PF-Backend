@@ -11,8 +11,8 @@ export const verificationEmail = async (
   )
     .then((res) => res.json())
     .catch((e) => e.message);
-
+  
   if (verified.message === 'Cuenta verificada exitosamente.') {
-    return url;
+    return `http://localhost:3000/code-verification`; //Cambiar a `${url}code-verification` cuando este listo.
   }
 };
