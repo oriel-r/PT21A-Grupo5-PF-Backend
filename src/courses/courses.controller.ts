@@ -32,7 +32,10 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express/multer/interceptors/file.interceptor';
 import { RateCourseDto } from './dto/rate-course.dto';
 import { FilterCourses } from 'src/helpers/Filter';
-import { FileFieldsInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import {
+  FileFieldsInterceptor,
+  FilesInterceptor,
+} from '@nestjs/platform-express';
 import { RolesGuard } from 'src/guards/roles/roles.guard';
 import { Roles } from 'src/decorators/roles/roles.decorator';
 import { Role } from 'src/enums/roles.enum';
@@ -86,18 +89,21 @@ export class CoursesController {
       },
     },
   })
-  @UseInterceptors(FileFieldsInterceptor([
-    {name: 'img_file', maxCount: 1},
-    {name: 'video_file', maxCount: 1}
-  ]))
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'img_file', maxCount: 1 },
+      { name: 'video_file', maxCount: 1 },
+    ]),
+  )
   @Roles(Role.ADMIN, Role.TEACHER)
   @UseGuards(AuthGuard, RolesGuard)
   @Post()
   async create(
     @Body() data: CreateCourseDto,
-    @UploadedFiles(new FilesPipe(0, 50000000, aceptedMimetypes)) files: FilesFromCreateCourse,
+    @UploadedFiles(new FilesPipe(0, 50000000, aceptedMimetypes))
+    files: FilesFromCreateCourse,
   ) {
-    const {video_file, img_file} = files;
+    const { video_file, img_file } = files;
     return await this.coursesService.create(data, img_file, video_file);
   }
 
@@ -189,9 +195,31 @@ export class CoursesController {
   })
   @Roles(Role.ADMIN, Role.TEACHER)
   @UseGuards(AuthGuard, RolesGuard)
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCourseDto: UpdateCourseDto) {
-    return this.coursesService.update(id, updateCourseDto);
+  @UseInterceptors(
+    FilesInterceptor('files', 2, {
+      fileFilter: (req, file, callback) => {
+        const allowedMimeTypes = [
+          'image/jpeg',
+          'image/png',
+          'image/webp',
+          'image/jpg',
+          'video/mp4',
+          'video/mpeg',
+          'video/webm',
+          'video/x-msvideo',
+        ];
+        if (allowedMimeTypes.includes(file.mimetype)) {
+          callback(null, true);
+        } else {
+          callback(new BadRequestException('Invalid file type'), false);
+        }
+      },
+      limits: { fileSize: 2000000 },
+    }),
+  )
+  @Put(':id')
+  update(@Param('id') id: string, @Body() updateCourseDto: UpdateCourseDto,@UploadedFiles() files: Express.Multer.File[]) {
+    return this.coursesService.update(id, updateCourseDto, files);
   }
 
   @ApiOperation({ summary: 'Delete a course' })

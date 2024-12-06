@@ -126,17 +126,46 @@ export class CoursesService {
     return await this.coursesRepository.findById(id);
   }
 
-  async update(id: string, data: UpdateCourseDto) {
+  async update(
+    id: string,
+    data: UpdateCourseDto,
+    files?: Express.Multer.File[],
+  ) {
+    const [img_file, video_file] = files;
     const course = await this.coursesRepository.findById(id);
     if (!course) throw new NotFoundException('No se encontro el curso');
+    const uploadFile = async (
+      file?: Express.Multer.File,
+    ): Promise<string | null> => {
+      return file
+        ? await this.uploadFileService.uploadFile(
+            file.buffer,
+            file.originalname,
+          )
+        : null;
+    };
+
+    const [img_url, video_url] = await Promise.all([
+      uploadFile(img_file),
+      uploadFile(video_file),
+    ]);
+
+    if (img_url) {
+      data.img_file = img_url;
+    }
+
+    if (video_url) {
+      data.video_file = img_url;
+    }
     await this.coursesRepository.updateCourse(id, data);
     return await this.coursesRepository.findById(id);
   }
 
   async remove(id: string) {
-    const course = await this.coursesRepository.findById(id)
-    if(!course) throw new NotFoundException('Curso no encontrado')
-    if(!course.isActive) throw new BadRequestException('El curso ya se encuentra ianctivo')
-    return await this.coursesRepository.remove(id)
-}
+    const course = await this.coursesRepository.findById(id);
+    if (!course) throw new NotFoundException('Curso no encontrado');
+    if (!course.isActive)
+      throw new BadRequestException('El curso ya se encuentra ianctivo');
+    return await this.coursesRepository.remove(id);
+  }
 }
