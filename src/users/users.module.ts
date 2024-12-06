@@ -9,11 +9,12 @@ import { SubscriptionsModule } from 'src/subscriptions/subscriptions.module';
 import { SubscriptionsService } from 'src/subscriptions/subscriptions.service';
 import { MembershipModule } from 'src/membership/membership.module';
 import { CoursesModule } from 'src/courses/courses.module';
+import { CloudinaryService } from 'src/services/cloudinary/cloudinary.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User]), JwtModule, forwardRef(() => MembershipModule), SubscriptionsModule, forwardRef(() => CoursesModule)],
   controllers: [UsersController],
-  providers: [UsersService, UsersRepository],
+  providers: [UsersService, UsersRepository, CloudinaryService],
   exports: [UsersRepository, UsersService],
 })
 export class UsersModule {}

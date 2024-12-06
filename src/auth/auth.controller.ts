@@ -9,6 +9,7 @@ import {
   Query,
   Req,
   Res,
+  UploadedFile,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -16,18 +17,41 @@ import { SignupUserDto } from './dto/signup-auth.dto';
 import { SignInAuthDto } from './dto/signin-auth.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { UserResponseAuthDto } from './dto/user-response-auth.dto';
-import { ApiOperation } from '@nestjs/swagger';
-
+import { ApiBody, ApiConsumes, ApiOperation } from '@nestjs/swagger';
+import { FilePipe } from 'src/pipes/file/file.pipe';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @ApiOperation({ summary: 'Register a new user' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   @Post('signup')
   @HttpCode(201)
-  async signUp(@Body() signUpUser: SignupUserDto) {
-    const newUser = await this.authService.signUp(signUpUser);
+  async signUp(
+    @UploadedFile(
+      new FilePipe(0, 20000, [
+        'image/jpeg',
+        'image/png',
+        'image/webp',
+        'image/jpg',
+      ]),
+    )
+    file: Express.Multer.File,
+    @Body() signUpUser: SignupUserDto,
+  ) {
+    const newUser = await this.authService.signUp(signUpUser, file);
     return {
       message:
         'Usuario registrado exitosamente. Revisa tu correo para verificar tu cuenta.',
@@ -45,7 +69,7 @@ export class AuthController {
   @Post('codeVerification')
   async verificationEmailWhitCode(
     @Query('email') email: string,
-    @Query('code') code: string
+    @Query('code') code: string,
   ) {
     return await this.authService.verifyEmail(email, code);
   }
