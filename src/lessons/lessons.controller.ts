@@ -143,8 +143,20 @@ export class LessonsController {
   @Roles(Role.ADMIN, Role.TEACHER)
   @UseGuards(AuthGuard, RolesGuard)
   @Put(':id')
-  async updateLesson(@Param('id') id: string, @Body() data: UpdateLessonDto) {
-    return await this.lessonsService.updateLesson(id, data);
+  async updateLesson(
+    @Param('id') id: string,
+    @UploadedFile(
+      new FilePipe(0, 50000, [
+        'video/mp4',
+        'video/mpeg',
+        'video/webm',
+        'video/x-msvideo',
+      ]),
+    )
+    file: Express.Multer.File,
+    @Body() data: UpdateLessonDto,
+  ) {
+    return await this.lessonsService.updateLesson(id, data, file);
   }
 
   @ApiOperation({

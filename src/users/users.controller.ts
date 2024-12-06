@@ -12,6 +12,7 @@ import {
   HttpCode,
   HttpStatus,
   ParseUUIDPipe,
+  UploadedFile,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -35,6 +36,7 @@ import { RolesGuard } from 'src/guards/roles/roles.guard';
 import { Roles } from 'src/decorators/roles/roles.decorator';
 import { Subscriptions } from 'src/decorators/subscriptions/subscriptions.decorator';
 import { SubscriptionTypes } from 'src/enums/subscription-types.enum';
+import { FilePipe } from 'src/pipes/file/file.pipe';
 
 @ApiBearerAuth()
 @Controller('users')
@@ -140,8 +142,16 @@ export class UsersController {
   })
   @UseGuards(AuthGuard)
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    const user = await this.usersService.update(id, updateUserDto);
+  async update(@Param('id') id: string, @UploadedFile(
+    new FilePipe(0, 20000, [
+      'image/jpeg',
+      'image/png',
+      'image/webp',
+      'image/jpg',
+    ]),
+  )
+  file: Express.Multer.File,@Body() updateUserDto: UpdateUserDto) {
+    const user = await this.usersService.update(id, updateUserDto, file);
     return new UserResponseDto(user);
   }
 

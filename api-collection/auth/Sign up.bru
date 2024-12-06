@@ -1,0 +1,21 @@
+meta {
+  name: Sign up
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{BASE_URL}}/auth/signup
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "John Doe",
+    "email": "orielromero97@gmail.com",
+    "password": "Password123!",
+    "repeatPassword": "Password123!",
+    "idNumber": "12345678"
+  }
+}

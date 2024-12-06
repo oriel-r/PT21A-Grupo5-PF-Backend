@@ -83,8 +83,9 @@ export class MembershipService {
     newData.subscription = newSubscription
 
     await this.membershipsRepository.updateMembership(membership.id, newData);
+    const newMembership = await this.membershipsRepository.getById(membership.id)
   
-    return { link: mpResponse.init_point };
+    return { link: mpResponse.init_point, newMembership};
   }
 
   async getMemberships() {
