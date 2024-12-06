@@ -72,10 +72,20 @@ export class LessonsService {
     }
   }
 
-  async updateLesson(id: string, updateLessonDto: UpdateLessonDto) {
+  async updateLesson(
+    id: string,
+    updateLessonDto: UpdateLessonDto,
+    file?: Express.Multer.File,
+  ) {
     const lessonToUpdate = await this.getById(id);
     if (!lessonToUpdate)
       throw new NotFoundException('No se encontra la leccion');
+
+    const video_url = await this.fileUploadService.uploadFile(
+      file.buffer,
+      file.originalname,
+    );
+    file ? (updateLessonDto.video_url = video_url) : undefined;
 
     const updatedLesson = Object.assign(lessonToUpdate, updateLessonDto);
 

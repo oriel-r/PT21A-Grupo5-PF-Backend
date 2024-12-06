@@ -22,6 +22,7 @@ import { randomBytes } from 'crypto';
 import { AuthRepository } from './auth.repository';
 import { AuthPayload } from 'src/helpers/AuthPayload';
 import { verificationEmail } from 'src/helpers/VerifyEmail';
+import { CloudinaryService } from 'src/services/cloudinary/cloudinary.service';
 
 @Injectable()
 export class AuthService {
@@ -32,11 +33,20 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly emailService: EmailerService,
     private readonly authRepository: AuthRepository,
+    private readonly fileService: CloudinaryService,
   ) {}
 
-  async signUp(signUpUser: SignupUserDto) {
+  async signUp(signUpUser: SignupUserDto, file?: Express.Multer.File) {
     if (signUpUser.password !== signUpUser.repeatPassword) {
       throw new HttpException('Las contraseñas no coinciden', 400);
+    }
+
+    if (file) {
+      const photo_url = await this.fileService.uploadFile(
+        file.buffer,
+        file.originalname,
+      );
+      signUpUser.photo = photo_url;
     }
 
     signUpUser.password = await hash(signUpUser.password, 10);

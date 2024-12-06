@@ -22,6 +22,7 @@ import { Membership } from 'src/membership/entities/membership.entity';
 import { v4 as uuid } from 'uuid';
 import { CoursesService } from 'src/courses/courses.service';
 import { Course } from 'src/courses/entities/course.entity';
+import { CloudinaryService } from 'src/services/cloudinary/cloudinary.service';
 
 @Injectable()
 export class UsersService {
@@ -31,6 +32,7 @@ export class UsersService {
     private readonly subscriptionService: SubscriptionsService,
     private readonly membershipService: MembershipService,
     private readonly coursesService: CoursesService,
+    private readonly fileServices: CloudinaryService,
   ) {}
 
   async pagination(page: number, limit: number, role) {
@@ -133,7 +135,7 @@ export class UsersService {
         'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg'),
       (user.password = uuid()),
       (user.idNumber = uuid()),
-      user.isVerified = true,
+      (user.isVerified = true),
       await this.usersRepository.save(user);
     const membership: Membership =
       await this.membershipService.createMembership(user);
@@ -162,10 +164,22 @@ export class UsersService {
     return await this.usersRepo.findOne(id);
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
+  async update(
+    id: string,
+    updateUserDto: UpdateUserDto,
+    file?: Express.Multer.File,
+  ) {
     const userToUpdate = await this.findOne(id);
     if (!userToUpdate) {
       throw new BadRequestException('Usuario inexistente.');
+    }
+
+    if (file) {
+      const photo_url = await this.fileServices.uploadFile(
+        file.buffer,
+        file.originalname,
+      );
+      updateUserDto.photo = photo_url;
     }
 
     const updatedUser = {
