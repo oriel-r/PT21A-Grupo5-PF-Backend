@@ -1,0 +1,21 @@
+meta {
+  name: Enroll
+  type: http
+  seq: 1
+}
+
+put {
+  url: {{BASE_URL}}/users/enroll/847cbd4a-3263-4a13-8951-17cb300c90db
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijg0N2NiZDRhLTMyNjMtNGExMy04OTUxLTE3Y2IzMDBjOTBkYiIsImVtYWlsIjoidXNlcjFAc3RhbmRhcmQuY29tIiwicm9sZSI6InVzZXIiLCJtZW1iZXJzaGlwIjp7ImlkIjoiM2U5ZDU4ZjQtZDhhOC00MTEzLTlmNDAtYjEzNDAxZmVlYTFmIiwiZXh0ZXJuYWxfaWQiOm51bGwsInN0YXJ0X2RhdGUiOiIyMDI0LTEyLTA2VDA0OjE1OjE2Ljk3N1oiLCJlbmRfZGF0ZSI6bnVsbCwic3Vic2NyaXB0aW9uX21vZGlmaWVkX2F0IjpudWxsLCJ1cGRhdGVfYXQiOiIyMDI0LTEyLTA2VDA3OjE1OjIwLjA5MFoiLCJzdWJzY3JpcHRpb24iOnsiaWQiOiIwZjk5YjA1Ny05OGJmLTQyNjgtYmY5Ni03ZGUwZTk5NGMyMjIiLCJuYW1lIjoiU3RhbmRhcmQiLCJkZXNjcmlwdGlvbiI6WyJBY2Nlc28gYSBkb3MgY3Vyc29zIChDYXRlZ29yw61hIEJhc2ljKSIsIkFjY2VzbyBhIGN1cnNvcyBPbi1EZW1hbmQiLCJObyByZWNpYmUgY2VydGlmaWNhZG8iXSwicHJpY2UiOiIwLjAwIn19LCJpYXQiOjE3MzM0NjAzNzAsImV4cCI6MTczMzQ2Mzk3MH0.6wie4b3iBQ_dn5nSqQ7uArVkL7aDwjug2nNqmyeL_UY
+}
+
+body:json {
+  {
+    "courseId": "26b999ba-ad1c-45ce-8027-b0a09c6fe4f2"
+  }
+}
