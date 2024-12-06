@@ -68,6 +68,7 @@ export class AuthController {
     return await this.authService.signIn(credentials);
   }
 
+  @ApiOperation({summary: 'Verify email address with a code'})
   @Post('codeVerification')
   async verificationEmailWhitCode(
     @Query('email') email: string,
