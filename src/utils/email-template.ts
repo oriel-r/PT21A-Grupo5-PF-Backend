@@ -13,7 +13,6 @@ export const emailHtml = `
         body {
             font-family: 'Poppins', Arial, sans-serif;
             background-color: #fafafa;
-            color: #333333;
             margin: 0;
             padding: 0;
         }
@@ -53,13 +52,15 @@ export const emailHtml = `
             padding: 10px 20px;
             font-size: 16px;
             font-weight: 600;
-            color: white;
             background-color: #0033A0;
+            color: white;
             text-decoration: none;
             border-radius: 5px;
-                &:hover {
-                    background-color: #0033A022;
-                }
+            transition: all 0.5s easy;
+        }
+
+        .button:hover {
+            background-color: #0033A022;
         }
     </style>
 </head>
