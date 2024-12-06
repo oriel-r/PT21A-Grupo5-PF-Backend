@@ -10,6 +10,7 @@ import { EmailerModule } from 'src/emailer/emailer.module';
 import { JwtModule } from '@nestjs/jwt';
 import { UserVerification } from './entities/user-verification.entity';
 import { AuthRepository } from './auth.repository';
+import { CloudinaryService } from 'src/services/cloudinary/cloudinary.service';
 
 @Module({
   imports: [
@@ -23,6 +24,6 @@ import { AuthRepository } from './auth.repository';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, AuthStrategy, AuthRepository],
+  providers: [AuthService, AuthStrategy, AuthRepository, CloudinaryService],
 })
 export class AuthModule {}
