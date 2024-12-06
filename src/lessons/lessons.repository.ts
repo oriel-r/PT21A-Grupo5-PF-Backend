@@ -28,7 +28,7 @@ export class LessonsRepository {
   async create(data: Partial<Lesson>): Promise<Lesson> {
     return await this.lessonsRepository.save(
       this.lessonsRepository.create(data),
-    )[0];
+    );
   }
 
   async updateVideo(id, url) {

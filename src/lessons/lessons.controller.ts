@@ -40,6 +40,7 @@ export class LessonsController {
   @ApiOperation({
     summary: 'Get all lessons',
   })
+  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get()
   async getall(@Query('page') page: number, @Query('limit') limit: number) {
