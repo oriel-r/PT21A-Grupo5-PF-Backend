@@ -9,15 +9,15 @@ const pro = 'Pro';
 export const usersMock = [
   {
     name: 'John Doe',
-    email: 'john.doe@example.com',
-    password: 'Jd45679654!',
+    email: 'teacher@teacher.com',
+    password: 'Password123!',
     idNumber: '45679654',
     role: teacher,
   },
   {
     name: 'Alice Smith',
-    email: 'alice.smith@example.com',
-    password: 'Alice1234$',
+    email: 'admin@admin.com',
+    password: 'Password123!',
     idNumber: '37659083',
     role: admin,
   },
@@ -31,7 +31,7 @@ export const usersMock = [
   },
   {
     name: 'Maria Lopez',
-    email: 'maria.lopez@example.com',
+    email: 'user1@standard.com',
     idNumber: '87654321',
     password: 'Password123!',
     subscription: standard,
@@ -39,7 +39,7 @@ export const usersMock = [
   },
   {
     name: 'Carlos Ruiz',
-    email: 'carlos.ruiz@example.com',
+    email: 'user2@standard.com',
     idNumber: '23456789',
     password: 'Password123!',
     subscription: standard,
@@ -47,7 +47,7 @@ export const usersMock = [
   },
   {
     name: 'Ana Martinez',
-    email: 'ana.martinez@example.com',
+    email: 'user3@standard.com',
     idNumber: '34567890',
     password: 'Password123!',
     subscription: standard,
@@ -55,7 +55,7 @@ export const usersMock = [
   },
   {
     name: 'Luis Hernandez',
-    email: 'luis.hernandez@example.com',
+    email: 'user4@standard.com',
     idNumber: '45678901',
     password: 'Password123!',
     subscription: standard,
@@ -63,7 +63,7 @@ export const usersMock = [
   },
   {
     name: 'Sofia Ramirez',
-    email: 'sofia.ramirez@example.com',
+    email: 'user1@premium.com',
     idNumber: '56789012',
     password: 'Password123!',
     subscription: premium,
@@ -71,7 +71,7 @@ export const usersMock = [
   },
   {
     name: 'Javier Fernandez',
-    email: 'javier.fernandez@example.com',
+    email: 'user2@premium.com',
     idNumber: '67890123',
     password: 'Password123!',
     subscription: premium,
@@ -79,7 +79,7 @@ export const usersMock = [
   },
   {
     name: 'Isabella Torres',
-    email: 'isabella.torres@example.com',
+    email: 'user3@premium.com',
     idNumber: '78901234',
     password: 'Password123!',
     subscription: premium,
@@ -87,7 +87,7 @@ export const usersMock = [
   },
   {
     name: 'Diego Gomez',
-    email: 'diego.gomez@example.com',
+    email: 'user4@premium.com',
     idNumber: '89012345',
     password: 'Password123!',
     subscription: premium,
@@ -95,7 +95,7 @@ export const usersMock = [
   },
   {
     name: 'Valeria Morales',
-    email: 'valeria.morales@example.com',
+    email: 'user5@premium.com',
     idNumber: '90123456',
     password: 'Password123!',
     subscription: premium,
@@ -103,7 +103,7 @@ export const usersMock = [
   },
   {
     name: 'Miguel Vargas',
-    email: 'miguel.vargas@example.com',
+    email: 'user1@pro.com',
     idNumber: '12345067',
     password: 'Password123!',
     subscription: pro,
@@ -111,7 +111,7 @@ export const usersMock = [
   },
   {
     name: 'Camila Rojas',
-    email: 'camila.rojas@example.com',
+    email: 'user2@pro.com',
     idNumber: '23456178',
     password: 'Password123!',
     subscription: pro,
@@ -119,7 +119,7 @@ export const usersMock = [
   },
   {
     name: 'Alejandro Castillo',
-    email: 'alejandro.castillo@example.com',
+    email: 'user3@pro.com',
     idNumber: '34567289',
     password: 'Password123!',
     subscription: pro,
@@ -127,7 +127,7 @@ export const usersMock = [
   },
   {
     name: 'Emilia Vega',
-    email: 'emilia.vega@example.com',
+    email: 'user4@pro.com',
     idNumber: '45678390',
     password: 'Password123!',
     subscription: pro,
@@ -135,7 +135,7 @@ export const usersMock = [
   },
   {
     name: 'Daniel Herrera',
-    email: 'daniel.herrera@example.com',
+    email: 'user5@pro.com',
     idNumber: '56789401',
     password: 'Password123!',
     subscription: pro,
@@ -143,7 +143,7 @@ export const usersMock = [
   },
   {
     name: 'Lucia Perez',
-    email: 'lucia.perez@example.com',
+    email: 'user6@pro.com',
     idNumber: '67890512',
     password: 'Password123!',
     subscription: pro,
@@ -151,7 +151,7 @@ export const usersMock = [
   },
   {
     name: 'Mateo Diaz',
-    email: 'mateo.diaz@example.com',
+    email: 'user6@premium.com',
     idNumber: '78901623',
     password: 'Password123!',
     subscription: premium,
@@ -159,15 +159,15 @@ export const usersMock = [
   },
   {
     name: 'Victoria Garcia',
-    email: 'victoria.garcia@example.com',
+    email: 'test_user_1309689138@testuser.com',
     idNumber: '89012734',
     password: 'Password123!',
-    subscription: standard,
+    subscription: standard,   
     role: user,
   },
   {
     name: 'Sebastian Lopez',
-    email: 'sebastian.lopez@example.com',
+    email: 'test_user_169518996@testuser.com',
     idNumber: '90123845',
     password: 'Password123!',
     subscription: standard,
@@ -175,10 +175,11 @@ export const usersMock = [
   },
   {
     name: 'Martina Chavez',
-    email: 'martina.chavez@example.com',
+    email: 'user7@premium.com',
     idNumber: '01234956',
     password: 'Password123!',
     subscription: premium,
     role: user,
   },
 ];
+
