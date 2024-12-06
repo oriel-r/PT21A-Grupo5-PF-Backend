@@ -66,12 +66,15 @@ export class AuthService {
     );
 
     const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
-    /* const verificationLink = verificationEmail(
-      newUser.email,
-      verificationCode,
-      baseUrl,
-    ); */
-    const verificationLink = `http://localhost:3000/code-verification?email=${newUser.email}&code=${verificationCode}`;
+  /* const verificationLink = () => {
+   verificationEmail(
+     newUser.email,
+     verificationCode,
+     baseUrl,
+   );
+   }*/
+    
+    const verificationLink = `http://localhost:3000/auth/code-verification?email=${newUser.email}&code=${verificationCode}`;
 
     const message = emailHtml
       .replace('{{userName}}', signUpUser.name)
@@ -87,6 +90,7 @@ export class AuthService {
   }
 
   async verifyEmail(email: string, code: string) {
+    console.log('are used')
     const verification = await this.authRepository.findVerificationCode(
       email,
       code,

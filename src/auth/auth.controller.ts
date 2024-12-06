@@ -11,6 +11,7 @@ import {
   Res,
   UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignupUserDto } from './dto/signup-auth.dto';
@@ -19,6 +20,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { UserResponseAuthDto } from './dto/user-response-auth.dto';
 import { ApiBody, ApiConsumes, ApiOperation } from '@nestjs/swagger';
 import { FilePipe } from 'src/pipes/file/file.pipe';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('auth')
 export class AuthController {
@@ -40,7 +42,7 @@ export class AuthController {
   @Post('signup')
   @HttpCode(201)
   async signUp(
-    @UploadedFile(
+   /* @UploadedFile(
       new FilePipe(0, 20000, [
         'image/jpeg',
         'image/png',
@@ -48,10 +50,10 @@ export class AuthController {
         'image/jpg',
       ]),
     )
-    file: Express.Multer.File,
+    file: Express.Multer.File,*/
     @Body() signUpUser: SignupUserDto,
   ) {
-    const newUser = await this.authService.signUp(signUpUser, file);
+    const newUser = await this.authService.signUp(signUpUser);
     return {
       message:
         'Usuario registrado exitosamente. Revisa tu correo para verificar tu cuenta.',
@@ -66,7 +68,7 @@ export class AuthController {
     return await this.authService.signIn(credentials);
   }
 
-  @Post('codeVerification')
+  @Get('code-verification')
   async verificationEmailWhitCode(
     @Query('email') email: string,
     @Query('code') code: string,
