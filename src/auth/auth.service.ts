@@ -74,7 +74,7 @@ export class AuthService {
    );
    }*/
     
-    const verificationLink = `http://localhost:3000/auth/code-verification?email=${newUser.email}&code=${verificationCode}`;
+    const verificationLink = `http://localhost:3000/code-verification?email=${newUser.email}&code=${verificationCode}`;
 
     const message = emailHtml
       .replace('{{userName}}', signUpUser.name)
@@ -90,12 +90,10 @@ export class AuthService {
   }
 
   async verifyEmail(email: string, code: string) {
-    console.log('are used')
     const verification = await this.authRepository.findVerificationCode(
       email,
       code,
     );
-
     if (!verification) {
       throw new HttpException(
         'Código de verificación inválido.',
@@ -110,12 +108,13 @@ export class AuthService {
       );
     }
 
-    await this.authRepository.deleteVerificationCode(verification.id);
-
-    await this.authRepository.activateUser(email);
-
-    return { message: 'Cuenta verificada exitosamente.' };
-  }
+    const result = await this.authRepository.activateUser(email);
+    if(result) {
+      await this.authRepository.deleteVerificationCode(verification.id);
+      return { message: 'Cuenta verificada exitosamente.' };
+    }
+    return {message: 'Error inesperado en el checkeo'}
+    }
 
   async signIn(credentials: SignInAuthDto) {
     const user = await this.userRepo.getUserByEmail(credentials.email);

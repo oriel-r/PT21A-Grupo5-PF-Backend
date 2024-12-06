@@ -19,25 +19,29 @@ export class AuthRepository {
     }
 
     async findVerificationCode(email: string, code: string) {
-        return this.userVerificationRepository.findOne({ where: { email, code }});
+        return await this.userVerificationRepository.findOne({where: {email, code}});
     }
 
     async deleteVerificationCode(id: string) {
-        await this.userVerificationRepository.delete(id);
+        return await this.userVerificationRepository.delete(id);
     }
 
     async activateUser(email: string) {
         const user = await this.userRepository.findOneBy({ email });
-
-        if (!user) {
+        console.log({inRepo: user})
+        if (!user ) {
         throw new Error('Usuario no encontrado');
         }
-
         if (user.isVerified) {
             throw new Error('El usuario ya está activado');
         }
 
-        return await this.userRepository.update(user.id, {isVerified: true}); 
+        const result = await this.userRepository.update(user.id, {isVerified: true}); 
+        if(result) {
+            const hola =  await this.userRepository.findBy({email})
+            return hola
+        }
+        return
     }
 
 }
