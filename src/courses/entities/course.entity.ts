@@ -26,7 +26,7 @@ export class Course {
     example: 'e6bfb1c7-8c3c-4d9f-a1ec-9f1bb9b2e252',
   })
   @PrimaryGeneratedColumn('uuid')
-  id: string = uuid();
+  id: string;
 
   @ApiProperty({
     description: 'The title of the course.',
@@ -54,16 +54,16 @@ export class Course {
     enum: Specialization,
     example: Specialization.IT,
   })
-  @Column({ type: 'enum', enum: Specialization })
-  specialization: Specialization;
+  @Column({ type: 'varchar'})
+  specialization: string;
 
   @ApiProperty({
     description: 'The difficulty level of the course.',
     enum: Level,
     example: Level.ELEMENTARY,
   })
-  @Column({ type: 'enum', enum: Level })
-  level: Level;
+  @Column({ type: 'varchar' })
+  level: string;
 
   @ApiProperty({
     description: 'A detailed description of the course.',
@@ -104,7 +104,7 @@ export class Course {
     description: 'The timestamp when the course was created.',
     example: '2024-11-12T10:00:00Z',
   })
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ type: 'datetime', default: Date.now() })
   createdAt: Date;
 
   @ApiProperty({

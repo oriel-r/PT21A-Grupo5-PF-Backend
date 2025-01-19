@@ -33,8 +33,8 @@ export class Payment {
     name: 'date',
     description: "payment's date",
   })
-  @Column({default: new Date()})
-  date: Date;Z
+  @Column({default: () => 'CURRENT_TIME'})
+  date: Date;
   
   @ApiProperty({
     name: 'status',

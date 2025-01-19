@@ -2,22 +2,19 @@ import { registerAs } from '@nestjs/config';
 import { fail } from 'assert';
 import { config as dotenvConfig } from 'dotenv';
 import { DataSource, DataSourceOptions } from 'typeorm';
-
-dotenvConfig({ path: '.env.development.local' });
+import { envConfig } from 'src/helpers/get-envs';
+import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions';
+import { BetterSqlite3ConnectionOptions } from 'typeorm/driver/better-sqlite3/BetterSqlite3ConnectionOptions';
 
 //DB Postgres configuration
 
 const PostgresDataSourceOptions: DataSourceOptions = {
-  type: 'postgres',
-  database: process.env.POSTGRES_DB,
-  host: process.env.POSTGRES_HOST,
-  port: parseInt(process.env.POSTGRES_PORT),
-  username: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD,
+  type: 'sqlite',
+  database: String(process.env.DB_NAME),
+  key: envConfig.DB_PASSWORD,
   synchronize: true,
   dropSchema: true,
   logging: ['error'],
-  ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
   entities: ['dist/**/*.entity{.ts,.js}'],
   migrations: ['dist/migrations/*{.js,.ts}'],
 };
