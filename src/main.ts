@@ -70,7 +70,7 @@ async function bootstrap() {
   const swaggerConfig = new DocumentBuilder()
     .setTitle('online-courses-platform')
     .setDescription('Description')
-    .setVersion('0.0.1')
+    .setVersion('0.1.1')
     .addBearerAuth()
     .build();
 
